@@ -8,10 +8,9 @@ app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
 
 // app.get( "/" , (req, res) => res.send("Is this working"))
-app.get( "/app" , (req, res) => {
+app.get( "/" , (req, res) => {
 res.sendFile(path.join(__dirname, "../client/dist/index.html"))
-// res.sendFile("../client/dist/index.html")
 });
+app.get("/graphql", res.json("data"));
 
-
-app.listen(PORT, () =>  console.log("Help") )
+app.listen(PORT, () =>  console.log(`Application is running on ${PORT}`) )
