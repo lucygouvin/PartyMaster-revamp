@@ -4,10 +4,10 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cd server npm run start",
-    "dev": "concurrently \"cd client  && npm run dev\" \"/server && npm run dev\"",
-    "build": "cd client && npm run buil"
+    "install": "cd client && npm install && cd server && npm istall",
+    "start": "cd server && npm run start",
+    "dev": "concurrently -n client.server \"cd client && npm run dev\" \" cd server && npm run dev\"",
+    "build": "cd client && npm run build"
   },
   "keywords": [],
   "author": "",
