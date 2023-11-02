@@ -1,0 +1,20 @@
+{
+  "name": "project-3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "install": "cd client && npm install && cd server && npm istall",
+    "start": "cd server && npm run start",
+    "dev": "concurrently -n client.server \"cd client && npm run dev\" \" cd server && npm run dev\"",
+    "build": "cd client && npm run build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.0.1",
+    "vite": "^4.5.0"
+  }
+}
