@@ -19,8 +19,13 @@ const userSchema = new Schema({
         required: true,
         minlength: 8,
         match: [/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,1024}$/, 'invalid password'], //spec char, numb, capital
-    }
-    // RSVP boolean? use user id as RSVP? 
+    },
+    event: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Event'
+        }
+    ]
 })
 
 const User = model("User", userSchema);

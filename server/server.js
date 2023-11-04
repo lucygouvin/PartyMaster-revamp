@@ -23,11 +23,11 @@ app.get("/", (req, res) => {
 });
 
 //dup?
-db.once("open", () => {
-    app.get("/graphql", res.json("data"));
+// db.once("open", () => {
+//     app.get("/graphql", res.json("data"));
 
-    app.listen(PORT, () => console.log(`Application is running on ${PORT}`))
-})
+//     app.listen(PORT, () => console.log(`Application is running on ${PORT}`))
+// })
 
 const startApolloServer = async () => {
     await server.start();

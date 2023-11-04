@@ -14,6 +14,7 @@ const eventSchema = new Schema({
     },
     description: {
         type: String,
+        required: true,
     },
     date: {
         type: Date,
@@ -28,7 +29,7 @@ const eventSchema = new Schema({
     },
     // sets guest to an array of users in userSchema
     // rename to RSVP? 
-    guest: [
+    RSVP: [
         {
             type: Schema.Types.ObjectId,
             ref: 'User',
@@ -40,6 +41,11 @@ const eventSchema = new Schema({
         // have a list of items and have a boolean set to each 
         // item while offering users to add other contributions
     },
+    // potluckTest: [
+    //     contribution, // grabbing it from contributions?
+    //     {
+    //     type: Boolean
+    // }],
     contribution: [
         {// split potluck check list with users with those who 
             // need to find out how to sort contributions
@@ -51,6 +57,7 @@ const eventSchema = new Schema({
                 type: String
             }
         }]
+    
 });
 
 const Event = model("Event", eventSchema);

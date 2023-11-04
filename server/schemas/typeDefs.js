@@ -1,13 +1,15 @@
 const typeDefs = `
- Type Event {
+ type Event {
     _id: ID
+    hostID: [User]
     title: String
     description: String
     date: String
     time: String
     location: String
-    guest: [User]
-    contribution: [contribution]
+    RSVP: [User]
+    potluck: Boolean
+    contribution: [Contribution]
  }
 
  type Contribution {
@@ -17,14 +19,16 @@ const typeDefs = `
 
  # need to fix event, figuring out model 
 
- Type User {
+ type User {
     _id: ID
     name: String
     email: String
     password: String
  }
 
- Type Comment {
+ #remove password later
+
+ type Comment {
     eventID: [Event]
     userID: [User]
     content: String
@@ -33,14 +37,19 @@ const typeDefs = `
  type Query {
     events: [Event]
     users: [User]
+    comments: [Comment]  
  }
 
  # auth to be set up***
 
  type Mutation {
-    login(name: String!, password!): Auth
-    addUser(name: String!, email: String!, password: String!): Auth
-    updateEvent(_id: ID, title: String, description:String)
+   # login(name: String!, password: String!): User
+   # addUser(name: String!, email: String!, password: String!): User
+    deleteUser(userID: ID!): User
+    addEvent(title: String!, description: String!, date: String, time: String, location: String, potluck: Boolean): Event
+    updateEvent(_id: ID, title: String, description:String, date: String, time: String, location: String ): Event
+   # addinvite()
 
  }
 `
+module.exports = typeDefs;
