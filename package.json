@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "install": "cd client && npm install && cd server && npm istall",
+    "install": "cd client && npm install && cd ../server && npm install",
     "start": "cd server && npm run start",
     "dev": "concurrently -n client.server \"cd client && npm run dev\" \" cd server && npm run dev\"",
     "build": "cd client && npm run build"
@@ -13,8 +13,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@vitejs/plugin-react": "^4.1.1",
     "concurrently": "^8.2.2",
     "nodemon": "^3.0.1",
+    "react-router-dom": "^6.18.0",
     "vite": "^4.5.0"
   }
 }
