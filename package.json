@@ -6,7 +6,7 @@
   "scripts": {
     "install": "cd client && npm install && cd ../server && npm install",
     "start": "cd server && npm run start",
-    "dev": "concurrently -n client.server \"cd client && npm run dev\" \" cd server && npm run dev\"",
+    "dev": "concurrently -n client.server \"cd client && npm run dev\" \" cd server && npm run watch\"",
     "build": "cd client && npm run build",
     "server": "node server --ignore client",
     "lint": "eslint .",
