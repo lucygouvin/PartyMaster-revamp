@@ -10,7 +10,8 @@
     "build": "cd client && npm run build",
     "server": "node server --ignore client",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "seed": "node server/seeder/seed.js"
   },
   "keywords": [],
   "author": "",
