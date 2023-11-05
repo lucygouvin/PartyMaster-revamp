@@ -1,14 +1,13 @@
-const { Event, User, Comment } = require('../models');
+const { Event, User, Comment } = require("../models");
 // auth
 
 const resolvers = {
-
   Query: {
     getEventData: async (parent, { eventInput }) =>
       Event.findOne({ _id: eventInput._id }),
 
     getUserEvents: async (parent, _, context) =>
-      User.findOne({ _id: context.user._id }).populate('event'),
+      User.findOne({ _id: context.user._id }).populate("event"),
   },
 
   Mutation: {
@@ -28,7 +27,7 @@ const resolvers = {
     deleteUser: async (parent, { userID }, context) => {
       if (context.user) return User.findOneAndDelete({ _id: userID });
 
-      throw new Error('Something has gone wrong!');
+      throw new Error("Something has gone wrong!");
     },
 
     addEvent: async (parent, { eventInput }, context) => {
@@ -43,7 +42,7 @@ const resolvers = {
         return event;
       }
 
-      throw new Error('Something has gone wrong!');
+      throw new Error("Something has gone wrong!");
     },
 
     updateEvent: async (parent, { eventInput }, context) => {
@@ -60,12 +59,6 @@ const resolvers = {
         );
         return event;
       }
-<<<<<<<<< Temporary merge branch 1
-      throw new Error('Not logged in');
-    },
-  },
-};
-=========
       throw new Error("Not logged in");
     },
 
@@ -73,7 +66,7 @@ const resolvers = {
       if (context.user._id === eventInput.hostID) {
         return Event.findOneAndDelete({ _id: eventInput._id });
       }
-      throw new Error('The user is not the host');
+      throw new Error("The user is not the host");
     },
 
     addComment: async (parent, { eventInput, commentInput }, context) => {
@@ -87,7 +80,7 @@ const resolvers = {
           }
         );
       }
-      throw new Error('Not logged in');
+      throw new Error("Not logged in");
     },
 
     deleteComment: async (parent, { eventInput, commentInput }, context) => {
@@ -97,17 +90,17 @@ const resolvers = {
           { $pull: { comment: { _id: commentInput._id } } }
         );
       }
-      throw new Error('Not your comment');
+      throw new Error("Not your comment");
     },
 
     updateRSVP: async (parent, { eventInput, rsvpInput }, context) => {
       if (context.user) {
         return Event.findOneAndUpdate(
-          { _id: eventInput._id, 'RSVP.userId': context.user._id },
-          { $set: { 'RSVP.$.invite': rsvpInput } }
+          { _id: eventInput._id, "RSVP.userId": context.user._id },
+          { $set: { "RSVP.$.invite": rsvpInput } }
         );
       }
-      throw new Error('Not logged in');
+      throw new Error("Not logged in");
     },
 
     addContribution: async (
@@ -121,7 +114,7 @@ const resolvers = {
           { $addToSet: { contribution: { item: contributionInput } } }
         );
       }
-      throw new Error('Not logged in');
+      throw new Error("Not logged in");
     },
     // Not sure if this needs to be its own function or if it should be part of updateEvent?
     deleteContribution: async (
@@ -136,13 +129,9 @@ const resolvers = {
           { $pull: { contribution: { item: contributionInput } } }
         );
       }
-      throw new Error('Not logged in');
+      throw new Error("Not logged in");
     },
-
-    
-
-  }
-}
->>>>>>>>> Temporary merge branch 2
+  },
+};
 
 module.exports = resolvers;
