@@ -47,6 +47,11 @@ const typeDefs = `
 
  # auth to be set up***
 
+ type Auth{
+   token: ID
+   user: User
+}
+
  type Mutation {
    # login(name: String!, password: String!): User
    # addUser(name: String!, email: String!, password: String!): User
