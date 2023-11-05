@@ -1,24 +1,20 @@
 const typeDefs = `
+# need to fix event, figuring out model 
  type Event {
     _id: ID
     hostID: [User]
-    title: String
-    description: String
-    date: String
-    time: String
-    location: String
-    RSVP: [User]
-    potluck: Boolean
+    title: String!
+    description: String!
+    date: String!
+    time: String!
+    location: String!
+    comment: [Comment]
+    RSVP: [Invite]
+    potluck: Boolean!
     contribution: [Contribution]
  }
 
- type Contribution {
-    userId: ID
-    item: String
-}
-
- # need to fix event, figuring out model 
-
+ #remove password later
  type User {
     _id: ID
     name: String
@@ -26,19 +22,26 @@ const typeDefs = `
     password: String
  }
 
- #remove password later
-
  type Comment {
-    eventID: [Event]
     userID: [User]
     content: String
+ }
+
+ type Invite {
+   userId: [User]!
+   invite: String!
  }
 
  type Query {
     events: [Event]
     users: [User]
-    comments: [Comment]  
+    me: User
  }
+
+ type Contribution {
+   userId: [User]
+   item: String
+}
 
  # auth to be set up***
 
@@ -46,8 +49,8 @@ const typeDefs = `
    # login(name: String!, password: String!): User
    # addUser(name: String!, email: String!, password: String!): User
     deleteUser(userID: ID!): User
-    addEvent(title: String!, description: String!, date: String, time: String, location: String, potluck: Boolean): Event
-    updateEvent(_id: ID, title: String, description:String, date: String, time: String, location: String ): Event
+    addEvent(title: String!, description: String!, date: String!, time: String!, location: String!, potluck: Boolean!, contribution: [Contribution]): Event
+    updateEvent(_id: ID, title: String!, description:String!, date: String!, time: String!, location: String, potluck: Boolean!,  contribution: [Contribution]): Event
    # addinvite()
 
  }

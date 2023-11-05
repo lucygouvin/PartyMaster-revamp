@@ -3,6 +3,9 @@ const { Schema, model } = require('mongoose');
 // was giving me a hard tim eif i have it capital, might need to capitalize later
 // const userSchema = require('./user');
 
+const inviteSchema = require('./Invite')
+const commentSchema = require('./Comment')
+
 const eventSchema = new Schema({
     hostID: {
         type: Schema.Types.ObjectId,
@@ -17,26 +20,28 @@ const eventSchema = new Schema({
         required: true,
     },
     date: {
-        type: Date,
+        type: String,
+        required: true,
+        //scalar.date good to know later 
+        // date or string is option
     },
     time: {
         // need to allow user to select date, maybe string or have calender option
-        type: Date,
+        type: String,
+        required: true,
     },
     location: {
         // stretch goal, add map api 
         type: String,
+        required: true,
     },
+    comment: [commentSchema],
     // sets guest to an array of users in userSchema
     // rename to RSVP? 
-    RSVP: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'User',
-        }
-    ],
-    potluck: {
-        type: Boolean
+    RSVP: [inviteSchema],
+    potluck: { // if false then contribution is not needed for the event!
+        type: Boolean,
+        required: true,
         // pool of items being brought to the the party
         // have a list of items and have a boolean set to each 
         // item while offering users to add other contributions
