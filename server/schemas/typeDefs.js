@@ -36,6 +36,8 @@ const typeDefs = `
     events: [Event]
     users: [User]
     me: User
+    getEventData(_id: ID!): Event
+    getUserEvents(_id: ID!): User
  }
 
  type Contribution {
@@ -52,6 +54,14 @@ const typeDefs = `
     addEvent(title: String!, description: String!, date: String!, time: String!, location: String!, potluck: Boolean!, contribution: [Contribution]): Event
     updateEvent(_id: ID, title: String!, description:String!, date: String!, time: String!, location: String, potluck: Boolean!,  contribution: [Contribution]): Event
    # addinvite()
+   deleteEvent(_id: ID!): Event
+   addComment(_id: ID!, comment.content: String): Event
+   deleteComment(_id:ID!, comment._id: ID!): Event
+   updateRSVP (_id: ID!, RSVP.invite: String!): Event
+   addContribution (_id:ID!, contribution.item: String!): Event
+   deleteContribution (_id:ID!, contribution.item:String!): Event
+
+
 
  }
 `;
