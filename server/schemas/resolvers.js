@@ -2,6 +2,7 @@ const { Event, User, Comment } = require('../models');
 // auth
 
 const resolvers = {
+
   Query: {
     getEventData: async (parent, { eventInput }) =>
       Event.findOne({ _id: eventInput._id }),
@@ -59,7 +60,13 @@ const resolvers = {
         );
         return event;
       }
+<<<<<<<<< Temporary merge branch 1
       throw new Error('Not logged in');
+    },
+  },
+};
+=========
+      throw new Error("Not logged in");
     },
 
     deleteEvent: async (parent, { eventInput }, context) => {
@@ -131,7 +138,11 @@ const resolvers = {
       }
       throw new Error('Not logged in');
     },
-  },
-};
+
+    
+
+  }
+}
+>>>>>>>>> Temporary merge branch 2
 
 module.exports = resolvers;
