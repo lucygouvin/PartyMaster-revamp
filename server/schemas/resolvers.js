@@ -1,10 +1,8 @@
 const { Event, User, Comment } = require('../models');
-// auth 
+// auth
 
 const resolvers = {
-  Query: {
-
-  },
+  Query: {},
 
   Mutation: {
     // addUser: async (parent, args) => {
@@ -18,16 +16,16 @@ const resolvers = {
     //     if (!user) {
     //         throw console.log("error");
     //     }
-    //     // need auth 
+    //     // need auth
     // },
     deleteUser: async (parent, { userID }, context) => {
-      if (context.user)
-        return User.findOneAndDelete({ _id: userID })
+      if (context.user) return User.findOneAndDelete({ _id: userID });
 
-      throw new Error("Something has gone wrong!");
+      throw new Error('Something has gone wrong!');
     },
     addEvent: async (parent, { eventInput }, context) => {
-      if (context.user) { // needs testing
+      if (context.user) {
+        // needs testing
         const event = await Event.create(eventInput);
 
         await User.findByIdAndUpdate(context.user._id, {
@@ -37,25 +35,25 @@ const resolvers = {
         return event;
       }
 
-      throw new Error("Something has gone wrong!");
-
+      throw new Error('Something has gone wrong!');
     },
     updateEvent: async (parent, { eventInput }, context) => {
       if (context.user) {
-        const event = await Event.findOneAndUpdate({ _id: eventInput._id },
+        const event = await Event.findOneAndUpdate(
+          { _id: eventInput._id },
           {
-            $set: eventInput
+            $set: eventInput,
           },
           {
             runValidators: true,
             new: true,
           }
-        )
+        );
         return event;
       }
-      throw new Error("Not logged in");
-    }
-  }
-}
+      throw new Error('Not logged in');
+    },
+  },
+};
 
-module.exports = resolvers
+module.exports = resolvers;

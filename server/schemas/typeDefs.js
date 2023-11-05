@@ -54,5 +54,5 @@ const typeDefs = `
    # addinvite()
 
  }
-`
+`;
 module.exports = typeDefs;
