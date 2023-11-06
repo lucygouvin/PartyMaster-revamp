@@ -40,14 +40,19 @@ const typeDefs = `
     getUserEvents(_id: ID!): User
  }
 
+
  type Contribution {
-   userId: [User]
+   userId: ID
+   item: String
+}
+input ContributionInput {
+   userId: ID
    item: String
 }
 
  # auth to be set up***
 
- type Auth{
+ type Auth {
    token: ID
    user: User
 }
@@ -56,15 +61,15 @@ const typeDefs = `
    # login(name: String!, password: String!): User
    # addUser(name: String!, email: String!, password: String!): User
     deleteUser(userID: ID!): User
-    addEvent(title: String!, description: String!, date: String!, time: String!, location: String!, potluck: Boolean!, contribution: [Contribution]): Event
-    updateEvent(_id: ID, title: String!, description:String!, date: String!, time: String!, location: String, potluck: Boolean!,  contribution: [Contribution]): Event
+    addEvent(title: String!, description: String!, date: String!, time: String!, location: String!, potluck: Boolean!, contribution: [ContributionInput]): Event
+    updateEvent(_id: ID, title: String!, description:String!, date: String!, time: String!, location: String!, potluck: Boolean!,  contribution: [ContributionInput]): Event
    # addinvite()
    deleteEvent(_id: ID!): Event
-   addComment(_id: ID!, comment.content: String): Event
-   deleteComment(_id:ID!, comment._id: ID!): Event
-   updateRSVP (_id: ID!, RSVP.invite: String!): Event
-   addContribution (_id:ID!, contribution.item: String!): Event
-   deleteContribution (_id:ID!, contribution.item:String!): Event
+  # addComment(_id: ID!, comment.content: String): Event
+   # deleteComment(_id:ID!, comment._id: ID!): Event
+   # updateRSVP (_id: ID!, RSVP.invite: String!): Event
+   # addContribution (_id:ID!, contribution.item: String!): Event
+   # deleteContribution (_id:ID!, contribution.item:String!): Event
 
 
 
