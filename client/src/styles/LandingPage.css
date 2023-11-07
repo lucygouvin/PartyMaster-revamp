@@ -1,3 +1,12 @@
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #2ecc71;
+  --bg-color: #ecf0f1;
+  --font-stack: 'Arial', sans-serif;
+  --border-radius: 8px;
+  --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 body {
   font-family: 'Roboto', sans-serif;
   margin: 0;
