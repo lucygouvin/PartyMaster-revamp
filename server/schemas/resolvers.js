@@ -11,27 +11,33 @@ const resolvers = {
   },
 
   Mutation: {
-    // addUser: async (parent, args) => {
-    //     const user = await User.create(args);
+    addUser: async (parent, args) => {
+      
+        const user = await User.create(args);
 
-    //     return { user };
-    // },
-    // login: async ( parent, { email, password }) => {
-    //     const user = await User.findOne({ email });
+        console.log(user)
+        return user ;
+    },
+    login: async ( parent, { name, password }) => {
+        const user = await User.findOne({ name });
 
-    //     if (!user) {
-    //         throw console.log("error");
-    //     }
-    //     // need auth
-    // },
+        if (!user) {
+            throw console.log("error");
+        }
+
+        return user;
+        // need auth
+    },
     deleteUser: async (parent, { userID }, context) => {
       if (context.user) return User.findOneAndDelete({ _id: userID });
 
       throw new Error('Something has gone wrong!');
     },
 
-    addEvent: async (parent, { eventInput }, context) => {
+    addEvent: async (parent, eventInput , context) => {
       if (context.user) {
+        console.log(context)
+        console.log(eventInput)
         // needs testing
         const event = await Event.create(eventInput);
 
@@ -45,7 +51,7 @@ const resolvers = {
       throw new Error('Something has gone wrong!');
     },
 
-    updateEvent: async (parent, { eventInput }, context) => {
+    updateEvent: async (parent, eventInput , context) => {
       if (context.user) {
         const event = await Event.findOneAndUpdate(
           { _id: eventInput._id },
@@ -69,19 +75,19 @@ const resolvers = {
       throw new Error('The user is not the host');
     },
 
-    // addComment: async (parent, { eventInput, commentInput }, context) => {
-    //   if (context.user) {
-    //     return Event.findOneAndUpdate(
-    //       { _id: eventInput._id },
-    //       {
-    //         $addToSet: {
-    //           comment: { userId: contex.user._id, content: commentInput },
-    //         },
-    //       }
-    //     );
-    //   }
-    //   throw new Error('Not logged in');
-    // },
+    addComment: async (parent, { eventInput, commentInput }, context) => {
+      if (context.user) {
+        return Event.findOneAndUpdate(
+          { _id: eventInput._id },
+          {
+            $addToSet: {
+              comment: { userId: context.user._id, content: commentInput },
+            },
+          }
+        );
+      }
+      throw new Error('Not logged in');
+    },
 
     // deleteComment: async (parent, { eventInput, commentInput }, context) => {
     //   if (context.user === commentInput.userId) {
