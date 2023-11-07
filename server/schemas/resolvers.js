@@ -51,8 +51,8 @@ const resolvers = {
 
       return { token, user };
     },
-
-    deleteUser: async (parent, userID, context) => {
+    deleteUser: async (parent, {userID}, context) => {
+      // TODO remove || true once auth stuff is added
       if (context.user || true) {
         return User.findOneAndDelete({ _id: userID });
       }

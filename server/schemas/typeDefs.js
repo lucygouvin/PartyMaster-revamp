@@ -11,7 +11,7 @@ const typeDefs = `
     comment: [Comment]
     RSVP: [Invite]
     potluck: Boolean!
-    contribution: [Contribution]
+    potluckContributions: [Contribution]
  }
 
  type User {
@@ -37,6 +37,7 @@ const typeDefs = `
  }
 
  type Contribution {
+   _id: ID
    userId: ID
    item: String
 }
