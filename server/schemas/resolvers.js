@@ -3,6 +3,10 @@ const { Event, User, Comment } = require('../models');
 
 const resolvers = {
   Query: {
+    events: async () => Event.find(),
+
+    users: async () => User.find(),
+
     getEventData: async (parent, { eventInput }) =>
       Event.findOne({ _id: eventInput._id }),
 
@@ -12,21 +16,20 @@ const resolvers = {
 
   Mutation: {
     addUser: async (parent, args) => {
-      
-        const user = await User.create(args);
+      const user = await User.create(args);
 
-        console.log(user)
-        return user ;
+      console.log(user);
+      return user;
     },
-    login: async ( parent, { name, password }) => {
-        const user = await User.findOne({ name });
+    login: async (parent, { name, password }) => {
+      const user = await User.findOne({ name });
 
-        if (!user) {
-            throw console.log("error");
-        }
+      if (!user) {
+        throw console.log('error');
+      }
 
-        return user;
-        // need auth
+      return user;
+      // need auth
     },
     deleteUser: async (parent, { userID }, context) => {
       if (context.user) return User.findOneAndDelete({ _id: userID });
@@ -34,10 +37,10 @@ const resolvers = {
       throw new Error('Something has gone wrong!');
     },
 
-    addEvent: async (parent, eventInput , context) => {
+    addEvent: async (parent, eventInput, context) => {
       if (context.user) {
-        console.log(context)
-        console.log(eventInput)
+        console.log(context);
+        console.log(eventInput);
         // needs testing
         const event = await Event.create(eventInput);
 
@@ -51,7 +54,7 @@ const resolvers = {
       throw new Error('Something has gone wrong!');
     },
 
-    updateEvent: async (parent, eventInput , context) => {
+    updateEvent: async (parent, eventInput, context) => {
       if (context.user) {
         const event = await Event.findOneAndUpdate(
           { _id: eventInput._id },
