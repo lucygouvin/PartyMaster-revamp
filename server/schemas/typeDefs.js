@@ -36,13 +36,7 @@ const typeDefs = `
    invite: String!
  }
 
- type Query {
-    events: [Event]
-    users: [User]
-    me: User
-    getEventData(_id: ID!): Event
-    getUserEvents(_id: ID!): User
- }
+ 
 
  type Contribution {
    userId: ID
@@ -54,16 +48,22 @@ input ContributionInput {
    item: String
 }
 
- # auth to be set up***
-
  type Auth {
    token: ID
    user: User
 }
 
+type Query {
+    events: [Event]
+    users: [User]
+    me: User
+    getEventData(_id: ID!): Event
+    getUserEvents(_id: ID!): User
+ }
+
  type Mutation {
-    login(name: String!, password: String!): User
-    addUser(name: String!, email: String!, password: String!): User
+    login(email: String!, password: String!): Auth
+    addUser(name: String!, email: String!, password: String!): Auth
     deleteUser(_id: ID!): User
     addEvent(title: String!, description: String!, date: String!, time: String!, location: String!, potluck: Boolean!, contribution: [ContributionInput]): Event
     updateEvent(_id: ID, title: String!, description:String!, date: String!, time: String!, location: String!, potluck: Boolean!,  contribution: [ContributionInput]): Event
