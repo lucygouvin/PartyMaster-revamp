@@ -16,10 +16,7 @@ const resolvers = {
 
   Mutation: {
     addUser: async (parent, args) => {
-      const user = await User.create(args);
-
-      console.log(user);
-      return user;
+      return await User.create(args);
     },
     login: async (parent, { name, password }) => {
       const user = await User.findOne({ name });
@@ -31,22 +28,24 @@ const resolvers = {
       return user;
       // need auth
     },
-    deleteUser: async (parent, { userID }, context) => {
-      if (context.user) return User.findOneAndDelete({ _id: userID });
+    deleteUser: async (parent, userID, context) => {
+      console.log(userID)
+      // TODO remove || true once auth stuff is added
+      if (context.user||true) return User.findOneAndDelete({_id: userID });
 
       throw new Error('Something has gone wrong!');
     },
 
     addEvent: async (parent, eventInput, context) => {
-      if (context.user) {
+      if (context.user||true) {
         console.log(context);
         console.log(eventInput);
         // needs testing
         const event = await Event.create(eventInput);
 
-        await User.findByIdAndUpdate(context.user._id, {
-          $push: { events: event._id },
-        });
+        // await User.findByIdAndUpdate(context.user._id, {
+        //   $push: { events: event._id },
+        // });
 
         return event;
       }
@@ -55,7 +54,7 @@ const resolvers = {
     },
 
     updateEvent: async (parent, eventInput, context) => {
-      if (context.user) {
+      if (context.user||true) {
         const event = await Event.findOneAndUpdate(
           { _id: eventInput._id },
           {
@@ -71,21 +70,25 @@ const resolvers = {
       throw new Error('Not logged in');
     },
 
-    deleteEvent: async (parent, { eventInput }, context) => {
-      if (context.user._id === eventInput.hostID) {
-        return Event.findOneAndDelete({ _id: eventInput._id });
+    deleteEvent: async (parent,  eventInput , context) => {
+      console.log(eventInput)
+      if (true || context.user._id === eventInput.hostID ) {
+        return Event.findOneAndDelete({ _id: eventInput });
       }
       throw new Error('The user is not the host');
     },
 
-    addComment: async (parent, { eventInput, commentInput }, context) => {
-      if (context.user) {
+    addComment: async (parent, args, context) => {
+      if (context.user||true) {
         return Event.findOneAndUpdate(
-          { _id: eventInput._id },
+          { _id: args._id },
           {
             $addToSet: {
-              comment: { userId: context.user._id, content: commentInput },
+              comment: {content: args.comment.content },
             },
+          },
+          {
+            new: true,
           }
         );
       }
