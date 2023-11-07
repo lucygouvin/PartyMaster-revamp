@@ -11,7 +11,7 @@ const typeDefs = `
     comment: [Comment]
     RSVP: [Invite]
     potluck: Boolean!
-    contribution: [Contribution]
+    potluckContributions: [Contribution]
  }
 
  #remove password later
@@ -39,6 +39,7 @@ const typeDefs = `
  
 
  type Contribution {
+   _id: ID
    userId: ID
    item: String
 }
