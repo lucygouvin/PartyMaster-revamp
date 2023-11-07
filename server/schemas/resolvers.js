@@ -1,5 +1,5 @@
 const { Event, User, Comment } = require('../models');
-// auth
+const { signToken, AuthenticationError } = require('../utils/auth');
 
 const resolvers = {
   Query: {
@@ -7,37 +7,60 @@ const resolvers = {
 
     users: async () => User.find(),
 
+    me: async (parent, args, context) => {
+      if (context.user) {
+        return User.findOne({ _id: context.user._id });
+      }
+      throw AuthenticationError;
+    },
+
     getEventData: async (parent, { eventInput }) =>
       Event.findOne({ _id: eventInput._id }),
 
-    getUserEvents: async (parent, _, context) =>
-      User.findOne({ _id: context.user._id }).populate('event'),
+    getUserEvents: async (parent, _, context) => {
+      if (context.user) {
+        User.findOne({ _id: context.user._id }).populate('event');
+      }
+      throw AuthenticationError;
+    },
   },
 
   Mutation: {
     addUser: async (parent, args) => {
-      return await User.create(args);
+      const newUser = await User.create(args);
+      const token = signToken(newUser);
+      console.log(newUser);
+
+      return { token, newUser };
     },
-    login: async (parent, { name, password }) => {
-      const user = await User.findOne({ name });
+    login: async (parent, { email, password }) => {
+      const user = await User.findOne({ email });
 
       if (!user) {
-        throw console.log('error');
+        throw AuthenticationError;
       }
 
-      return user;
-      // need auth
+      const validatePw = await user.isCorrectPassword(password);
+
+      if (!validatePw) {
+        throw AuthenticationError;
+      }
+
+      const token = signToken(user);
+
+      return { token, user };
     },
     deleteUser: async (parent, userID, context) => {
-      console.log(userID)
       // TODO remove || true once auth stuff is added
-      if (context.user||true) return User.findOneAndDelete({_id: userID });
+      if (context.user || true) {
+        return User.findOneAndDelete({ _id: userID });
+      }
 
-      throw new Error('Something has gone wrong!');
+      throw AuthenticationError;
     },
 
     addEvent: async (parent, eventInput, context) => {
-      if (context.user||true) {
+      if (context.user || true) {
         console.log(context);
         console.log(eventInput);
         // needs testing
@@ -50,11 +73,11 @@ const resolvers = {
         return event;
       }
 
-      throw new Error('Something has gone wrong!');
+      throw AuthenticationError;
     },
 
     updateEvent: async (parent, eventInput, context) => {
-      if (context.user||true) {
+      if (context.user || true) {
         const event = await Event.findOneAndUpdate(
           { _id: eventInput._id },
           {
@@ -67,24 +90,23 @@ const resolvers = {
         );
         return event;
       }
-      throw new Error('Not logged in');
+      throw AuthenticationError;
     },
 
-    deleteEvent: async (parent,  eventInput , context) => {
-      console.log(eventInput)
-      if (true || context.user._id === eventInput.hostID ) {
+    deleteEvent: async (parent, eventInput, context) => {
+      if (true || context.user._id === eventInput.hostID) {
         return Event.findOneAndDelete({ _id: eventInput });
       }
-      throw new Error('The user is not the host');
+      throw AuthenticationError;
     },
 
     addComment: async (parent, args, context) => {
-      if (context.user||true) {
+      if (context.user || true) {
         return Event.findOneAndUpdate(
           { _id: args._id },
           {
             $addToSet: {
-              comment: {content: args.comment.content },
+              comment: { content: args.comment.content },
             },
           },
           {
@@ -92,7 +114,7 @@ const resolvers = {
           }
         );
       }
-      throw new Error('Not logged in');
+      throw AuthenticationError;
     },
 
     // deleteComment: async (parent, { eventInput, commentInput }, context) => {
