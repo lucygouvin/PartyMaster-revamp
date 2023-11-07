@@ -27,6 +27,11 @@ const typeDefs = `
     content: String
  }
 
+ input CommentInput {
+   userID: ID!
+   content: String!
+ }
+
  type Invite {
    userId: [User]!
    invite: String!
@@ -40,11 +45,11 @@ const typeDefs = `
     getUserEvents(_id: ID!): User
  }
 
-
  type Contribution {
    userId: ID
    item: String
 }
+
 input ContributionInput {
    userId: ID
    item: String
@@ -58,20 +63,18 @@ input ContributionInput {
 }
 
  type Mutation {
-   # login(name: String!, password: String!): User
-   # addUser(name: String!, email: String!, password: String!): User
+    login(name: String!, password: String!): User
+    addUser(name: String!, email: String!, password: String!): User
     deleteUser(userID: ID!): User
     addEvent(title: String!, description: String!, date: String!, time: String!, location: String!, potluck: Boolean!, contribution: [ContributionInput]): Event
     updateEvent(_id: ID, title: String!, description:String!, date: String!, time: String!, location: String!, potluck: Boolean!,  contribution: [ContributionInput]): Event
    # addinvite()
    deleteEvent(_id: ID!): Event
-  # addComment(_id: ID!, comment.content: String): Event
-   # deleteComment(_id:ID!, comment._id: ID!): Event
+   addComment(_id: ID!, comment: CommentInput!): Event
+   # deleteComment(_id:ID!, comment: CommentInput!): Event
    # updateRSVP (_id: ID!, RSVP.invite: String!): Event
    # addContribution (_id:ID!, contribution.item: String!): Event
    # deleteContribution (_id:ID!, contribution.item:String!): Event
-
-
 
  }
 `;
