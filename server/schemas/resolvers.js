@@ -1,5 +1,7 @@
-const { Event, User, Comment } = require('../models');
+const { Event, User } = require('../models');
 const { signToken, AuthenticationError } = require('../utils/auth');
+
+// TODO remove || true once auth stuff is added
 
 const resolvers = {
   Query: {
@@ -27,12 +29,11 @@ const resolvers = {
 
   Mutation: {
     addUser: async (parent, args) => {
-      const newUser = await User.create(args);
-      const token = signToken(newUser);
-      console.log(newUser);
-
-      return { token, newUser };
+      const user = await User.create(args);
+      const token = signToken(user);
+      return { token, user };
     },
+
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
 
@@ -61,10 +62,8 @@ const resolvers = {
 
     addEvent: async (parent, eventInput, context) => {
       if (context.user || true) {
-        console.log(context);
-        console.log(eventInput);
-        // needs testing
         const event = await Event.create(eventInput);
+        // TODO Add the event to the user's list
 
         // await User.findByIdAndUpdate(context.user._id, {
         //   $push: { events: event._id },
@@ -94,6 +93,7 @@ const resolvers = {
     },
 
     deleteEvent: async (parent, eventInput, context) => {
+      // TODO check to see if the event's creator is the current user.
       if (true || context.user._id === eventInput.hostID) {
         return Event.findOneAndDelete({ _id: eventInput });
       }
@@ -106,6 +106,7 @@ const resolvers = {
           { _id: args._id },
           {
             $addToSet: {
+              // TODO include the user's id in the comment object
               comment: { content: args.comment.content },
             },
           },
@@ -117,54 +118,76 @@ const resolvers = {
       throw AuthenticationError;
     },
 
-    // deleteComment: async (parent, { eventInput, commentInput }, context) => {
-    //   if (context.user === commentInput.userId) {
-    //     return Event.findOneAndUpdate(
-    //       { _id: eventInput._id },
-    //       { $pull: { comment: { _id: commentInput._id } } }
-    //     );
-    //   }
-    //   throw new Error('Not your comment');
-    // },
+    deleteComment: async (parent, args, context) => {
+      // TODO check to see if the logged in user wrote the comment
+      if (true || context.user) {
+        return Event.findOneAndUpdate(
+          { _id: args._id },
+          { $pull: { comment: { commentId: args.commentId } } },
+          { new: true }
+        );
+      }
+      throw new Error('Not your comment');
+    },
 
-    // updateRSVP: async (parent, { eventInput, rsvpInput }, context) => {
-    //   if (context.user) {
-    //     return Event.findOneAndUpdate(
-    //       { _id: eventInput._id, 'RSVP.userId': context.user._id },
-    //       { $set: { 'RSVP.$.invite': rsvpInput } }
-    //     );
-    //   }
-    //   throw new Error('Not logged in');
-    // },
+    addGuest: async (parent, args, context) =>
+      // TODO Add logic for making sure the currenly logged in user owns the event
+      Event.findOneAndUpdate(
+        { _id: args.eventId },
+        { $addToSet: { RSVP: { userId: args.guestId, invite: 'maybe' } } },
+        { new: true }
+      ),
+    removeGuest: async (parent, args, context) =>
+      // TODO Add logic for making sure the currenly logged in user owns the event
+      Event.findOneAndUpdate(
+        { _id: args.eventId },
+        { $pull: { RSVP: { userId: args.guestId } } },
+        { new: true }
+      ),
 
-    // addContribution: async (
-    //   parent,
-    //   { eventInput, contributionInput },
-    //   context
-    // ) => {
-    //   if (context.user) {
-    //     return Event.findOneAndUpdate(
-    //       { _id: eventInput._id },
-    //       { $addToSet: { contribution: { item: contributionInput } } }
-    //     );
-    //   }
-    //   throw new Error('Not logged in');
-    // },
-    // // Not sure if this needs to be its own function or if it should be part of updateEvent?
-    // deleteContribution: async (
-    //   parent,
-    //   { eventInput, contributionInput },
-    //   context
-    // ) => {
-    //   if (context.user) {
-    //     return Event.findOneAndUpdate(
-    //       { _id: eventInput._id },
-    //       // Note: if there are two items with the same name, this may delete the wrong one. it would be more robust to have an id for each contribution. Maybe have a contributionSchema?
-    //       { $pull: { contribution: { item: contributionInput } } }
-    //     );
-    //   }
-    //   throw new Error('Not logged in');
-    // },
+    updateRSVP: async (parent, args, context) => {
+      console.log(args);
+      console.log(args.RSVP.invite);
+      if (true || context.user) {
+        return Event.findOneAndUpdate(
+          { _id: args._id, 'RSVP.userId': args.RSVP.userId },
+          { $set: { 'RSVP.$.invite': args.RSVP.invite } },
+          { new: true }
+        );
+      }
+      throw new Error('Not logged in');
+    },
+
+    addContribution: async (parent, args, context) => {
+      if (true || context.user) {
+        return Event.findOneAndUpdate(
+          { _id: args.eventId },
+          {
+            $addToSet: {
+              contribution: {
+                userId: args.contribution.userId,
+                item: args.contribution.item,
+              },
+            },
+          },
+          { new: true }
+        );
+      }
+      throw new Error('Not logged in');
+    },
+    // Not sure if this needs to be its own function or if it should be part of updateEvent?
+    deleteContribution: async (parent, args, context) => {
+      // TODO Add logic to see if the signed in user is the host
+      // TODO Add an id to contributions, make them their own schema
+      if (true || context.user) {
+        return Event.findOneAndUpdate(
+          { _id: args.eventId },
+          { $pull: { contribution: { item: args.contribution.item } } },
+          { new: true }
+        );
+      }
+      throw new Error('Not logged in');
+    },
   },
 };
 
