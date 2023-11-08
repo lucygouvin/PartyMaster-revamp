@@ -3,8 +3,6 @@ import '../../styles/EventCreate.css';
 
 
 const EventCreate = () => {
-   
-    const [isHovered, setIsHovered] = useState(false);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -29,13 +27,6 @@ const EventCreate = () => {
 
     return (
         <div className="landing-page">
-            <header className="landing-header"
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
-                >
-                    <h1 className={isHovered ? 'hide' : ''}>Welcome to PartyMaster</h1>
-                    <h1 className={isHovered ? '' : 'hide'}>Your go-to for planning and managing social events.</h1>
-            </header>
             <div className="container mt-5">
                 <h2>Create a New Event</h2>
                 <form onSubmit={handleSubmit}>
@@ -58,9 +49,6 @@ const EventCreate = () => {
                     <button type="submit" className="btn btn-primary">Create Event</button>
                 </form>
             </div>
-            <footer className="landing-footer">
-                <p>&copy; 2023 PartyMaster</p>
-            </footer>
         </div>
     );
 };

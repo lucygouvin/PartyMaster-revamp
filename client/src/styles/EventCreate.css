@@ -31,17 +31,6 @@ body {
     box-sizing: border-box;
 }
 
-.landing-header {
-    text-align: center;
-    background-color: var(--primary-color);
-    color: white;
-    padding: 20px;
-}
-
-.landing-header h1 {
-    margin: 0;
-}
-
 .hide {
     display: none;
 }
@@ -66,16 +55,4 @@ body {
     border: none;
     border-radius: var(--border-radius);
     cursor: pointer;
-}
-
-
-.landing-footer {
-    background-color: #2c3e50;
-    color: #bdc3c7;
-    text-align: center;
-    padding: 20px;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    border-top: 1px solid #7f8c8d;
 }

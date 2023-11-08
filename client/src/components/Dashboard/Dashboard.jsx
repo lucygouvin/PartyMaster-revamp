@@ -7,7 +7,6 @@ import '../../styles/Dashboard.css';
 const Dashboard = () => {
     const [events, setEvents] = useState([]);
     const [userData, setUserData] = useState({});
-    const [isHovered, setIsHovered] = useState(false);
 
     useEffect(() => {
         async function fetchData() {
@@ -26,13 +25,6 @@ const Dashboard = () => {
 
     return (
         <div className="landing-page">
-            <header className="landing-header"
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-            >
-                <h1 className={isHovered ? 'hide' : ''}>Welcome to PartyMaster</h1>
-                <h1 className={isHovered ? '' : 'hide'}>Your go-to for planning and managing social events.</h1>
-            </header>
             <div className="dashboard">
                 <div className="user-profile">
                     <h2>Welcome, {userData.name}</h2>
@@ -57,9 +49,6 @@ const Dashboard = () => {
                     </div>
                 </div>
             </div>
-            <footer className="landing-footer">
-                <p>&copy; 2023 PartyMaster</p>
-            </footer>
         </div>
     );
 };

@@ -2,17 +2,8 @@ import React, { useState } from 'react';
 import '../../styles/signup.css';
 
 export function Signup(props) {
-    const [isHovered, setIsHovered] = useState(false);
     return (
         <div className="landing-page">
-            <header className="landing-header"
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-            >
-                <h1 className={isHovered ? 'hide' : ''}>Welcome to PartyMaster</h1>
-                <h1 className={isHovered ? '' : 'hide'}>Your go-to for planning and managing social events.</h1>
-            </header>
-
             <main className="main-content">
                 <div className="signup-container">
                     <form className="signup-form">
