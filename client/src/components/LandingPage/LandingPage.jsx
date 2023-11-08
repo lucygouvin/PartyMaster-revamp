@@ -4,10 +4,18 @@ import { useQuery } from '@apollo/client';
 import { USERS } from '../../utils/queries';
 
 export function LandingPage(props) {
+
+  const {data, loading, error} = useQuery(USERS)
+  const userData = data?.users || []
+  // console log i sent you a pic of
+  console.log(userData);
+
+  if (loading) return <h2>Loading....</h2>
+
     return (
     <div className="landing-page">
       <main className="main-content">
-      {/* <div> {data[0].name} </div> */}
+      <div> {userData[0].name} </div>
       <section className="features-overview">
         <div className="feature">
           <h2>Plan Events Effortlessly</h2>
