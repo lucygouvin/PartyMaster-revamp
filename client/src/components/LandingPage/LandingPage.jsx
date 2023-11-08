@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 import '../../styles/LandingPage.css';
+import { useQuery } from '@apollo/client';
+import { USERS } from '../../utils/queries';
 
 export function LandingPage(props) {
   const [isHovered, setIsHovered] = useState(false);
+  const { loading, data } = useQuery(USERS);
+  console.log(data)
+  // console.log(data[0])
+
+
     return (
     <div className="landing-page">
       <header className="landing-header"
@@ -14,6 +21,7 @@ export function LandingPage(props) {
       </header>
       
       <main className="main-content">
+      {/* <div> {data[0].name} </div> */}
       <section className="features-overview">
         <div className="feature">
           <h2>Plan Events Effortlessly</h2>
@@ -39,11 +47,13 @@ export function LandingPage(props) {
       </section> */}
       </main>
 
+  
+
       <footer className="landing-footer">
         <p>&copy; 2023 PartyMaster</p>
       </footer>
     </div>
   );
-};
+}
 
 export default LandingPage;

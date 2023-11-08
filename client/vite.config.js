@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
   proxy: {
     '/graphql': {
-      tartget: "http://localhost:3001",
+      target: "http://localhost:3001",
       changeOrigin: true,
       secure: false,
     }
