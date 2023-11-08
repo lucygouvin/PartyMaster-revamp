@@ -4,22 +4,8 @@ import { useQuery } from '@apollo/client';
 import { USERS } from '../../utils/queries';
 
 export function LandingPage(props) {
-  const [isHovered, setIsHovered] = useState(false);
-  const { loading, data } = useQuery(USERS);
-  console.log(data)
-  // console.log(data[0])
-
-
     return (
     <div className="landing-page">
-      <header className="landing-header"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <h1 className={isHovered ? 'hide' : ''}>Welcome to PartyMaster</h1>
-        <h1 className={isHovered ? '' : 'hide'}>Your go-to for planning and managing social events.</h1>
-      </header>
-      
       <main className="main-content">
       {/* <div> {data[0].name} </div> */}
       <section className="features-overview">
@@ -46,12 +32,6 @@ export function LandingPage(props) {
         </div>
       </section> */}
       </main>
-
-  
-
-      <footer className="landing-footer">
-        <p>&copy; 2023 PartyMaster</p>
-      </footer>
     </div>
   );
 }

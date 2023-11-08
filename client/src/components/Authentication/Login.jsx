@@ -2,17 +2,8 @@ import React, { useState } from 'react';
 import '../../styles/Login.css';
 
 export function Login(props) {
-  const [isHovered, setIsHovered] = useState(false);
   return (
     <div className="landing-page">
-      <header className="landing-header"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <h1 className={isHovered ? 'hide' : ''}>Welcome to PartyMaster</h1>
-        <h1 className={isHovered ? '' : 'hide'}>Your go-to for planning and managing social events.</h1>
-      </header>
-
       <main className="main-content">
         <div className="login-container">
           <form className="login-form">
