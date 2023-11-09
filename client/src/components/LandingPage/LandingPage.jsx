@@ -15,7 +15,7 @@ export function LandingPage(props) {
     return (
     <div className="landing-page">
       <main className="main-content">
-      <div> {userData[0].name} </div>
+      {/* <div> {userData[0].name} </div> */}
       <section className="features-overview">
         <div className="feature">
           <h2>Plan Events Effortlessly</h2>

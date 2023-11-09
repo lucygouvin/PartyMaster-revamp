@@ -1,16 +1,14 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import { Outlet } from 'react-router-dom';
+
 
 import LandingPage from './components/LandingPage/LandingPage';
 import Header from './Header';
 import Footer from './Footer';
-import Login from './components/Authentication/Login.jsx';
-import Signup from './components/Authentication/Signup.jsx';
-import Dashboard from './components/Dashboard/Dashboard.jsx';
-import EventOverview from './components/Events/EventOverview.jsx';
-import EventCreate from './components/Events/EventCreate.jsx';
+
 
 // Apollo client setup
 const httpLink = createHttpLink({
@@ -37,24 +35,10 @@ const client = new ApolloClient({
 const App = () => {
   return (
     <ApolloProvider client={client}>
-      <Router>
-        <Header /> {/* Global header included */}
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/eventoverview" element={<EventOverview />} />
-          <Route path="/eventcreate" element={<EventCreate />} />
-
-          {/* Uncomment and add other routes here */}
-          {/* <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/event-create" element={<EventCreate />} /> */}
-        </Routes>
-        <Footer /> {/* Footer is rendered below every Route */}
-      </Router>
+      <Header />
+     <LandingPage/>
+     <Outlet />
+     <Footer />
     </ApolloProvider>
   );
 };
