@@ -36,8 +36,7 @@ const App = () => {
   return (
     <ApolloProvider client={client}>
       <Header />
-     <LandingPage/>
-     <Outlet />
+      <Outlet />
      <Footer />
     </ApolloProvider>
   );
