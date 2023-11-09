@@ -43,6 +43,7 @@ const eventSchema = new Schema({
     // if false then contribution is not needed for the event!
     type: Boolean,
     required: true,
+    default: true,
     // pool of items being brought to the the party
     // have a list of items and have a boolean set to each
     // item while offering users to add other contributions

@@ -7,7 +7,8 @@ import LandingPage from './components/LandingPage/LandingPage.jsx';
 import Dashboard  from './components/Dashboard/Dashboard.jsx'
 import Login from './components/Authentication/Login.jsx';
 import Signup from './components/Authentication/Signup.jsx';
-
+import EventCreate from './components/Events/EventCreate.jsx';
+import EventOverview from './components/Events/EventOverview.jsx';
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,12 @@ const router = createBrowserRouter([
       },{
         path: '/signup',
         element: <Signup />
+      },{
+        path: '/create-event',
+        element: <EventCreate />
+      },{
+        path: '/event/:eventid',
+        element: <EventOverview />
       }
     ]
   }

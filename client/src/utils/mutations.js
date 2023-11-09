@@ -37,19 +37,14 @@ mutation DeleteUser($id: ID!) {
 `;
 
 export const ADD_EVENT = gql `
-mutation AddEvent($title: String!, $description: String!, $date: String!, $time: String!, $location: String!, $potluck: Boolean!) {
+mutation AddEvent($title: String!, $description: String!, $date: String!, $time: String!, $location: String!, $potluck: Boolean) {
   addEvent(title: $title, description: $description, date: $date, time: $time, location: $location, potluck: $potluck) {
     title
     description
     time
     date
     location
-    potluck
-    potluckContributions {
-      _id
-      item
-      userId
-    }
+    
   }
 }
 `;
