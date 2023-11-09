@@ -69,7 +69,7 @@ type Query {
    login(email: String!, password: String!): Auth
    addUser(name: String!, email: String!, password: String!): Auth
    deleteUser(_id: ID!): User
-   addEvent(title: String!, description: String!, date: String!, time: String!, location: String!, potluck: Boolean!, contribution: [ContributionInput]): Event
+   addEvent(title: String!, description: String!, date: String!, time: String!, location: String!, potluck: Boolean, contribution: [ContributionInput]): Event
    updateEvent(_id: ID, title: String!, description:String!, date: String!, time: String!, location: String!, potluck: Boolean!,  contribution: [ContributionInput]): Event
    # addinvite()
    deleteEvent(_id: ID!): Event

@@ -61,6 +61,7 @@ const resolvers = {
     },
 
     addEvent: async (parent, eventInput, context) => {
+      console.log ("EVENT INPUT", eventInput)
       if (context.user || true) {
         const event = await Event.create(eventInput);
         // TODO Add the event to the user's list
