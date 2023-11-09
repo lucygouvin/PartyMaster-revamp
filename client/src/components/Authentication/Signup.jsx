@@ -15,7 +15,7 @@ export function Signup(props) {
             const { data } = await addUser({
                 variables: { email, name, password },
             });
-            window.location.reload();
+            window.location.href="/dashboard";
         } catch (error) {
             console.log(error);
         }
