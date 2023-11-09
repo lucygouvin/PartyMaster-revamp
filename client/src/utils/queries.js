@@ -9,3 +9,29 @@ query Query {
       password
     }
   }`;
+
+export const EVENTS = gql `
+query Events {
+  events {
+    _id
+   
+    title
+    description
+    date
+    time
+    location
+    
+    potluck
+    comment {
+      commentId
+      content
+    }
+
+    RSVP {
+      invite
+      userId
+    }
+    
+  }
+}
+`;
