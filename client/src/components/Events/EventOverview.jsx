@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../../styles/EventOverview.css';
 import {useParams} from 'react-router-dom'
 // import axios from 'axios';
 import '../../styles/EventOverview.css'; // Make sure this path is correct
@@ -13,7 +14,6 @@ const EventOverview = ({ postId }) => {
   })
   const events = data?.getEventData|| {};
   const comments = events.comment
-  console.log(eventId)
   console.log( events)
   console.log(comments)
 
@@ -36,7 +36,12 @@ const EventOverview = ({ postId }) => {
     
     try {
       const {data} = addComment({
-        variables: {content: commentText}
+        variables: {
+          id: eventId,
+          comment: {
+            content: commentText
+          }
+        }
       })
       window.location.reload();
     } catch (error) {

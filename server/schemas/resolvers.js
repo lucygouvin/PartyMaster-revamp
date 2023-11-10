@@ -17,7 +17,7 @@ const resolvers = {
     },
 
     getEventData: async (parent, eventInput) => {
-      return Event.findOne(eventInput);
+      return Event.findOne(eventInput).populate('comment');
     },
 
     getUserEvents: async (parent, _, context) => {
@@ -103,7 +103,7 @@ const resolvers = {
 
     addComment: async (parent, args, context) => {
       if (context.user || true) {
-        return Event.findOneAndUpdate(
+      return Event.findOneAndUpdate(
           { _id: args._id },
           {
             $addToSet: {
