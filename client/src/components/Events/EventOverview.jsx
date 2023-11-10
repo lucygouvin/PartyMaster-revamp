@@ -14,6 +14,7 @@ const EventOverview = ({ postId }) => {
   })
   const events = data?.getEventData|| {};
   const comments = events.comment
+
   console.log( events)
   console.log(comments)
 
@@ -42,7 +43,7 @@ const EventOverview = ({ postId }) => {
             content: commentText
           }
         }
-      })
+
       window.location.reload();
     } catch (error) {
       console.error('Error submitting comment', error);
@@ -80,6 +81,7 @@ const EventOverview = ({ postId }) => {
     </section>
      
   </div> 
+
   );
  };
 

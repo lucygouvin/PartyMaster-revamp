@@ -23,6 +23,7 @@ const resolvers = {
       },
      
 
+
     getUserEvents: async (parent, _, context) => {
       if (context.user) {
         User.findOne({ _id: context.user._id }).populate('event');
