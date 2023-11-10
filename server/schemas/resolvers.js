@@ -17,9 +17,7 @@ const resolvers = {
     },
 
     getEventData: async (parent, eventInput) => {
-      const event = await Event.findOne({ _id: '654d687f3a54971fdb17d087' });
-      console.log(event);
-      return event;
+      return Event.findOne(eventInput);
     },
 
     getUserEvents: async (parent, _, context) => {

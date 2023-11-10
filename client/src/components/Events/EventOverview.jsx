@@ -3,45 +3,22 @@ import {useParams} from 'react-router-dom'
 // import axios from 'axios';
 import '../../styles/EventOverview.css'; // Make sure this path is correct
 import { EVENT_DATA } from '../../utils/queries';
-import { useQuery } from '@apollo/client';
+import { ADD_COMMENT } from '../../utils/mutations';
+import { useQuery, useMutation } from '@apollo/client';
 
 const EventOverview = ({ postId }) => {
   const {eventId} = useParams();
   const {loading, data} = useQuery(EVENT_DATA, {
-    variables:{id: "654d687f3a54971fdb17d087"}
+    variables:{id: eventId}
   })
   const events = data?.getEventData|| {};
   const comments = events.comment
   console.log(eventId)
   console.log( events)
   console.log(comments)
-  // const [post, setPost] = useState(null);
-  // const [comments, setComments] = useState([]);
 
-  // useEffect(() => {
-  //   // Fetch the post data
-  //   async function fetchPost() {
-  //     try {
-  //       const response = await axios.get(`/api/posts/${postId}`);
-  //       setPost(response.data);
-  //     } catch (error) {
-  //       console.error('Error fetching post data', error);
-  //     }
-  //   }
-
-  //   // Fetch the comments data
-  //   async function fetchComments() {
-  //     try {
-  //       const response = await axios.get(`/api/posts/${postId}/comments`);
-  //       setComments(response.data);
-  //     } catch (error) {
-  //       console.error('Error fetching comments', error);
-  //     }
-  //   }
-
-  //   fetchPost();
-  //   fetchComments();
-  // }, [postId]);
+  const [commentText, setCommentText] = useState('')
+  
 
   // const handleDelete = async () => {
   //   try {
@@ -52,16 +29,20 @@ const EventOverview = ({ postId }) => {
   //   }
   // };
 
-  // const handleCommentSubmit = async (event) => {
-  //   event.preventDefault();
-  //   const commentText = event.target.comment_text.value;
-  //   try {
-  //     await axios.post(`/api/posts/${postId}/comments`, { comment_text: commentText });
-  //     // Here you would handle the UI update after adding a comment
-  //   } catch (error) {
-  //     console.error('Error submitting comment', error);
-  //   }
-  // };
+  const [addComment, {error}] = useMutation(ADD_COMMENT)
+
+  const handleCommentSubmit = async (event) => {
+    event.preventDefault();
+    
+    try {
+      const {data} = addComment({
+        variables: {content: commentText}
+      })
+      window.location.reload();
+    } catch (error) {
+      console.error('Error submitting comment', error);
+    }
+  };
 
   return (
     <div>
@@ -84,10 +65,10 @@ const EventOverview = ({ postId }) => {
         </section>
 
         <section className="comment-form mt-5" id="commentForm">
-      <form className="p-3 rounded bg-white border">
+      <form onSubmit={handleCommentSubmit} className="p-3 rounded bg-white border">
         <div className="form-group">
           <label htmlFor="comment_text">Add a comment:</label>
-          <textarea className="form-control" id="comment_text" name="comment_text" rows="3" required></textarea>
+          <textarea className="form-control" id="comment_text" name="comment_text" rows="3" value={commentText} required onChange={(event)=> setCommentText(event.target.value)}></textarea>
         </div>
         <button type="submit" className="btn btn-primary">Submit</button>
       </form>
