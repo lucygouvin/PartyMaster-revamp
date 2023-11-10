@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import '../../styles/EventOverview.css';
 import {useParams} from 'react-router-dom'
 // import axios from 'axios';
 import '../../styles/EventOverview.css'; // Make sure this path is correct
 import { EVENT_DATA } from '../../utils/queries';
 import { ADD_COMMENT } from '../../utils/mutations';
 import { useQuery, useMutation } from '@apollo/client';
+
 
 const EventOverview = ({ postId }) => {
   const {eventId} = useParams();
@@ -64,7 +66,7 @@ const EventOverview = ({ postId }) => {
           ))}
         </section>
 
-        <section className="comment-form mt-5" id="commentForm">
+        <section className="comment-form" id="commentForm">
       <form onSubmit={handleCommentSubmit} className="p-3 rounded bg-white border">
         <div className="form-group">
           <label htmlFor="comment_text">Add a comment:</label>
@@ -75,6 +77,7 @@ const EventOverview = ({ postId }) => {
     </section>
      
   </div> 
+
   );
  };
 

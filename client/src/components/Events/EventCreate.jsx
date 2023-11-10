@@ -38,7 +38,7 @@ const EventCreate = () => {
                 <h2>Create a New Event</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-3">
-                        <label htmlFor="title" className="form-label">Title:</label>
+                        <label htmlFor="title" className="form-label">Event Title:</label>
                         <input type="text" className="form-control" id="title" name="title" value={title} required onChange={(event) => setTitle(event.target.value)}/>
                     </div>
                     <div className="mb-3">
@@ -56,6 +56,10 @@ const EventCreate = () => {
                     <div className="mb-3">
                         <label htmlFor="description" className="form-label">Description:</label>
                         <textarea className="form-control" id="description" name="description" rows="5" value={description} required onChange={(event) => setDescription(event.target.value)}></textarea>
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="description" className="form-label">Guests:</label>
+                        <textarea className="form-control" id="description" name="description" rows="5" value={description} required onChange={(event) => setGuests(event.target.value)}></textarea>
                     </div>
                     <button type="submit" className="btn btn-primary">Create Event</button>
                 </form>
