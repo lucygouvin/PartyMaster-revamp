@@ -16,9 +16,12 @@ const resolvers = {
       throw AuthenticationError;
     },
 
-    getEventData: async (parent, eventInput) => {
+    getEventData: async (parent, eventInput, context) => {
+      // if (context.user){
       return Event.findOne(eventInput).populate('comment');
-    },
+    // }
+      },
+     
 
     getUserEvents: async (parent, _, context) => {
       if (context.user) {

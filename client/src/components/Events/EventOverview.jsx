@@ -69,7 +69,7 @@ const EventOverview = ({ postId }) => {
           ))}
         </section>
 
-        <section className="comment-form mt-5" id="commentForm">
+        <section className="comment-form" id="commentForm">
       <form onSubmit={handleCommentSubmit} className="p-3 rounded bg-white border">
         <div className="form-group">
           <label htmlFor="comment_text">Add a comment:</label>
