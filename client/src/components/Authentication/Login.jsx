@@ -23,7 +23,9 @@ export function Login(props) {
       const { data }= await login({
         variables: {...formState },
       });
+
       Auth.login(data.login.token);
+      
       window.location.href="/dashboard";
     } catch(e) {
       console.error(e);

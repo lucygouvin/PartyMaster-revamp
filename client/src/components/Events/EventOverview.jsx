@@ -43,7 +43,7 @@ const EventOverview = ({ postId }) => {
             content: commentText
           }
         }
-
+      })
       window.location.reload();
     } catch (error) {
       console.error('Error submitting comment', error);
