@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 
 // was giving me a hard tim eif i have it capital, might need to capitalize later
 // const userSchema = require('./user');
-const contributionSchema = require("./Contribution");
+const contributionSchema = require('./Contribution');
 const inviteSchema = require('./Invite');
 const commentSchema = require('./Comment');
 
@@ -53,9 +53,10 @@ const eventSchema = new Schema({
   //     {
   //     type: Boolean
   // }],
-  potluckContributions: [contributionSchema
-      // split potluck check list with users with those who
-      // need to find out how to sort contributions
+  potluckContributions: [
+    contributionSchema,
+    // split potluck check list with users with those who
+    // need to find out how to sort contributions
   ],
 });
 

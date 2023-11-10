@@ -35,3 +35,38 @@ query Events {
   }
 }
 `;
+
+export const EVENT_DATA = gql `
+query GetEventData($id: ID!) {
+  getEventData(_id: $id) {
+    _id
+    hostID {
+      _id
+      name
+    }
+    title
+    description
+    date
+    time
+    location
+    comment {
+      commentId
+      content
+      userID {
+        name
+        _id
+        email
+      }
+    }
+    RSVP {
+      userId
+      invite
+    }
+    potluck
+    potluckContributions {
+      _id
+      userId
+      item
+    }
+  }
+}`;
