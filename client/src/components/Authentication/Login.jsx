@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import '../../styles/Login.css';
-// import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { LOGIN } from '../../utils/mutations';
 import Auth from '../../utils/auth';
@@ -25,6 +24,7 @@ export function Login(props) {
         variables: {...formState },
       });
       Auth.login(data.login.token);
+      window.location.href="/dashboard";
     } catch(e) {
       console.error(e);
     }
@@ -41,15 +41,20 @@ export function Login(props) {
           <form className="login-form" onSubmit={handleFormSubmit}>
             <div className="form-group">
               <label htmlFor="email-login" className="form-label">Email address</label>
-              <input type="email" className="form-control" id="email-login" required 
+              <input type="email" className="form-control" id="email-login" placeholder="Your Email" required
+              name="email"
               value= {formState.email}
               onChange={handleChange}/>
             </div>
             <div className="form-group">
               <label htmlFor="password-login" className="form-label">Password</label>
-              <input type="password" className="form-control" id="password-login" required />
+              <input type="password" className="form-control" id="password-login" placeholder="****" required 
+              name="password"
+              value={formState.password}
+              onChange={handleChange}
+              />
             </div>
-            <button type="/Dashboard" className="signin-button">Sign In</button>
+            <button type="submit" className="signin-button">Sign In</button>
             <a href="/signup" className="signup-button">Create New Account</a>
           </form>
         </div>
