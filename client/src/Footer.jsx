@@ -5,7 +5,7 @@ import './styles/Footer.css';
 function Footer() {
   return (
     <footer className="footer">
-      <p>&copy; 2023 PartyMaster</p>
+      <p>Copyright &copy; 2023 PartyMaster | All Rights Reserved. | Privacy Policy</p>
     </footer>
   );
 }
