@@ -18,7 +18,11 @@ const EventCreate = () => {
         
         try {
             const {data} = addEvent({
-                variables: { title, date, time, location, description}
+                variables: { title, date, time, location, description},
+                onCompleted(data) {
+                    console.log(data)
+                }
+                // onCompleted: () => {console.log("COMPLETE")}
             });
 
             // TODO redirect to the newly created event page

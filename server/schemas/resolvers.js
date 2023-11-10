@@ -16,8 +16,11 @@ const resolvers = {
       throw AuthenticationError;
     },
 
-    getEventData: async (parent, { eventInput }) =>
-      Event.findOne({ _id: eventInput._id }),
+    getEventData: async (parent, eventInput) => {
+      const event = await Event.findOne({ _id: '654d687f3a54971fdb17d087' });
+      console.log(event);
+      return event;
+    },
 
     getUserEvents: async (parent, _, context) => {
       if (context.user) {
@@ -51,7 +54,7 @@ const resolvers = {
 
       return { token, user };
     },
-    deleteUser: async (parent, {userID}, context) => {
+    deleteUser: async (parent, { userID }, context) => {
       // TODO remove || true once auth stuff is added
       if (context.user || true) {
         return User.findOneAndDelete({ _id: userID });
@@ -61,7 +64,6 @@ const resolvers = {
     },
 
     addEvent: async (parent, eventInput, context) => {
-      console.log ("EVENT INPUT", eventInput)
       if (context.user || true) {
         const event = await Event.create(eventInput);
         // TODO Add the event to the user's list

@@ -23,7 +23,7 @@ const typeDefs = `
 
  type Comment {
    commentId: ID
-    userID: [User]
+    userID: User
     content: String
  }
 
