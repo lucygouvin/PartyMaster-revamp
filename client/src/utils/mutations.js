@@ -89,7 +89,7 @@ mutation AddComment($id: ID!, $comment: CommentInput!) {
     }
   }
 }
-`
+`;
 
 export const DELETE_COMMENT = gql `
 mutation DeleteComment($id: ID!, $commentId: ID!) {

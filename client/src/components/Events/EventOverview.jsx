@@ -7,7 +7,6 @@ import { EVENT_DATA } from '../../utils/queries';
 import { ADD_COMMENT } from '../../utils/mutations';
 import { useQuery, useMutation } from '@apollo/client';
 
-
 const EventOverview = ({ postId }) => {
   const {eventId} = useParams();
   const {loading, data} = useQuery(EVENT_DATA, {
@@ -15,7 +14,7 @@ const EventOverview = ({ postId }) => {
   })
   const events = data?.getEventData|| {};
   const comments = events.comment
-  console.log(eventId)
+
   console.log( events)
   console.log(comments)
 
@@ -38,8 +37,13 @@ const EventOverview = ({ postId }) => {
     
     try {
       const {data} = addComment({
-        variables: {content: commentText}
-      })
+        variables: {
+          id: eventId,
+          comment: {
+            content: commentText
+          }
+        }
+
       window.location.reload();
     } catch (error) {
       console.error('Error submitting comment', error);

@@ -16,9 +16,13 @@ const resolvers = {
       throw AuthenticationError;
     },
 
-    getEventData: async (parent, eventInput) => {
-      return Event.findOne(eventInput);
-    },
+    getEventData: async (parent, eventInput, context) => {
+      // if (context.user){
+      return Event.findOne(eventInput).populate('comment');
+    // }
+      },
+     
+
 
     getUserEvents: async (parent, _, context) => {
       if (context.user) {
@@ -103,7 +107,7 @@ const resolvers = {
 
     addComment: async (parent, args, context) => {
       if (context.user || true) {
-        return Event.findOneAndUpdate(
+      return Event.findOneAndUpdate(
           { _id: args._id },
           {
             $addToSet: {
