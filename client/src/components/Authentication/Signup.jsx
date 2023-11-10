@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../../styles/signup.css';
 import { useMutation } from '@apollo/client';
 import { ADD_USER } from '../../utils/mutations';
+import Auth from '../../utils/auth';
 
 export function Signup(props) {
     const [email, setEmail] = useState('');
@@ -15,6 +16,7 @@ export function Signup(props) {
             const { data } = await addUser({
                 variables: { email, name, password },
             });
+            Auth.login(data.addUser.token)
             window.location.href="/dashboard";
         } catch (error) {
             console.log(error);
