@@ -31,8 +31,8 @@ class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('id_token');
-    window.location.assign('/');
+    localStorage.removeItem('id_token'); // remove token from local storage ie logging ie removes user context
+    window.location.assign('/'); //redirects to landing page
   }
 }
 

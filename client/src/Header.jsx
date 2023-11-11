@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './styles/Header.css';
+import Auth from "../src/utils/auth";
 
 function Header() {
   const [isHovered, setIsHovered] = useState(false);
@@ -61,15 +62,16 @@ function Header() {
       {/* Dropdown Menu */}
       {showDropdown && (
         <div className="dropdown-content" ref={dropdownRef}>
-          {isLoggedIn ? (
+          {Auth.loggedIn ()? (
             <>
               <Link to="/dashboard" onClick={closeDropdown}>Dashboard</Link>
               <Link to="/create-event" onClick={closeDropdown}>Create Event</Link>
-              <Link to="/" onClick={handleLogout}>Logout</Link>
+              <Link onClick={Auth.logout}>Logout</Link>
             </>
           ) : (
             <>
-              <Link to="/" onClick={handleLogout}>Home</Link>
+
+              <Link to="/">Home</Link>
               <Link to="/login" onClick={closeDropdown}>Sign In</Link>
               <Link to="/signup" onClick={closeDropdown}>Sign Up</Link>
             </>

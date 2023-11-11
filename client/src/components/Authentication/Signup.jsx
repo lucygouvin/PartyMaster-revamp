@@ -17,7 +17,10 @@ export function Signup(props) {
                 variables: { email, name, password },
             });
             Auth.login(data.addUser.token)
+
+       
             window.location.href="/dashboard";
+         
         } catch (error) {
             console.log(error);
         }
