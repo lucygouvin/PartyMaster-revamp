@@ -66,8 +66,6 @@ const resolvers = {
 
     addEvent: async (parent, eventInput, context) => {
       if (context.user) {
-        console.log('REACHED');
-        console.log(eventInput);
         const event = await Event.create({
           hostID: context.user._id,
           title: eventInput.title,
@@ -76,7 +74,28 @@ const resolvers = {
           time: eventInput.time,
           location: eventInput.location,
         });
-        // TODO Add the event to the user's list
+
+        const guestArray = eventInput.guestList.split(',');
+
+        guestArray.forEach(async (invitee) => {
+          invitee.trim();
+          const guest = await User.findOne({ email: invitee });
+          await Event.findOneAndUpdate(
+            { _id: event._id },
+            {
+              $addToSet: {
+                RSVP: { userId: guest._id.toHexString(), invite: 'maybe' },
+              },
+            },
+            { new: true }
+          );
+
+          await User.findByIdAndUpdate(guest._id.toHexString(), {
+            $push: { event: event._id },
+          });
+
+
+        });
 
         await User.findByIdAndUpdate(context.user._id, {
           $push: { event: event._id },
@@ -144,18 +163,20 @@ const resolvers = {
       throw new Error('Not your comment');
     },
 
-    addGuest: async (parent, args, context) =>
-    {
-      const guest = await User.findOne({email: args.email})
-      return  Event.findOneAndUpdate(
+    addGuest: async (parent, args, context) => {
+      const guest = await User.findOne({ email: args.email });
+      return Event.findOneAndUpdate(
         { _id: args.eventId },
-        { $addToSet: { RSVP: { userId: guest._id.toHexString(), invite: 'maybe' } } },
+        {
+          $addToSet: {
+            RSVP: { userId: guest._id.toHexString(), invite: 'maybe' },
+          },
+        },
         { new: true }
-      )
-      
+      );
     },
-      // TODO Add logic for making sure the currenly logged in user owns the event
-      
+    // TODO Add logic for making sure the currenly logged in user owns the event
+
     removeGuest: async (parent, args, context) =>
       // TODO Add logic for making sure the currenly logged in user owns the event
       Event.findOneAndUpdate(
@@ -168,21 +189,23 @@ const resolvers = {
       console.log(args);
       console.log(args.RSVP.userId);
       if (true || context.user) {
-        const event = await Event.findOne({ _id: "654f1107eb74b98243ad5695"});
-        const rsvps = event.RSVP
-        console.log(rsvps)
+        const event = await Event.findOne({ _id: '654f1107eb74b98243ad5695' });
+        const rsvps = event.RSVP;
+        console.log(rsvps);
         rsvps.forEach((rsvp) => {
-          console.log("from event")
-          console.log(rsvp.userId)
-          console.log("from input")
-          console.log(args.RSVP.userId)
-          console.log(rsvp.userId===" new ObjectId('654da9f470977691506d94ba')")
-        })
+          console.log('from event');
+          console.log(rsvp.userId);
+          console.log('from input');
+          console.log(args.RSVP.userId);
+          console.log(
+            rsvp.userId === " new ObjectId('654da9f470977691506d94ba')"
+          );
+        });
 
         // const invitee = rsvps.filter((rsvp) => rsvp.userId==="new ObjectId('654da9f470977691506d94ba')")
         // console.log(invitee)
 
-        return event
+        return event;
       }
       throw new Error('Not logged in');
     },
