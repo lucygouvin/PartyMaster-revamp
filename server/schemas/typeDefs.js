@@ -12,6 +12,10 @@ const typeDefs = `
     RSVP: [Invite]
     potluck: Boolean!
     potluckContributions: [Contribution]
+    rsvpMaybe:[Invite]
+    rsvpYes:[Invite]
+    rsvpNo:[Invite]
+   
  }
 
  type User {
@@ -34,7 +38,7 @@ const typeDefs = `
 
 
  type Invite {
-   userId: ID!
+   userId: ID
    invite: String!
  }
 
@@ -45,7 +49,6 @@ const typeDefs = `
 }
 
 input ContributionInput {
-   userId: ID
    item: String
 }
 #TODO Should make userId required
@@ -71,13 +74,14 @@ type Query {
    login(email: String!, password: String!): Auth
    addUser(name: String!, email: String!, password: String!): Auth
    deleteUser(_id: ID!): User
-   addEvent(title: String!, description: String!, date: String!, time: String!, location: String!, potluck: Boolean, contribution: [ContributionInput]): Event
+   addEvent(title: String!, description: String!, date: String!, time: String!, location: String!, potluck: Boolean, contribution: [ContributionInput], guestList:String): Event
    updateEvent(_id: ID!, title: String, description:String, date: String, time: String, location: String, potluck: Boolean,  contribution: [ContributionInput]): Event
    # addinvite()
    deleteEvent(_id: ID!): Event
    addComment(_id: ID!, comment: CommentInput!): Event
    deleteComment(_id:ID!, commentId: ID!): Event
-   addGuest(eventId:ID!, guestId:ID! ): Event
+   # addGuest(eventId:ID!, guestId:ID! ): Event
+   addGuest(eventId: ID!, email:String!) : Event
    removeGuest(eventId:ID!, guestId:ID!) : Event
    updateRSVP (_id: ID!, RSVP:RSVPInput): Event
    addContribution (eventId:ID!, contribution: ContributionInput!): Event

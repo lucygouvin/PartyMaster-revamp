@@ -10,6 +10,7 @@ const EventCreate = () => {
     const [time, setTime] = useState('');
     const [location, setLocation] = useState('');
     const [description, setDescription] = useState('');
+    const [guestList, setGuestList] = useState('')
 
     const [addEvent, {error}] = useMutation(ADD_EVENT)
 
@@ -18,11 +19,7 @@ const EventCreate = () => {
         
         try {
             const {data} = addEvent({
-                variables: { title, date, time, location, description},
-                onCompleted(data) {
-                    console.log(data)
-                }
-                // onCompleted: () => {console.log("COMPLETE")}
+                variables: { title, date, time, location, description, guestList},
             });
 
             // TODO redirect to the newly created event page
@@ -59,7 +56,7 @@ const EventCreate = () => {
                     </div>
                     <div className="mb-3">
                         <label htmlFor="description" className="form-label">Guests:</label>
-                        <textarea className="form-control" id="description" name="description" rows="5" value={description} required onChange={(event) => setGuests(event.target.value)}></textarea>
+                        <textarea className="form-control" id="description" name="description" rows="5" value={guestList} required onChange={(event) => setGuestList(event.target.value)}></textarea>
                     </div>
                     <button type="submit" className="btn btn-primary">Create Event</button>
                 </form>

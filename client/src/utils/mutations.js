@@ -37,8 +37,8 @@ mutation DeleteUser($id: ID!) {
 `;
 
 export const ADD_EVENT = gql `
-mutation AddEvent($title: String!, $description: String!, $date: String!, $time: String!, $location: String!) {
-  addEvent(title: $title, description: $description, date: $date, time: $time, location: $location) {
+mutation AddEvent($title: String!, $description: String!, $date: String!, $time: String!, $location: String!, $guestList: String) {
+  addEvent(title: $title, description: $description, date: $date, time: $time, location: $location, guestList: $guestList) {
     title
     time
     location
@@ -113,14 +113,10 @@ mutation UpdateRSVP($id: ID!, $rsvp: RSVPInput) {
 `;
 
 export const ADD_GUEST = gql `
-mutation AddGuest($eventId: ID!, $guestId: ID!) {
-  addGuest(eventId: $eventId, guestId: $guestId) {
-    title
-    _id
-    RSVP {
-      userId
-      invite
-    }
+mutation AddGuest($eventId: ID!, $email: String!) {
+  addGuest(eventId: $eventId, email: $email) {
+    userId
+    invite
   }
 }
 `;
@@ -142,7 +138,6 @@ mutation AddContribution($eventId: ID!, $contribution: ContributionInput!) {
     potluckContributions {
       _id
       item
-      userId
     }
   }
 }
