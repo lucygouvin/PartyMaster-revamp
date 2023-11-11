@@ -68,6 +68,8 @@ type Query {
    me: User
    getEventData(_id: ID!): Event
    getUserEvents: User
+   userRSVP(_id: ID!):Invite
+   
  }
 
  type Mutation {

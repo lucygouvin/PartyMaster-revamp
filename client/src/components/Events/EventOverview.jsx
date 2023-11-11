@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import '../../styles/EventOverview.css';
 import {useParams} from 'react-router-dom'
-import { EVENT_DATA } from '../../utils/queries';
-import { ADD_COMMENT, UPDATE_EVENT, DELETE_EVENT } from '../../utils/mutations';
+import { EVENT_DATA, USER_RSVP } from '../../utils/queries';
+import { ADD_COMMENT, UPDATE_EVENT, DELETE_EVENT, UPDATE_RSVP } from '../../utils/mutations';
 import { useQuery, useMutation } from '@apollo/client';
 import EasyEdit from 'react-easy-edit';
 import Auth from '../../utils/auth';
+import getUserRsvp from '../../utils/userRSVP';
 
 const EventOverview = ({ postId }) => {
   const {eventId} = useParams();
@@ -14,20 +15,31 @@ const EventOverview = ({ postId }) => {
   })
   const events = data?.getEventData|| {};
   const comments = events.comment
+  const rsvp = events.RSVP ||[]
+
+
   const rsvpMaybe = events.rsvpMaybe ||[]
   const rsvpYes=events.rsvpYes || []
   const rsvpNo=events.rsvpNo || []
   const contributions = events.potluckContributions
 
-  console.log(contributions)
+  // console.log("USERRSVP", userRSVP)
 
+  // const {rsvploading, rsvpData} = useQuery(USER_RSVP, {
+  //   variables:{id: eventId}
+  // })
 
-  // const [rsvpYes, setRsvpYes] = useState('')
-  // const rsvpYes = rsvps.filter((rsvp) => rsvp.invite === "yes")
-  // const rsvpNo = rsvps.filter((rsvp) => rsvp.invite === "no")
-  // const rsvpMaybe = rsvps.filter((rsvp) => rsvp.invite === "maybe")
+  // console.log(rsvpData)
 
-    
+  // useEffect(() => {
+  //   if (rsvp.length) {
+  //     console.log("RSVPLIST", rsvp)
+  //     const result = rsvp.find(({userId})=> userId === user.data._id)
+  //     console.log("USEEFFECT", result.invite)
+  //     return (result.invite)
+  //   } 
+
+  // }, [rsvp])
 
   const [commentText, setCommentText] = useState('')
   const [addComment, {error}] = useMutation(ADD_COMMENT)
@@ -67,6 +79,7 @@ const EventOverview = ({ postId }) => {
 
   const [updateEvent, {eventError}] = useMutation(UPDATE_EVENT)
   const [deleteEvent, {deleteError}] = useMutation(DELETE_EVENT)
+  const [updateRSVP, {rsvpError}] = useMutation(UPDATE_RSVP)
   const saveDescription = (value) => {
     try {
       const {data} = updateEvent({
@@ -136,13 +149,48 @@ const EventOverview = ({ postId }) => {
     }
   }
 const user = Auth.getProfile()
-
+const rsvpStatus = (rsvpList)=> {
+if (rsvpList.length) {
+  console.log("RSVPLIST", rsvpList)
+  const result = rsvpList.find(({userId})=> userId === user.data._id)
+  return (result.invite)
+} else{
+  return ''
+}
+}
 const [isEditable, setIsEditable] = useState(false)
+let [guestRSVP, setGuestRSVP] = useState(rsvpStatus(rsvp))
+
+let userResponse = getUserRsvp(rsvp, user.data._id)
+console.log(userResponse)
+
+
+
+const save=(value) =>{
+  userResponse = value
+  try {
+    const {data} = updateRSVP({
+      variables: {
+        id: eventId,
+        rsvp: {
+          userId: user.data._id,
+          invite: value
+        }
+      }
+    })
+    }catch(rsvpError){
+        console.error('Unable to update RSVP', rsvpError)
+
+      }
+    
+  }
+
+
 
 const toggleEditable = () => {
   setIsEditable(!isEditable)
 }
-
+console.log(events)
 const delEvent = () => {
   try {
     const {data} = deleteEvent({
@@ -165,6 +213,10 @@ const delEvent = () => {
         </>
 
       ):(<></>)}
+
+      {rsvp.map((response) => response.userId).includes(user.data._id)?(
+        <p>You're a guest</p>
+      ):<p>You're not a guest</p>}
             
       <section className="post-full mt-5 p-3 rounded bg-white border">
         <h2 className="display-4" >
@@ -214,10 +266,35 @@ const delEvent = () => {
     />
         </section>
       <section className='rsvp-container'>
+      {rsvp.map((response) => response.userId).includes(user.data._id)?(
+        <>
+        <p>You're a guest</p>
+       
+        <h3>Your RSVP:{userResponse}</h3>
+        <button>Change RSVP</button>
+        <EasyEdit
+  type="select"
+  options={[
+      {label: "Yes", value: 'yes'},
+      {label: 'No', value: 'no'},
+      {label: 'Maybe', value: 'maybe'}]}
+  
+  placeholder={userResponse}
+  onSave={save}
+/>
+        <p>{rsvpYes.length} Going</p>
+        <p>{rsvpNo.length} Not going</p>
+        <p>{rsvpMaybe.length} Maybe going</p>
+        </>
+
+      ):<>
+        <p>You're not a guest</p>
         <h3>RSVPs</h3>
         <p>Yes: {rsvpYes.length}</p>
         <p>No: {rsvpNo.length}</p>
         <p>Maybe: {rsvpMaybe.length}</p>
+        </>}
+
       </section>
 
       <section className='contributions-container'>

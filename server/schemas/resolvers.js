@@ -29,6 +29,18 @@ const resolvers = {
       }
       throw AuthenticationError;
     },
+
+    userRSVP: async (parent, args, context) => {
+      console.log("REACHED")
+      console.log(args)
+      const event = await Event.findById(args._id)
+      const rsvps = event.RSVP
+      console.log(rsvps)
+      const result = rsvps.find(({userId})=> userId.toHexString() ===context.user._id)
+      console.log(result)
+      return result
+
+    }
   },
 
   Mutation: {
@@ -184,34 +196,23 @@ const resolvers = {
       ),
 
     updateRSVP: async (parent, args, context) => {
-      console.log(args);
-      console.log(args.RSVP.userId);
       if (true || context.user) {
-        const event = await Event.findOne({ _id: '654f1107eb74b98243ad5695' });
-        const rsvps = event.RSVP;
-        console.log(rsvps);
-        rsvps.forEach((rsvp) => {
-          console.log('from event');
-          console.log(rsvp.userId);
-          console.log('from input');
-          console.log(args.RSVP.userId);
-          console.log(
-            rsvp.userId === " new ObjectId('654da9f470977691506d94ba')"
-          );
-        });
-
-        // const invitee = rsvps.filter((rsvp) => rsvp.userId==="new ObjectId('654da9f470977691506d94ba')")
-        // console.log(invitee)
-
+        const event = await Event.findOneAndUpdate(
+          { _id: args._id, "RSVP.userId":args.RSVP.userId},
+        {$set: {"RSVP.$.invite": args.RSVP.invite}}
+        );
         return event;
-      }
-      throw new Error('Not logged in');
+        }
+
+        throw new Error('Not logged in');
+      
+      
     },
 
     addContribution: async (parent, args, context) => {
       if (true || context.user) {
-        console.log(args.eventId)
-        return  Event.findOneAndUpdate(
+        console.log(args.eventId);
+        return Event.findOneAndUpdate(
           { _id: args.eventId },
           {
             $addToSet: {

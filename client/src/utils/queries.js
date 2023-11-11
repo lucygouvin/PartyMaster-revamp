@@ -103,3 +103,12 @@ query GetUserEvents {
   }
 }
 `;
+
+export const USER_RSVP = gql `
+query Query($id: ID!) {
+  userRSVP(_id: $id) {
+    invite
+    userId
+  }
+}
+`;

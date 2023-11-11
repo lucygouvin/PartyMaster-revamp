@@ -105,8 +105,8 @@ mutation UpdateRSVP($id: ID!, $rsvp: RSVPInput) {
     title
     _id
     RSVP {
-      invite
       userId
+      invite
     }
   }
 }
