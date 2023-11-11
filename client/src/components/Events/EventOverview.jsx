@@ -4,7 +4,8 @@ import {useParams} from 'react-router-dom'
 import { EVENT_DATA } from '../../utils/queries';
 import { ADD_COMMENT, UPDATE_EVENT } from '../../utils/mutations';
 import { useQuery, useMutation } from '@apollo/client';
-import EasyEdit from 'react-easy-edit'
+import EasyEdit from 'react-easy-edit';
+import Auth from '../../utils/auth';
 
 const EventOverview = ({ postId }) => {
   const {eventId} = useParams();
@@ -119,9 +120,22 @@ const EventOverview = ({ postId }) => {
       console.error('Unable to update event', eventError)
     }
   }
+const user = Auth.getProfile()
 
+const [isEditable, setIsEditable] = useState(false)
+
+const toggleEditable = () => {
+  setIsEditable(!isEditable)
+}
   return (
     <div>
+      {user.data._id === events.hostID? (
+        <>
+       <button onClick={toggleEditable}>Editable</button>
+        </>
+
+      ):(<></>)}
+            
       <section className="post-full mt-5 p-3 rounded bg-white border">
         <h2 className="display-4" >
         <EasyEdit
@@ -129,6 +143,7 @@ const EventOverview = ({ postId }) => {
       saveButtonLabel="Save"
       cancelButtonLabel="Cancel"
       value={title}
+      allowEdit={isEditable}
       onSave={saveTitle}
     />
         </h2>
@@ -139,6 +154,7 @@ const EventOverview = ({ postId }) => {
       saveButtonLabel="Save"
       cancelButtonLabel="Cancel"
       value={date}
+      allowEdit={isEditable}
       onSave={saveDate}
     />
          <EasyEdit
@@ -146,6 +162,7 @@ const EventOverview = ({ postId }) => {
       saveButtonLabel="Save"
       cancelButtonLabel="Cancel"
       value={time}
+      allowEdit={isEditable}
       onSave={saveTime}
     />
         </div>
@@ -154,6 +171,7 @@ const EventOverview = ({ postId }) => {
       saveButtonLabel="Save"
       cancelButtonLabel="Cancel"
       value={location}
+      allowEdit={isEditable}
       onSave={saveLocation}
     />
         <EasyEdit
@@ -161,6 +179,7 @@ const EventOverview = ({ postId }) => {
       saveButtonLabel="Save"
       cancelButtonLabel="Cancel"
       value={description}
+      allowEdit={isEditable}
       onSave={saveDescription}
     />
         </section>

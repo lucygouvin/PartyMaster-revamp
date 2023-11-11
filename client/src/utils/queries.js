@@ -40,10 +40,7 @@ export const EVENT_DATA = gql `
 query GetEventData($id: ID!) {
   getEventData(_id: $id) {
     _id
-    hostID {
-      _id
-      name
-    }
+    hostID 
     title
     description
     date
@@ -85,10 +82,7 @@ query GetUserEvents {
         invite
       }
       _id
-      hostID {
-        _id
-        name
-      }
+      hostID 
     }
 
   }

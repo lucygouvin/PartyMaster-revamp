@@ -24,6 +24,7 @@ const resolvers = {
 
     getUserEvents: async (parent, _, context) => {
       if (context.user) {
+        console.log("REACHED")
         return User.findOne({ _id: context.user._id }).populate('event');
       }
       throw AuthenticationError;

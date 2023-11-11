@@ -72,3 +72,7 @@ body {
     flex-direction: row;
     gap: 30px;
 }
+/* Overwriting the Easy Edit default styling */
+.easy-edit-not-allowed{
+    cursor: auto!important;
+}
