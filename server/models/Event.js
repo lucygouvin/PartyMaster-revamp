@@ -10,7 +10,7 @@ const eventSchema = new Schema({
   hostID: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    default:'6549a9520e3f154bdee9dc1b',
+    default: '6549a9520e3f154bdee9dc1b',
   }, // might need hostID?
   title: {
     type: String,
@@ -59,9 +59,9 @@ const eventSchema = new Schema({
     // split potluck check list with users with those who
     // need to find out how to sort contributions
   ],
-  test:{
+  test: {
     type: String,
-  }
+  },
 });
 
 const Event = model('Event', eventSchema);

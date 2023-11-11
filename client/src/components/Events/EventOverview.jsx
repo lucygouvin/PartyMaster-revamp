@@ -2,7 +2,7 @@ import { useState } from 'react';
 import '../../styles/EventOverview.css';
 import {useParams} from 'react-router-dom'
 import { EVENT_DATA } from '../../utils/queries';
-import { ADD_COMMENT, UPDATE_EVENT } from '../../utils/mutations';
+import { ADD_COMMENT, UPDATE_EVENT, DELETE_EVENT } from '../../utils/mutations';
 import { useQuery, useMutation } from '@apollo/client';
 import EasyEdit from 'react-easy-edit';
 import Auth from '../../utils/auth';
@@ -52,6 +52,7 @@ const EventOverview = ({ postId }) => {
  title = events.title
 
   const [updateEvent, {eventError}] = useMutation(UPDATE_EVENT)
+  const [deleteEvent, {deleteError}] = useMutation(DELETE_EVENT)
   const saveDescription = (value) => {
     try {
       const {data} = updateEvent({
@@ -127,11 +128,26 @@ const [isEditable, setIsEditable] = useState(false)
 const toggleEditable = () => {
   setIsEditable(!isEditable)
 }
+
+const delEvent = () => {
+  try {
+    const {data} = deleteEvent({
+      variables: {
+        id: eventId
+      }
+    })
+    window.location.href="/dashboard";
+  }catch (eventError) {
+    console.error('Unable to delete event', eventError)
+  }
+}
   return (
     <div>
       {user.data._id === events.hostID? (
         <>
-       <button onClick={toggleEditable}>Editable</button>
+      
+       <button onClick={toggleEditable}>Edit</button>
+       <button onClick={delEvent}>Delete</button>
         </>
 
       ):(<></>)}

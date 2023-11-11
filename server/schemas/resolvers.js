@@ -24,7 +24,7 @@ const resolvers = {
 
     getUserEvents: async (parent, _, context) => {
       if (context.user) {
-        console.log("REACHED")
+        console.log('REACHED');
         return User.findOne({ _id: context.user._id }).populate('event');
       }
       throw AuthenticationError;
@@ -66,17 +66,15 @@ const resolvers = {
 
     addEvent: async (parent, eventInput, context) => {
       if (context.user) {
-        console.log("REACHED")
-        console.log(eventInput)
+        console.log('REACHED');
+        console.log(eventInput);
         const event = await Event.create({
-          
-            hostID:context.user._id,
-            title: eventInput.title,
-            description: eventInput.description,
-            date: eventInput.date,
-            time: eventInput.time,
-            location: eventInput.location
-          
+          hostID: context.user._id,
+          title: eventInput.title,
+          description: eventInput.description,
+          date: eventInput.date,
+          time: eventInput.time,
+          location: eventInput.location,
         });
         // TODO Add the event to the user's list
 
@@ -91,8 +89,8 @@ const resolvers = {
     },
 
     updateEvent: async (parent, eventInput, context) => {
-      console.log("REACHED")
-      console.log(eventInput)
+      console.log('REACHED');
+      console.log(eventInput);
       if (context.user || true) {
         const event = await Event.findOneAndUpdate(
           { _id: eventInput._id },
@@ -109,23 +107,21 @@ const resolvers = {
       throw AuthenticationError;
     },
 
-    deleteEvent: async (parent, eventInput, context) => {
-      // TODO check to see if the event's creator is the current user.
-      if (true || context.user._id === eventInput.hostID) {
-        return Event.findOneAndDelete({ _id: eventInput });
-      }
-      throw AuthenticationError;
-    },
+    deleteEvent: async (parent, eventInput, context) =>
+      Event.findOneAndDelete({ _id: eventInput }),
 
     addComment: async (parent, args, context) => {
       if (context.user) {
-        console.log(context.user._id)
+        console.log(context.user._id);
         return Event.findOneAndUpdate(
           { _id: args._id },
           {
             $addToSet: {
               // TODO include the user's id in the comment object
-              comment: { userId: context.user.id, content: args.comment.content },
+              comment: {
+                userId: context.user.id,
+                content: args.comment.content,
+              },
             },
           },
           {
