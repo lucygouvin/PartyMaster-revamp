@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import '../../styles/EventOverview.css';
 import {useParams} from 'react-router-dom'
-import '../../styles/EventOverview.css'; // Make sure this path is correct
 import { EVENT_DATA } from '../../utils/queries';
-import { ADD_COMMENT } from '../../utils/mutations';
+import { ADD_COMMENT, UPDATE_EVENT } from '../../utils/mutations';
 import { useQuery, useMutation } from '@apollo/client';
+import EasyEdit from 'react-easy-edit'
 
 const EventOverview = ({ postId }) => {
   const {eventId} = useParams();
@@ -14,23 +14,9 @@ const EventOverview = ({ postId }) => {
   const events = data?.getEventData|| {};
   const comments = events.comment
 
-  console.log( events)
-  console.log(comments)
-
   const [commentText, setCommentText] = useState('')
-  
-
-  // const handleDelete = async () => {
-  //   try {
-  //     await axios.delete(`/api/posts/${postId}`);
-  //     // Here you would handle the UI update after deletion
-  //   } catch (error) {
-  //     console.error('Error deleting post', error);
-  //   }
-  // };
-
   const [addComment, {error}] = useMutation(ADD_COMMENT)
-
+  
   const handleCommentSubmit = async (event) => {
     event.preventDefault();
     
@@ -49,23 +35,38 @@ const EventOverview = ({ postId }) => {
     }
   };
 
+  const [eventData, {eventError}] = useMutation(UPDATE_EVENT)
+  const save = (value) => {
+    console.log(event.target)
+
+  }
   return (
     <div>
       <section className="post-full mt-5 p-3 rounded bg-white border">
-        <h2 className="display-4">{events.title}</h2>
+        <h2 className="display-4" >{events.title}</h2>
         <p className="text-muted"><small>Hosted by: {"Host Name"}</small></p>
-        <p className="text-muted"><small>{events.location} at {events.time}</small></p>
-        <p>{events.description}</p>
+        <div className="time-section">
+        <p className="text-muted">{events.date}</p>
+        <p>{events.time}</p>
+        </div>
+        <p>{events.location}</p>
+        <EasyEdit
+      type="text"
+      saveButtonLabel="Save"
+      cancelButtonLabel="Cancel"
+      attributes={{ name: "awesome-input", id: "description"}}
+      value={events.description}
+      onSave={save}
+    />
         </section>
 
       <section className="mt-5">
           {comments &&
           comments.map((comment) => (
-            <div className="post p-3 rounded bg-light border mb-3">
-            <p>by {"Username"} </p>
+            <div className="post p-3 rounded bg-light border mb-3 comment-item" key={comment.commentId}>
+            <p>by {comment.userId} </p>
             <p>{comment.content}</p>
           </div>
-
           ))}
         </section>
 

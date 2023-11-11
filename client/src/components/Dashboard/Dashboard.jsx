@@ -26,7 +26,7 @@ const Dashboard = () => {
                         {/* <h3>Upcoming Events</h3> */}
                         {events.event &&
                         events.event.map ((event) => (
-                            <div>
+                            <div key={event._id}>
                                 <a href={`/event/${event._id}`}><p>{event.title} hosted by {event.hostId}</p></a>
                                 <p>{event.date} at {event.time}, {event.location}</p>
                                 </div>

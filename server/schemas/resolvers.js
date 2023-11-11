@@ -17,17 +17,15 @@ const resolvers = {
     },
 
     getEventData: async (parent, eventInput, context) => {
-      console.log(context.user)
-    if(context.user){
-      return Event.findOne(eventInput).populate('comment');
+      console.log(context.user);
+      if (context.user) {
+        return Event.findOne(eventInput).populate('comment');
       }
     },
 
-
     getUserEvents: async (parent, _, context) => {
       if (context.user) {
-       
-        return User.findOne({ _id: context.user._id }).populate("event");
+        return User.findOne({ _id: context.user._id }).populate('event');
       }
       throw AuthenticationError;
     },
@@ -108,7 +106,7 @@ const resolvers = {
 
     addComment: async (parent, args, context) => {
       if (context.user || true) {
-      return Event.findOneAndUpdate(
+        return Event.findOneAndUpdate(
           { _id: args._id },
           {
             $addToSet: {
