@@ -93,8 +93,6 @@ const resolvers = {
           await User.findByIdAndUpdate(guest._id.toHexString(), {
             $push: { event: event._id },
           });
-
-
         });
 
         await User.findByIdAndUpdate(context.user._id, {

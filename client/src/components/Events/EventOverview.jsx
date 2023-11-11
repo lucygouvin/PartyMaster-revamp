@@ -14,7 +14,10 @@ const EventOverview = ({ postId }) => {
   })
   const events = data?.getEventData|| {};
   const comments = events.comment
-  const rsvps = events.RSVP
+  const rsvpMaybe = events.rsvpMaybe ||[]
+  const rsvpYes=events.rsvpYes || []
+  const rsvpNo=events.rsvpNo || []
+
 
   // const [rsvpYes, setRsvpYes] = useState('')
   // const rsvpYes = rsvps.filter((rsvp) => rsvp.invite === "yes")
@@ -209,6 +212,12 @@ const delEvent = () => {
     />
         </section>
       <section className='rsvp-container'>
+        <h3>RSVPs</h3>
+        <p>Yes: {rsvpYes.length}</p>
+        <p>No: {rsvpNo.length}</p>
+        <p>Maybe: {rsvpMaybe.length}</p>
+  
+
 
       </section>
 

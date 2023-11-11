@@ -12,6 +12,10 @@ const typeDefs = `
     RSVP: [Invite]
     potluck: Boolean!
     potluckContributions: [Contribution]
+    rsvpMaybe:[Invite]
+    rsvpYes:[Invite]
+    rsvpNo:[Invite]
+   
  }
 
  type User {

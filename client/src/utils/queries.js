@@ -31,7 +31,10 @@ query Events {
       invite
       userId
     }
-    
+    rsvpMaybe{
+      invite
+      userId
+    }
   }
 }
 `;
@@ -39,6 +42,18 @@ query Events {
 export const EVENT_DATA = gql `
 query GetEventData($id: ID!) {
   getEventData(_id: $id) {
+    rsvpMaybe{
+      userId
+      invite
+    }
+    rsvpYes{
+      userId
+      invite
+    }
+    rsvpNo{
+      userId
+      invite
+    }
     _id
     hostID 
     title
