@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/Dashboard.css';
+import Auth from "../../utils/auth"
 
 
 const Dashboard = () => {
@@ -22,7 +23,8 @@ const Dashboard = () => {
     }, []);
 
     return (
-        <div className="landing-page">
+        <div>
+       { Auth.loggedIn() ? (<div className="landing-page">
             <div className="dashboard">
                 <div className="user-profile">
                     <h2>Welcome, {userData.name}</h2>
@@ -47,7 +49,11 @@ const Dashboard = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div>) : 
+        (<h2>you suck!</h2>)
+    
+    }
+    </div>
     );
 };
 
