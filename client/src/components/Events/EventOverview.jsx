@@ -158,16 +158,17 @@ if (rsvpList.length) {
   return ''
 }
 }
-const [isEditable, setIsEditable] = useState(false)
-let [guestRSVP, setGuestRSVP] = useState(rsvpStatus(rsvp))
-
 let userResponse = getUserRsvp(rsvp, user.data._id)
 console.log(userResponse)
+const [isEditable, setIsEditable] = useState(false)
+let [guestRSVP, setGuestRSVP] = useState(userResponse)
+
+
 
 
 
 const save=(value) =>{
-  userResponse = value
+  setGuestRSVP(value)
   try {
     const {data} = updateRSVP({
       variables: {
@@ -270,7 +271,7 @@ const delEvent = () => {
         <>
         <p>You're a guest</p>
        
-        <h3>Your RSVP:{userResponse}</h3>
+        <h3>Your RSVP:{guestRSVP||userResponse}</h3>
         <button>Change RSVP</button>
         <EasyEdit
   type="select"
