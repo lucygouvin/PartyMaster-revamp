@@ -194,8 +194,7 @@ const resolvers = {
     },
 
     addContribution: async (parent, args, context) => {
-      if (true || context.user) {
-        console.log(args.eventId);
+      if (context.user) {
         return Event.findOneAndUpdate(
           { _id: args.eventId },
           {

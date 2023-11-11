@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import '../../styles/EventOverview.css';
 import {useParams} from 'react-router-dom'
 import { EVENT_DATA } from '../../utils/queries';
-import { ADD_COMMENT, UPDATE_EVENT, DELETE_EVENT, UPDATE_RSVP } from '../../utils/mutations';
+import { ADD_COMMENT, UPDATE_EVENT, DELETE_EVENT, UPDATE_RSVP, ADD_CONTRIBUTION } from '../../utils/mutations';
 import { useQuery, useMutation } from '@apollo/client';
 import EasyEdit from 'react-easy-edit';
 import Auth from '../../utils/auth';
@@ -24,6 +24,7 @@ const EventOverview = ({ postId }) => {
 
   const [commentText, setCommentText] = useState('')
   const [addComment, {error}] = useMutation(ADD_COMMENT)
+  const [addContribution, {contribError}] = useMutation(ADD_CONTRIBUTION)
   
   const handleCommentSubmit = async (event) => {
     event.preventDefault();
@@ -129,11 +130,29 @@ const EventOverview = ({ postId }) => {
       console.error('Unable to update event', eventError)
     }
   }
+
+  const saveContribution = () => {
+    try {
+      const {data} = addContribution({
+        variables: {
+          contribution: {
+            item: contrib
+          },      
+          eventId: eventId
+        }
+        
+      })
+    }catch (eventError) {
+      console.error('Unable to update event', eventError)
+    }
+  setContrib('')
+  }
 const user = Auth.getProfile()
 
 let userResponse = getUserRsvp(rsvp, user.data._id)
 const [isEditable, setIsEditable] = useState(false)
 let [guestRSVP, setGuestRSVP] = useState(userResponse)
+const [contrib, setContrib] = useState('')
 
 const save=(value) =>{
   setGuestRSVP(value)
@@ -270,6 +289,15 @@ const delEvent = () => {
             <p>{contrib.item} claimed by {contrib.name}</p>
           </div>
           ))}
+          <input type='text' value = {contrib} onChange={(event)=> setContrib(event.target.value)}></input> <button onClick={saveContribution}>Add</button>
+          {/* <EasyEdit
+      type="text"
+      saveButtonLabel="Save"
+      cancelButtonLabel="Cancel"
+      onSave={saveContribution}
+      value={''}
+      placeholder={"Add contribution"}
+    /> */}
 
       </section>
 
