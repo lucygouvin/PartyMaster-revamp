@@ -35,28 +35,133 @@ const EventOverview = ({ postId }) => {
     }
   };
 
-  const [eventData, {eventError}] = useMutation(UPDATE_EVENT)
-  const save = (value) => {
-    console.log(event.target)
+  let [description, setDescription] = useState()
+  description = events.description
 
+  let [location, setLocation] = useState()
+  location = events.location
+
+  let [date, setDate] = useState()
+  date = events.date
+
+  let [time, setTime] = useState()
+ time = events.time
+
+ let [title, setTitle] = useState()
+ title = events.title
+
+  const [updateEvent, {eventError}] = useMutation(UPDATE_EVENT)
+  const saveDescription = (value) => {
+    try {
+      const {data} = updateEvent({
+        variables: {
+          description: value,
+          id: eventId
+        }
+        
+      })
+    }catch (eventError) {
+      console.error('Unable to update event', eventError)
+    }
   }
+  const saveLocation = (value) => {
+    try {
+      const {data} = updateEvent({
+        variables: {
+          location: value,
+          id: eventId
+        }
+        
+      })
+    }catch (eventError) {
+      console.error('Unable to update event', eventError)
+    }
+  }
+
+  const saveTime = (value) => {
+    try {
+      const {data} = updateEvent({
+        variables: {
+          time: value,
+          id: eventId
+        }
+        
+      })
+    }catch (eventError) {
+      console.error('Unable to update event', eventError)
+    }
+  }
+
+  const saveDate = (value) => {
+    try {
+      const {data} = updateEvent({
+        variables: {
+          date: value,
+          id: eventId
+        }
+        
+      })
+    }catch (eventError) {
+      console.error('Unable to update event', eventError)
+    }
+  }
+
+  const saveTitle = (value) => {
+    try {
+      const {data} = updateEvent({
+        variables: {
+          title: value,
+          id: eventId
+        }
+        
+      })
+    }catch (eventError) {
+      console.error('Unable to update event', eventError)
+    }
+  }
+
   return (
     <div>
       <section className="post-full mt-5 p-3 rounded bg-white border">
-        <h2 className="display-4" >{events.title}</h2>
-        <p className="text-muted"><small>Hosted by: {"Host Name"}</small></p>
-        <div className="time-section">
-        <p className="text-muted">{events.date}</p>
-        <p>{events.time}</p>
-        </div>
-        <p>{events.location}</p>
+        <h2 className="display-4" >
         <EasyEdit
       type="text"
       saveButtonLabel="Save"
       cancelButtonLabel="Cancel"
-      attributes={{ name: "awesome-input", id: "description"}}
-      value={events.description}
-      onSave={save}
+      value={title}
+      onSave={saveTitle}
+    />
+        </h2>
+        <p className="text-muted"><small>Hosted by: {"Host Name"}</small></p>
+        <div className="time-section">
+        <EasyEdit
+      type="date"
+      saveButtonLabel="Save"
+      cancelButtonLabel="Cancel"
+      value={date}
+      onSave={saveDate}
+    />
+         <EasyEdit
+      type="time"
+      saveButtonLabel="Save"
+      cancelButtonLabel="Cancel"
+      value={time}
+      onSave={saveTime}
+    />
+        </div>
+        <EasyEdit
+      type="text"
+      saveButtonLabel="Save"
+      cancelButtonLabel="Cancel"
+      value={location}
+      onSave={saveLocation}
+    />
+        <EasyEdit
+      type="textarea"
+      saveButtonLabel="Save"
+      cancelButtonLabel="Cancel"
+      value={description}
+      onSave={saveDescription}
     />
         </section>
 

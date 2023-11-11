@@ -17,7 +17,6 @@ const resolvers = {
     },
 
     getEventData: async (parent, eventInput, context) => {
-      console.log(context.user);
       if (context.user) {
         return Event.findOne(eventInput).populate('comment');
       }
@@ -80,6 +79,8 @@ const resolvers = {
     },
 
     updateEvent: async (parent, eventInput, context) => {
+      console.log("REACHED")
+      console.log(eventInput)
       if (context.user || true) {
         const event = await Event.findOneAndUpdate(
           { _id: eventInput._id },
