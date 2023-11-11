@@ -16,17 +16,16 @@ const resolvers = {
       throw AuthenticationError;
     },
 
-    // getEventData: async (parent, eventInput, context) => {
-    // if(context.user){
-    //   return Event.findOne(eventInput).populate('comment');
-    // // }
-    //   }
-    // },
-
+    getEventData: async (parent, eventInput, context) => {
+      console.log(context.user);
+      if (context.user) {
+        return Event.findOne(eventInput).populate('comment');
+      }
+    },
 
     getUserEvents: async (parent, _, context) => {
       if (context.user) {
-        User.findOne({ _id: context.user._id }).populate('event');
+        return User.findOne({ _id: context.user._id }).populate('event');
       }
       throw AuthenticationError;
     },
@@ -58,7 +57,7 @@ const resolvers = {
     },
     deleteUser: async (parent, { userID }, context) => {
       // TODO remove || true once auth stuff is added
-      if (context.user || true) {
+      if (context.user) {
         return User.findOneAndDelete({ _id: userID });
       }
 
@@ -66,13 +65,13 @@ const resolvers = {
     },
 
     addEvent: async (parent, eventInput, context) => {
-      if (context.user || true) {
+      if (context.user) {
         const event = await Event.create(eventInput);
         // TODO Add the event to the user's list
 
-        // await User.findByIdAndUpdate(context.user._id, {
-        //   $push: { events: event._id },
-        // });
+        await User.findByIdAndUpdate(context.user._id, {
+          $push: { event: event._id },
+        });
 
         return event;
       }
@@ -107,7 +106,7 @@ const resolvers = {
 
     addComment: async (parent, args, context) => {
       if (context.user || true) {
-      return Event.findOneAndUpdate(
+        return Event.findOneAndUpdate(
           { _id: args._id },
           {
             $addToSet: {

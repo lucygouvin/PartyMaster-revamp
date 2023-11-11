@@ -59,7 +59,7 @@ mutation DeleteEvent($id: ID!) {
 `;
 
 export const UPDATE_EVENT = gql `
-mutation UpdateEvent($title: String!, $description: String!, $date: String!, $time: String!, $location: String!, $potluck: Boolean!, $id: ID) {
+mutation UpdateEvent($title: String, $description: String, $date: String, $time: String, $location: String, $potluck: Boolean, $id: ID!) {
   updateEvent(title: $title, description: $description, date: $date, time: $time, location: $location, potluck: $potluck, _id: $id) {
     title
     description

@@ -19,6 +19,7 @@ const typeDefs = `
     name: String
     email: String
     password: String
+    event: [Event]
  }
 
  type Comment {
@@ -62,7 +63,7 @@ type Query {
    users: [User]
    me: User
    getEventData(_id: ID!): Event
-   getUserEvents(_id: ID!): User
+   getUserEvents: User
  }
 
  type Mutation {
@@ -70,7 +71,7 @@ type Query {
    addUser(name: String!, email: String!, password: String!): Auth
    deleteUser(_id: ID!): User
    addEvent(title: String!, description: String!, date: String!, time: String!, location: String!, potluck: Boolean, contribution: [ContributionInput]): Event
-   updateEvent(_id: ID, title: String!, description:String!, date: String!, time: String!, location: String!, potluck: Boolean!,  contribution: [ContributionInput]): Event
+   updateEvent(_id: ID!, title: String, description:String, date: String, time: String, location: String, potluck: Boolean,  contribution: [ContributionInput]): Event
    # addinvite()
    deleteEvent(_id: ID!): Event
    addComment(_id: ID!, comment: CommentInput!): Event
