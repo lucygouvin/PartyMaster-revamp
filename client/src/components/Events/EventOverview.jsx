@@ -4,7 +4,8 @@ import {useParams} from 'react-router-dom'
 import { EVENT_DATA } from '../../utils/queries';
 import { ADD_COMMENT, UPDATE_EVENT } from '../../utils/mutations';
 import { useQuery, useMutation } from '@apollo/client';
-import EasyEdit from 'react-easy-edit'
+import EasyEdit from 'react-easy-edit';
+import Auth from '../../utils/auth';
 
 const EventOverview = ({ postId }) => {
   const {eventId} = useParams();
@@ -35,28 +36,151 @@ const EventOverview = ({ postId }) => {
     }
   };
 
-  const [eventData, {eventError}] = useMutation(UPDATE_EVENT)
-  const save = (value) => {
-    console.log(event.target)
+  let [description, setDescription] = useState()
+  description = events.description
 
+  let [location, setLocation] = useState()
+  location = events.location
+
+  let [date, setDate] = useState()
+  date = events.date
+
+  let [time, setTime] = useState()
+ time = events.time
+
+ let [title, setTitle] = useState()
+ title = events.title
+
+  const [updateEvent, {eventError}] = useMutation(UPDATE_EVENT)
+  const saveDescription = (value) => {
+    try {
+      const {data} = updateEvent({
+        variables: {
+          description: value,
+          id: eventId
+        }
+        
+      })
+    }catch (eventError) {
+      console.error('Unable to update event', eventError)
+    }
   }
+  const saveLocation = (value) => {
+    try {
+      const {data} = updateEvent({
+        variables: {
+          location: value,
+          id: eventId
+        }
+        
+      })
+    }catch (eventError) {
+      console.error('Unable to update event', eventError)
+    }
+  }
+
+  const saveTime = (value) => {
+    try {
+      const {data} = updateEvent({
+        variables: {
+          time: value,
+          id: eventId
+        }
+        
+      })
+    }catch (eventError) {
+      console.error('Unable to update event', eventError)
+    }
+  }
+
+  const saveDate = (value) => {
+    try {
+      const {data} = updateEvent({
+        variables: {
+          date: value,
+          id: eventId
+        }
+        
+      })
+    }catch (eventError) {
+      console.error('Unable to update event', eventError)
+    }
+  }
+
+  const saveTitle = (value) => {
+    try {
+      const {data} = updateEvent({
+        variables: {
+          title: value,
+          id: eventId
+        }
+        
+      })
+    }catch (eventError) {
+      console.error('Unable to update event', eventError)
+    }
+  }
+const user = Auth.getProfile()
+
+const [isEditable, setIsEditable] = useState(false)
+
+const toggleEditable = () => {
+  setIsEditable(!isEditable)
+}
   return (
     <div>
+      {user.data._id === events.hostID? (
+        <>
+       <button onClick={toggleEditable}>Editable</button>
+        </>
+
+      ):(<></>)}
+            
       <section className="post-full mt-5 p-3 rounded bg-white border">
-        <h2 className="display-4" >{events.title}</h2>
-        <p className="text-muted"><small>Hosted by: {"Host Name"}</small></p>
-        <div className="time-section">
-        <p className="text-muted">{events.date}</p>
-        <p>{events.time}</p>
-        </div>
-        <p>{events.location}</p>
+        <h2 className="display-4" >
         <EasyEdit
       type="text"
       saveButtonLabel="Save"
       cancelButtonLabel="Cancel"
-      attributes={{ name: "awesome-input", id: "description"}}
-      value={events.description}
-      onSave={save}
+      value={title}
+      allowEdit={isEditable}
+      onSave={saveTitle}
+    />
+        </h2>
+        <p className="text-muted"><small>Hosted by: {"Host Name"}</small></p>
+        <div className="time-section">
+        <EasyEdit
+      type="date"
+      saveButtonLabel="Save"
+      cancelButtonLabel="Cancel"
+      value={date}
+      allowEdit={isEditable}
+      onSave={saveDate}
+    />
+         <EasyEdit
+      type="time"
+      saveButtonLabel="Save"
+      cancelButtonLabel="Cancel"
+      value={time}
+      allowEdit={isEditable}
+      onSave={saveTime}
+    />
+        </div>
+        <EasyEdit
+      type="text"
+      saveButtonLabel="Save"
+      cancelButtonLabel="Cancel"
+      value={location}
+      allowEdit={isEditable}
+      onSave={saveLocation}
+    />
+        <EasyEdit
+      type="textarea"
+      saveButtonLabel="Save"
+      cancelButtonLabel="Cancel"
+      value={description}
+      allowEdit={isEditable}
+      onSave={saveDescription}
     />
         </section>
 

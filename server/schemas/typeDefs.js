@@ -2,7 +2,7 @@ const typeDefs = `
 # need to fix event, figuring out model 
  type Event {
     _id: ID
-    hostID: [User]
+    hostID: ID
     title: String!
     description: String!
     date: String!
@@ -31,6 +31,7 @@ const typeDefs = `
  input CommentInput {
    content: String!
  }
+
 
  type Invite {
    userId: ID!

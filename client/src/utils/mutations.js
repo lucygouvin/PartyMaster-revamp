@@ -37,14 +37,15 @@ mutation DeleteUser($id: ID!) {
 `;
 
 export const ADD_EVENT = gql `
-mutation AddEvent($title: String!, $description: String!, $date: String!, $time: String!, $location: String!, $potluck: Boolean) {
-  addEvent(title: $title, description: $description, date: $date, time: $time, location: $location, potluck: $potluck) {
+mutation AddEvent($title: String!, $description: String!, $date: String!, $time: String!, $location: String!) {
+  addEvent(title: $title, description: $description, date: $date, time: $time, location: $location) {
     title
-    description
     time
-    date
     location
-    
+    hostID
+    description
+    date
+    _id
   }
 }
 `;
@@ -79,12 +80,10 @@ mutation UpdateEvent($title: String, $description: String, $date: String, $time:
 export const ADD_COMMENT = gql`
 mutation AddComment($id: ID!, $comment: CommentInput!) {
   addComment(_id: $id, comment: $comment) {
-    _id
+    title
     comment {
       commentId
-      userID {
-        _id
-      }
+      userID
       content
     }
   }

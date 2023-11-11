@@ -17,7 +17,6 @@ const resolvers = {
     },
 
     getEventData: async (parent, eventInput, context) => {
-      console.log(context.user);
       if (context.user) {
         return Event.findOne(eventInput).populate('comment');
       }
@@ -25,6 +24,7 @@ const resolvers = {
 
     getUserEvents: async (parent, _, context) => {
       if (context.user) {
+        console.log("REACHED")
         return User.findOne({ _id: context.user._id }).populate('event');
       }
       throw AuthenticationError;
@@ -66,7 +66,18 @@ const resolvers = {
 
     addEvent: async (parent, eventInput, context) => {
       if (context.user) {
-        const event = await Event.create(eventInput);
+        console.log("REACHED")
+        console.log(eventInput)
+        const event = await Event.create({
+          
+            hostID:context.user._id,
+            title: eventInput.title,
+            description: eventInput.description,
+            date: eventInput.date,
+            time: eventInput.time,
+            location: eventInput.location
+          
+        });
         // TODO Add the event to the user's list
 
         await User.findByIdAndUpdate(context.user._id, {
@@ -80,6 +91,8 @@ const resolvers = {
     },
 
     updateEvent: async (parent, eventInput, context) => {
+      console.log("REACHED")
+      console.log(eventInput)
       if (context.user || true) {
         const event = await Event.findOneAndUpdate(
           { _id: eventInput._id },
@@ -105,13 +118,14 @@ const resolvers = {
     },
 
     addComment: async (parent, args, context) => {
-      if (context.user || true) {
+      if (context.user) {
+        console.log(context.user._id)
         return Event.findOneAndUpdate(
           { _id: args._id },
           {
             $addToSet: {
               // TODO include the user's id in the comment object
-              comment: { content: args.comment.content },
+              comment: { userId: context.user.id, content: args.comment.content },
             },
           },
           {
