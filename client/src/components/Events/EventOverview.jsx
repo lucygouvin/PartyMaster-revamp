@@ -17,6 +17,9 @@ const EventOverview = ({ postId }) => {
   const rsvpMaybe = events.rsvpMaybe ||[]
   const rsvpYes=events.rsvpYes || []
   const rsvpNo=events.rsvpNo || []
+  const contributions = events.potluckContributions
+
+  console.log(contributions)
 
 
   // const [rsvpYes, setRsvpYes] = useState('')
@@ -25,7 +28,6 @@ const EventOverview = ({ postId }) => {
   // const rsvpMaybe = rsvps.filter((rsvp) => rsvp.invite === "maybe")
 
     
-  const contributions = events.potluckContributions
 
   const [commentText, setCommentText] = useState('')
   const [addComment, {error}] = useMutation(ADD_COMMENT)
@@ -216,8 +218,15 @@ const delEvent = () => {
         <p>Yes: {rsvpYes.length}</p>
         <p>No: {rsvpNo.length}</p>
         <p>Maybe: {rsvpMaybe.length}</p>
-  
+      </section>
 
+      <section className='contributions-container'>
+      {contributions &&
+          contributions.map((contrib) => (
+            <div className="post p-3 rounded bg-light border mb-3 " key={contrib._id}>
+            <p>{contrib.item} claimed by {contrib.name}</p>
+          </div>
+          ))}
 
       </section>
 

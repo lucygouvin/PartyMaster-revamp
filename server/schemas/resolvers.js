@@ -210,12 +210,12 @@ const resolvers = {
 
     addContribution: async (parent, args, context) => {
       if (true || context.user) {
-        return Event.findOneAndUpdate(
+        console.log(args.eventId)
+        return  Event.findOneAndUpdate(
           { _id: args.eventId },
           {
             $addToSet: {
-              contribution: {
-                userId: args.contribution.userId,
+              potluckContributions: {
                 item: args.contribution.item,
               },
             },

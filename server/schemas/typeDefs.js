@@ -49,7 +49,6 @@ const typeDefs = `
 }
 
 input ContributionInput {
-   userId: ID
    item: String
 }
 #TODO Should make userId required

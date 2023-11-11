@@ -138,7 +138,6 @@ mutation AddContribution($eventId: ID!, $contribution: ContributionInput!) {
     potluckContributions {
       _id
       item
-      userId
     }
   }
 }
