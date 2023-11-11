@@ -64,11 +64,7 @@ query GetEventData($id: ID!) {
     comment {
       commentId
       content
-      userID {
-        name
-        _id
-        email
-      }
+      userID
     }
     RSVP {
       userId
@@ -100,15 +96,6 @@ query GetUserEvents {
       hostID 
     }
 
-  }
-}
-`;
-
-export const USER_RSVP = gql `
-query Query($id: ID!) {
-  userRSVP(_id: $id) {
-    invite
-    userId
   }
 }
 `;

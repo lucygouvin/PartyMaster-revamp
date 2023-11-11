@@ -28,7 +28,7 @@ const typeDefs = `
 
  type Comment {
    commentId: ID
-    userID: User
+    userID: ID
     content: String
  }
 
@@ -68,7 +68,6 @@ type Query {
    me: User
    getEventData(_id: ID!): Event
    getUserEvents: User
-   userRSVP(_id: ID!):Invite
    
  }
 

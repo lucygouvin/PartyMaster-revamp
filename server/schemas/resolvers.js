@@ -24,23 +24,10 @@ const resolvers = {
 
     getUserEvents: async (parent, _, context) => {
       if (context.user) {
-        console.log('REACHED');
         return User.findOne({ _id: context.user._id }).populate('event');
       }
       throw AuthenticationError;
     },
-
-    userRSVP: async (parent, args, context) => {
-      console.log("REACHED")
-      console.log(args)
-      const event = await Event.findById(args._id)
-      const rsvps = event.RSVP
-      console.log(rsvps)
-      const result = rsvps.find(({userId})=> userId.toHexString() ===context.user._id)
-      console.log(result)
-      return result
-
-    }
   },
 
   Mutation: {
@@ -68,7 +55,6 @@ const resolvers = {
       return { token, user };
     },
     deleteUser: async (parent, { userID }, context) => {
-      // TODO remove || true once auth stuff is added
       if (context.user) {
         return User.findOneAndDelete({ _id: userID });
       }
@@ -118,8 +104,6 @@ const resolvers = {
     },
 
     updateEvent: async (parent, eventInput, context) => {
-      console.log('REACHED');
-      console.log(eventInput);
       if (context.user || true) {
         const event = await Event.findOneAndUpdate(
           { _id: eventInput._id },
@@ -136,19 +120,19 @@ const resolvers = {
       throw AuthenticationError;
     },
 
-    deleteEvent: async (parent, eventInput, context) =>
-      Event.findOneAndDelete({ _id: eventInput }),
+    deleteEvent: async (parent, eventInput, context) => {
+      Event.findOneAndDelete({ _id: eventInput })
+    },
 
     addComment: async (parent, args, context) => {
       if (context.user) {
-        console.log(context.user._id);
         return Event.findOneAndUpdate(
           { _id: args._id },
           {
             $addToSet: {
               // TODO include the user's id in the comment object
               comment: {
-                userId: context.user.id,
+                userId: context.user._id,
                 content: args.comment.content,
               },
             },
@@ -196,7 +180,7 @@ const resolvers = {
       ),
 
     updateRSVP: async (parent, args, context) => {
-      if (true || context.user) {
+      if (context.user) {
         const event = await Event.findOneAndUpdate(
           { _id: args._id, "RSVP.userId":args.RSVP.userId},
         {$set: {"RSVP.$.invite": args.RSVP.invite}}

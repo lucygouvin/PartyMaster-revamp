@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import '../../styles/EventOverview.css';
 import {useParams} from 'react-router-dom'
-import { EVENT_DATA, USER_RSVP } from '../../utils/queries';
+import { EVENT_DATA } from '../../utils/queries';
 import { ADD_COMMENT, UPDATE_EVENT, DELETE_EVENT, UPDATE_RSVP } from '../../utils/mutations';
 import { useQuery, useMutation } from '@apollo/client';
 import EasyEdit from 'react-easy-edit';
@@ -14,32 +14,13 @@ const EventOverview = ({ postId }) => {
     variables:{id: eventId}
   })
   const events = data?.getEventData|| {};
+  console.log(events)
   const comments = events.comment
   const rsvp = events.RSVP ||[]
-
-
   const rsvpMaybe = events.rsvpMaybe ||[]
   const rsvpYes=events.rsvpYes || []
   const rsvpNo=events.rsvpNo || []
   const contributions = events.potluckContributions
-
-  // console.log("USERRSVP", userRSVP)
-
-  // const {rsvploading, rsvpData} = useQuery(USER_RSVP, {
-  //   variables:{id: eventId}
-  // })
-
-  // console.log(rsvpData)
-
-  // useEffect(() => {
-  //   if (rsvp.length) {
-  //     console.log("RSVPLIST", rsvp)
-  //     const result = rsvp.find(({userId})=> userId === user.data._id)
-  //     console.log("USEEFFECT", result.invite)
-  //     return (result.invite)
-  //   } 
-
-  // }, [rsvp])
 
   const [commentText, setCommentText] = useState('')
   const [addComment, {error}] = useMutation(ADD_COMMENT)
@@ -149,26 +130,14 @@ const EventOverview = ({ postId }) => {
     }
   }
 const user = Auth.getProfile()
-const rsvpStatus = (rsvpList)=> {
-if (rsvpList.length) {
-  console.log("RSVPLIST", rsvpList)
-  const result = rsvpList.find(({userId})=> userId === user.data._id)
-  return (result.invite)
-} else{
-  return ''
-}
-}
+
 let userResponse = getUserRsvp(rsvp, user.data._id)
-console.log(userResponse)
 const [isEditable, setIsEditable] = useState(false)
 let [guestRSVP, setGuestRSVP] = useState(userResponse)
 
-
-
-
-
 const save=(value) =>{
   setGuestRSVP(value)
+  toggleEditable()
   try {
     const {data} = updateRSVP({
       variables: {
@@ -182,16 +151,12 @@ const save=(value) =>{
     }catch(rsvpError){
         console.error('Unable to update RSVP', rsvpError)
 
-      }
-    
+      } 
   }
-
-
 
 const toggleEditable = () => {
   setIsEditable(!isEditable)
 }
-console.log(events)
 const delEvent = () => {
   try {
     const {data} = deleteEvent({
@@ -272,14 +237,14 @@ const delEvent = () => {
         <p>You're a guest</p>
        
         <h3>Your RSVP:{guestRSVP||userResponse}</h3>
-        <button>Change RSVP</button>
+        <button onClick={toggleEditable} hidden={!isEditable}>Change RSVP</button>
         <EasyEdit
   type="select"
   options={[
       {label: "Yes", value: 'yes'},
       {label: 'No', value: 'no'},
       {label: 'Maybe', value: 'maybe'}]}
-  
+  allowEdit={isEditable}
   placeholder={userResponse}
   onSave={save}
 />
