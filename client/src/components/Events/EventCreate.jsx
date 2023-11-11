@@ -23,7 +23,7 @@ const EventCreate = () => {
             });
 
             // TODO redirect to the newly created event page
-            window.location.reload();
+            window.location.href="/dashboard";
         } catch (err) {
           console.error(err);
         }

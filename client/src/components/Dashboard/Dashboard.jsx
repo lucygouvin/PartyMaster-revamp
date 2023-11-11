@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/Dashboard.css';
 import Auth from "../../utils/auth"
-import { GET_USER_EVENTS } from '../../utils/queries';
+import { EVENT_DATA, GET_USER_EVENTS } from '../../utils/queries';
 import { useQuery } from '@apollo/client';
+import { USERS } from '../../utils/queries'
 
 
 const Dashboard = () => {
@@ -25,10 +26,10 @@ const Dashboard = () => {
                     <div className="upcoming-events">
                         {/* <h3>Upcoming Events</h3> */}
                         {events.event &&
-                        events.event.map ((event) => (
-                            <div key={event._id}>
-                                <a href={`/event/${event._id}`}><p>{event.title} hosted by {event.hostId}</p></a>
-                                <p>{event.date} at {event.time}, {event.location}</p>
+                        events.event.map ((events) => (
+                            <div key={events._id}>
+                                <a href={`/event/${events._id}`}><p>{events.title} hosted by {events.hostID}</p></a>
+                                <p>{events.date} at {events.time}, {events.location}</p>
                                 </div>
                         )
                         )}
