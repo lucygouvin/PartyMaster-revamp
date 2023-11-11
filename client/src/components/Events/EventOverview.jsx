@@ -14,6 +14,15 @@ const EventOverview = ({ postId }) => {
   })
   const events = data?.getEventData|| {};
   const comments = events.comment
+  const rsvps = events.RSVP
+
+  // const [rsvpYes, setRsvpYes] = useState('')
+  // const rsvpYes = rsvps.filter((rsvp) => rsvp.invite === "yes")
+  // const rsvpNo = rsvps.filter((rsvp) => rsvp.invite === "no")
+  // const rsvpMaybe = rsvps.filter((rsvp) => rsvp.invite === "maybe")
+
+    
+  const contributions = events.potluckContributions
 
   const [commentText, setCommentText] = useState('')
   const [addComment, {error}] = useMutation(ADD_COMMENT)
@@ -199,6 +208,9 @@ const delEvent = () => {
       onSave={saveDescription}
     />
         </section>
+      <section className='rsvp-container'>
+
+      </section>
 
       <section className="mt-5">
           {comments &&

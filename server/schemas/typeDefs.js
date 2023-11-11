@@ -34,7 +34,7 @@ const typeDefs = `
 
 
  type Invite {
-   userId: ID!
+   userId: ID
    invite: String!
  }
 
@@ -77,7 +77,8 @@ type Query {
    deleteEvent(_id: ID!): Event
    addComment(_id: ID!, comment: CommentInput!): Event
    deleteComment(_id:ID!, commentId: ID!): Event
-   addGuest(eventId:ID!, guestId:ID! ): Event
+   # addGuest(eventId:ID!, guestId:ID! ): Event
+   addGuest(eventId: ID!, email:String!) : Event
    removeGuest(eventId:ID!, guestId:ID!) : Event
    updateRSVP (_id: ID!, RSVP:RSVPInput): Event
    addContribution (eventId:ID!, contribution: ContributionInput!): Event

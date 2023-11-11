@@ -145,12 +145,17 @@ const resolvers = {
     },
 
     addGuest: async (parent, args, context) =>
-      // TODO Add logic for making sure the currenly logged in user owns the event
-      Event.findOneAndUpdate(
+    {
+      const guest = await User.findOne({email: args.email})
+      return  Event.findOneAndUpdate(
         { _id: args.eventId },
-        { $addToSet: { RSVP: { userId: args.guestId, invite: 'maybe' } } },
+        { $addToSet: { RSVP: { userId: guest._id.toHexString(), invite: 'maybe' } } },
         { new: true }
-      ),
+      )
+      
+    },
+      // TODO Add logic for making sure the currenly logged in user owns the event
+      
     removeGuest: async (parent, args, context) =>
       // TODO Add logic for making sure the currenly logged in user owns the event
       Event.findOneAndUpdate(
@@ -161,13 +166,23 @@ const resolvers = {
 
     updateRSVP: async (parent, args, context) => {
       console.log(args);
-      console.log(args.RSVP.invite);
+      console.log(args.RSVP.userId);
       if (true || context.user) {
-        return Event.findOneAndUpdate(
-          { _id: args._id, 'RSVP.userId': args.RSVP.userId },
-          { $set: { 'RSVP.$.invite': args.RSVP.invite } },
-          { new: true }
-        );
+        const event = await Event.findOne({ _id: "654f1107eb74b98243ad5695"});
+        const rsvps = event.RSVP
+        console.log(rsvps)
+        rsvps.forEach((rsvp) => {
+          console.log("from event")
+          console.log(rsvp.userId)
+          console.log("from input")
+          console.log(args.RSVP.userId)
+          console.log(rsvp.userId===" new ObjectId('654da9f470977691506d94ba')")
+        })
+
+        // const invitee = rsvps.filter((rsvp) => rsvp.userId==="new ObjectId('654da9f470977691506d94ba')")
+        // console.log(invitee)
+
+        return event
       }
       throw new Error('Not logged in');
     },
