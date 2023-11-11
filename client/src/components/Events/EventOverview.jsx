@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import '../../styles/EventOverview.css';
 import {useParams} from 'react-router-dom'
-// import axios from 'axios';
 import '../../styles/EventOverview.css'; // Make sure this path is correct
 import { EVENT_DATA } from '../../utils/queries';
 import { ADD_COMMENT } from '../../utils/mutations';

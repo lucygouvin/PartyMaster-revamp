@@ -70,3 +70,27 @@ query GetEventData($id: ID!) {
     }
   }
 }`;
+
+export const GET_USER_EVENTS = gql `
+query GetUserEvents {
+  getUserEvents {
+  
+    event {
+      title
+      time
+      location
+      date
+      RSVP {
+        userId
+        invite
+      }
+      _id
+      hostID {
+        _id
+        name
+      }
+    }
+
+  }
+}
+`;

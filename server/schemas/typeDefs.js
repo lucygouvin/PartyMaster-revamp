@@ -19,6 +19,7 @@ const typeDefs = `
     name: String
     email: String
     password: String
+    event: [Event]
  }
 
  type Comment {
@@ -62,7 +63,7 @@ type Query {
    users: [User]
    me: User
    getEventData(_id: ID!): Event
-   getUserEvents(_id: ID!): User
+   getUserEvents: User
  }
 
  type Mutation {
