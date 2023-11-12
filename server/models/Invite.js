@@ -8,9 +8,9 @@ const inviteSchema = new Schema({
   },
   invite: {
     type: String,
-    enum: ['yes', 'no', 'maybe'],
+    enum: ['Yes', 'No', 'Maybe'],
     required: true,
-    default: 'maybe',
+    default: 'Maybe',
   },
   // notified: { A boolean to check if a user has been notified or not, stretch goal
   //     type: Boolean,

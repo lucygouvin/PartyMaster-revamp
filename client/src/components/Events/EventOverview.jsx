@@ -1,257 +1,236 @@
-import { useState } from 'react';
-import '../../styles/EventOverview.css';
-import {useParams} from 'react-router-dom'
-import { EVENT_DATA } from '../../utils/queries';
-import { ADD_COMMENT, UPDATE_EVENT, DELETE_EVENT } from '../../utils/mutations';
+// Import Hooks
+import { useState, useEffect } from 'react';
+import {useParams} from 'react-router-dom';
 import { useQuery, useMutation } from '@apollo/client';
-import EasyEdit from 'react-easy-edit';
-import Auth from '../../utils/auth';
 
-const EventOverview = ({ postId }) => {
+// Import Queries and Mutations
+import { EVENT_DATA } from '../../utils/queries';
+import { UPDATE_EVENT, DELETE_EVENT, UPDATE_RSVP} from '../../utils/mutations';
+
+// Import Styling
+import '../../styles/EventOverview.css';
+
+// Import utils and custom elements
+import Auth from '../../utils/auth';
+import getUserRole from '../../utils/userRole';
+import Comment from '../Communication/Comments'
+import CommentForm from '../Communication/CommentForm';
+import Contribution from '../Contributions/ContributionCoordination';
+import EasyEdit from 'react-easy-edit';
+
+const EventOverview = () => {
+  // Get the logged in user
+  const user = Auth.getProfile()
+  // Get the event ID from the URL params
   const {eventId} = useParams();
+  // Set up useState hooks for the data we'll need
+  let [title, setTitle] = useState('')
+  let [date, setDate] = useState('')
+  let [time, setTime] = useState('')
+  let [location, setLocation] = useState('')
+  let [description, setDescription] = useState('')
+  let [comments, setComments]= useState()
+  let [rsvp, setRSVP] = useState([])
+  let [rsvpMaybe, setRsvpMaybe] = useState([])
+  let [rsvpYes, setRsvpYes] = useState([])
+  let [rsvpNo, setRsvpNo] = useState([])
+  let [contributions, setContributions] = useState([])
+  let [hostID, setHostID] = useState('')
+  let [userResponse, setUserResponse] = useState({hostBool:false, rsvp:""})
+  let [guestRSVP, setGuestRSVP] = useState(userResponse.rsvp)
+  const [isEditable, setIsEditable] = useState(false)
+
+  const toggleEditable = () => {
+    setIsEditable(!isEditable)
+  }
+  // Set up mutations
+  const [updateEvent, {eventError}] = useMutation(UPDATE_EVENT)
+  const [deleteEvent, {deleteError}] = useMutation(DELETE_EVENT)
+  const [updateRSVP, {rsvpError}] = useMutation(UPDATE_RSVP)
+
+
+  const saveEventDetails = () => {
+    try {
+      const {data} = updateEvent({
+        variables: {
+          id: eventId,
+          description,
+          title,
+          location,
+          date,
+          time,
+        }
+        
+      })
+    }catch (eventError) {
+      console.error('Unable to update event', eventError)
+    }
+  
+  }
+  const delEvent = () => {
+    try {
+      const {data} = deleteEvent({
+        variables: {
+          id: eventId
+        }
+      })
+      window.location.href="/dashboard";
+    }catch (eventError) {
+      console.error('Unable to delete event', eventError)
+    }
+  }
+
+  const saveRSVP=(value) =>{
+    toggleEditable()
+    try {
+        const {data} = updateRSVP({
+        variables: {
+            id: eventId,
+            rsvp: {
+            userId: user.data._id,
+            invite: value
+            }
+        }
+        })
+        }catch(rsvpError){
+            console.error('Unable to update RSVP', rsvpError)
+    
+        } 
+        setGuestRSVP(value)
+    }
+
+  // Query the event data
   const {loading, data} = useQuery(EVENT_DATA, {
     variables:{id: eventId}
   })
-  const events = data?.getEventData|| {};
-  const comments = events.comment
-  const rsvpMaybe = events.rsvpMaybe ||[]
-  const rsvpYes=events.rsvpYes || []
-  const rsvpNo=events.rsvpNo || []
-  const contributions = events.potluckContributions
-
-  console.log(contributions)
-
-
-  // const [rsvpYes, setRsvpYes] = useState('')
-  // const rsvpYes = rsvps.filter((rsvp) => rsvp.invite === "yes")
-  // const rsvpNo = rsvps.filter((rsvp) => rsvp.invite === "no")
-  // const rsvpMaybe = rsvps.filter((rsvp) => rsvp.invite === "maybe")
-
-    
-
-  const [commentText, setCommentText] = useState('')
-  const [addComment, {error}] = useMutation(ADD_COMMENT)
-  
-  const handleCommentSubmit = async (event) => {
-    event.preventDefault();
-    
-    try {
-      const {data} = addComment({
-        variables: {
-          id: eventId,
-          comment: {
-            content: commentText
-          }
-        }
-      })
-      window.location.reload();
-    } catch (error) {
-      console.error('Error submitting comment', error);
+// wait for the event data to be returned, then set all the values
+  useEffect(()=>{
+    if (loading===false && data){
+      const events = data?.getEventData|| {};
+      setTitle(events.title);
+      setDate(events.date);
+      setTime(events.time);
+      setLocation(events.location);
+      setDescription(events.description);
+      setComments(events.comment);
+      setRSVP(events.RSVP);
+      setRsvpMaybe(events.rsvpMaybe)
+      setRsvpYes(events.rsvpYes)
+      setRsvpNo(events.rsvpNo)
+      setContributions(events.potluckContributions)
+      setHostID(events.hostID)
     }
-  };
-
-  let [description, setDescription] = useState()
-  description = events.description
-
-  let [location, setLocation] = useState()
-  location = events.location
-
-  let [date, setDate] = useState()
-  date = events.date
-
-  let [time, setTime] = useState()
- time = events.time
-
- let [title, setTitle] = useState()
- title = events.title
-
-  const [updateEvent, {eventError}] = useMutation(UPDATE_EVENT)
-  const [deleteEvent, {deleteError}] = useMutation(DELETE_EVENT)
-  const saveDescription = (value) => {
-    try {
-      const {data} = updateEvent({
-        variables: {
-          description: value,
-          id: eventId
-        }
-        
-      })
-    }catch (eventError) {
-      console.error('Unable to update event', eventError)
+  }, [loading, data])
+// Wait for the event data to come back, and then derive additional information
+  useEffect(()=>{
+    if (hostID && rsvp){
+      setUserResponse(getUserRole(hostID, rsvp, user.data._id))
     }
-  }
-  const saveLocation = (value) => {
-    try {
-      const {data} = updateEvent({
-        variables: {
-          location: value,
-          id: eventId
-        }
-        
-      })
-    }catch (eventError) {
-      console.error('Unable to update event', eventError)
-    }
-  }
+  },[hostID, rsvp]) 
 
-  const saveTime = (value) => {
-    try {
-      const {data} = updateEvent({
-        variables: {
-          time: value,
-          id: eventId
-        }
-        
-      })
-    }catch (eventError) {
-      console.error('Unable to update event', eventError)
-    }
-  }
-
-  const saveDate = (value) => {
-    try {
-      const {data} = updateEvent({
-        variables: {
-          date: value,
-          id: eventId
-        }
-        
-      })
-    }catch (eventError) {
-      console.error('Unable to update event', eventError)
-    }
-  }
-
-  const saveTitle = (value) => {
-    try {
-      const {data} = updateEvent({
-        variables: {
-          title: value,
-          id: eventId
-        }
-        
-      })
-    }catch (eventError) {
-      console.error('Unable to update event', eventError)
-    }
-  }
-const user = Auth.getProfile()
-
-const [isEditable, setIsEditable] = useState(false)
-
-const toggleEditable = () => {
-  setIsEditable(!isEditable)
-}
-
-const delEvent = () => {
-  try {
-    const {data} = deleteEvent({
-      variables: {
-        id: eventId
-      }
-    })
-    window.location.href="/dashboard";
-  }catch (eventError) {
-    console.error('Unable to delete event', eventError)
-  }
-}
   return (
     <div>
-      {user.data._id === events.hostID? (
-        <>
-      
-       <button onClick={toggleEditable}>Edit</button>
-       <button onClick={delEvent}>Delete</button>
-        </>
-
+      {userResponse.hostBool? (
+        <div className='edit-buttons'>
+        <button onClick={toggleEditable} >Edit</button>
+        <button onClick={delEvent}>Delete</button>
+        <button onClick={saveEventDetails}>Save</button>
+        </div>
       ):(<></>)}
-            
+
       <section className="post-full mt-5 p-3 rounded bg-white border">
+<>
         <h2 className="display-4" >
         <EasyEdit
       type="text"
-      saveButtonLabel="Save"
-      cancelButtonLabel="Cancel"
       value={title}
+      saveOnBlur={true}
       allowEdit={isEditable}
-      onSave={saveTitle}
+      onSave={(value)=>setTitle(value)}
     />
         </h2>
         <p className="text-muted"><small>Hosted by: {"Host Name"}</small></p>
         <div className="time-section">
         <EasyEdit
       type="date"
-      saveButtonLabel="Save"
-      cancelButtonLabel="Cancel"
       value={date}
+      saveOnBlur={true}
       allowEdit={isEditable}
-      onSave={saveDate}
+      onSave={(value)=>setDate(value)}
     />
          <EasyEdit
       type="time"
-      saveButtonLabel="Save"
-      cancelButtonLabel="Cancel"
       value={time}
+      saveOnBlur={true}
       allowEdit={isEditable}
-      onSave={saveTime}
+      onSave={(value)=>setTime(value)}
     />
         </div>
         <EasyEdit
       type="text"
-      saveButtonLabel="Save"
-      cancelButtonLabel="Cancel"
+      saveOnBlur={true}
       value={location}
       allowEdit={isEditable}
-      onSave={saveLocation}
+      onSave={(value)=>setLocation(value)}
     />
         <EasyEdit
       type="textarea"
-      saveButtonLabel="Save"
-      cancelButtonLabel="Cancel"
       value={description}
+      saveOnBlur={true}
       allowEdit={isEditable}
-      onSave={saveDescription}
+      onSave={(value)=>setDescription(value)}
     />
-        </section>
+</>      
+</section>
+<aside className='contributions-container'>
+        {contributions && (
+           <Contribution contributions={contributions} eventId={eventId} user={user}/>
+        )}
+      </aside>
+
       <section className='rsvp-container'>
-        <h3>RSVPs</h3>
-        <p>Yes: {rsvpYes.length}</p>
-        <p>No: {rsvpNo.length}</p>
-        <p>Maybe: {rsvpMaybe.length}</p>
+      {userResponse.hostBool?(
+        <>
+            <h3>RSVPs</h3>
+            <p>Yes: {rsvpYes.length}</p>
+            <p>No: {rsvpNo.length}</p>
+            <p>Maybe: {rsvpMaybe.length}</p>
+        </>
+
+        ):(
+        <>
+            <h3>Your RSVP:{guestRSVP||userResponse.rsvp}</h3>
+            <button onClick={toggleEditable} hidden={isEditable}>Change RSVP</button>
+            <EasyEdit
+                type="select"
+                options={[
+                    {label: "Yes", value: 'Yes'},
+                    {label: 'No', value: 'No'},
+                    {label: 'Maybe', value: 'Maybe'}]}
+                allowEdit={isEditable}
+                placeholder={userResponse.rsvp}
+                onSave={saveRSVP}
+            />
+            <p>{rsvpYes.length} Going</p>
+            <p>{rsvpNo.length} Not going</p>
+            <p>{rsvpMaybe.length} Maybe going</p>
+        </>
+
+        )}      </section>
+
+   
+
+      <section className="comments-container">
+        {comments &&
+        comments.map((comment)=> (
+          <Comment comment={comment} key={comment.commentId}/>
+        ))}
       </section>
 
-      <section className='contributions-container'>
-      {contributions &&
-          contributions.map((contrib) => (
-            <div className="post p-3 rounded bg-light border mb-3 " key={contrib._id}>
-            <p>{contrib.item} claimed by {contrib.name}</p>
-          </div>
-          ))}
-
+      <section className='commentForm'>
+        <CommentForm eventId={eventId} />
       </section>
-
-      <section className="mt-5">
-          {comments &&
-          comments.map((comment) => (
-            <div className="post p-3 rounded bg-light border mb-3 comment-item" key={comment.commentId}>
-            <p>by {comment.userId} </p>
-            <p>{comment.content}</p>
-          </div>
-          ))}
-        </section>
-
-        <section className="comment-form" id="commentForm">
-      <form onSubmit={handleCommentSubmit} className="p-3 rounded bg-white border">
-        <div className="form-group">
-          <label htmlFor="comment_text">Add a comment:</label>
-          <textarea className="form-control" id="comment_text" name="comment_text" rows="3" value={commentText} required onChange={(event)=> setCommentText(event.target.value)}></textarea>
-        </div>
-        <button type="submit" className="btn btn-primary">Submit</button>
-      </form>
-    </section>
-     
   </div> 
-
   );
  };
 

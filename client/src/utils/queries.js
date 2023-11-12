@@ -64,11 +64,7 @@ query GetEventData($id: ID!) {
     comment {
       commentId
       content
-      userID {
-        name
-        _id
-        email
-      }
+      userID
     }
     RSVP {
       userId
@@ -76,9 +72,9 @@ query GetEventData($id: ID!) {
     }
     potluck
     potluckContributions {
-      _id
-      userId
+      name
       item
+      _id
     }
   }
 }`;

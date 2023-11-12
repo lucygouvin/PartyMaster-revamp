@@ -105,8 +105,8 @@ mutation UpdateRSVP($id: ID!, $rsvp: RSVPInput) {
     title
     _id
     RSVP {
-      invite
       userId
+      invite
     }
   }
 }
@@ -137,6 +137,7 @@ mutation AddContribution($eventId: ID!, $contribution: ContributionInput!) {
     _id
     potluckContributions {
       _id
+      userId
       item
     }
   }
@@ -150,6 +151,19 @@ mutation DeleteContribution($eventId: ID!, $contribution: ContributionInput!) {
     _id
     potluckContributions {
       _id
+    }
+  }
+}
+`;
+
+export const CLAIM_CONTRIBUTION = gql `
+mutation ClaimContribution($eventId: ID!, $contribution: ContributionInput!) {
+  claimContribution(eventId: $eventId, contribution: $contribution) {
+    title
+    _id
+    potluckContributions {
+      name
+      item
     }
   }
 }
