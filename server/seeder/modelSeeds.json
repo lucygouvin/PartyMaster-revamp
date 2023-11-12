@@ -1,0 +1,60 @@
+[
+    {
+      "name": "Alice Johnson",
+      "email": "alice.j@bing.com",
+      "password": "Alicepass21!",
+      "title": "Winter Wonderland Party",
+      "description": "A festive gathering to celebrate the winter season.",
+      "date": "12/05/2023",
+      "time": "5PM",
+      "location": "Philadelphia Botanical Garden",
+      "potluck": true
+    },
+    {
+      "name": "Terrance Johnson",
+      "email": "TJ32@gmail.com",
+      "password": "Password123!",
+      "title": "Friendsgiving",
+      "description": "Friends and fun and food!",
+      "date": "11/21/2023",
+      "time": "7PM",
+      "location": "3400 Spruce St",
+      "potluck": true
+    },
+    {
+      "name": "Andy Joho",
+      "email": "notAndrew@gmail.com",
+      "password": "Password123!",
+      "title": "LAN smash event",
+      "description": "Bring your controllers!",
+      "date": "12/14/2023",
+      "time": "1PM",
+      "location": "Warnock Commons",
+      "potluck": false
+    },
+    {
+        "name":"Joe Smith",
+        "email":"JoeSmithy@aol.com",
+        "password": "Password123!"
+    },
+    {
+      "name":"Anthony Simmons",
+      "email":"AsmimmonX@gmail.com",
+      "password":"Password123!"
+    },
+    {
+      "name":"Clara Gallagher",
+      "email":"CGallagher@hey.com",
+      "password":"Password123!"
+    },
+    {
+      "name":"Maggie Long",
+      "email": "MagSafeLong@apple.com",
+      "password":"Password123!"
+    },
+    {
+      "name": "Ron Henderson",
+      "email": "RonHensom@gmail.com",
+      "password":"Password123!"
+    }
+]
