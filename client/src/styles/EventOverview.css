@@ -76,3 +76,38 @@ body {
 .easy-edit-not-allowed{
     cursor: auto!important;
 }
+
+.flex-container{
+    display: flex;
+}
+
+.contributions-container{
+    flex-grow: 1;
+    margin: 0 2%;
+
+}
+
+.left-column{
+    flex-grow: 8;
+    margin: 0 3% 0 2%;
+}
+
+.edit-rsvp-group{
+    display: flex;
+    align-items: center;
+}
+
+.rsvp-response-group{
+    display: flex;
+    gap: 5%;
+}
+
+.guest-list-group {
+    display: flex;
+    gap: 1%;
+    align-items: center;
+}
+
+.guest-list-group button {
+    max-height: 20px;
+}

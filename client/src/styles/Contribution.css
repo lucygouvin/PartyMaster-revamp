@@ -1,0 +1,20 @@
+.contribution-item{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.muted-text{
+    color: gray;
+    font-style: italic;
+
+}
+
+.contrib-input-group{
+    margin-top: 15px;
+   display: flex;
+   gap:10px;
+}
+.contrib-input{
+    flex-grow: 1;
+}
