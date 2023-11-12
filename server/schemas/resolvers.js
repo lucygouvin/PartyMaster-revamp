@@ -108,7 +108,7 @@ const resolvers = {
       console.log(args)
       if (context.user || true) {
         const event = await Event.findOneAndUpdate(
-          { _id: "654fb21b39c8ce7002af058f" },
+          { _id: args._id },
           {
             $set: args,
           },
