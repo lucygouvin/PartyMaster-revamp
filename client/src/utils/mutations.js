@@ -108,6 +108,18 @@ mutation UpdateRSVP($id: ID!, $rsvp: RSVPInput) {
       userId
       invite
     }
+    rsvpYes {
+      userId
+      invite
+    }
+    rsvpNo {
+      userId
+      invite
+    }
+    rsvpMaybe {
+      userId
+      invite
+    }
   }
 }
 `;
@@ -115,8 +127,12 @@ mutation UpdateRSVP($id: ID!, $rsvp: RSVPInput) {
 export const ADD_GUEST = gql `
 mutation AddGuest($eventId: ID!, $email: String!) {
   addGuest(eventId: $eventId, email: $email) {
-    userId
-    invite
+    title
+    _id
+    RSVP {
+      userId
+      invite
+    }
   }
 }
 `;
@@ -126,6 +142,10 @@ mutation RemoveGuest($eventId: ID!, $guestId: ID!) {
   removeGuest(eventId: $eventId, guestId: $guestId) {
     title
     _id
+    RSVP {
+      invite
+      userId
+    }
   }
 }
 `;

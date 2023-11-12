@@ -18,7 +18,7 @@ const resolvers = {
 
     getEventData: async (parent, eventInput, context) => {
       if (context.user) {
-        return Event.findOne(eventInput).populate('comment');
+        return Event.findOne(eventInput).populate('comment','user');
       }
     },
 
@@ -158,7 +158,10 @@ const resolvers = {
     },
 
     addGuest: async (parent, args) => {
-      const guest = await User.findOne({ email: args.email });
+      const guest = await User.findOneAndUpdate({ email: args.email },
+        {
+          $push: { event: args.eventId },
+        });
       return Event.findOneAndUpdate(
         { _id: args.eventId },
         {
@@ -169,21 +172,23 @@ const resolvers = {
         { new: true }
       );
     },
-    // TODO Add logic for making sure the currenly logged in user owns the event
 
-    removeGuest: async (parent, args) =>
-      // TODO Add logic for making sure the currenly logged in user owns the event
-      Event.findOneAndUpdate(
+    removeGuest: async (parent, args) => {
+    await User.findOneAndUpdate({_id:args.guestId},
+      {$pull:{ event: args.eventId }});
+    return Event.findOneAndUpdate(
         { _id: args.eventId },
         { $pull: { RSVP: { userId: args.guestId } } },
         { new: true }
-      ),
+      );
+    },
 
     updateRSVP: async (parent, args, context) => {
       if (context.user) {
         const event = await Event.findOneAndUpdate(
           { _id: args._id, 'RSVP.userId': args.RSVP.userId },
-          { $set: { 'RSVP.$.invite': args.RSVP.invite } }
+          { $set: { 'RSVP.$.invite': args.RSVP.invite } },
+          {new: true}
         );
         return event;
       }

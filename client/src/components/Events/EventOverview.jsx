@@ -5,7 +5,7 @@ import { useQuery, useMutation } from '@apollo/client';
 
 // Import Queries and Mutations
 import { EVENT_DATA } from '../../utils/queries';
-import { UPDATE_EVENT, DELETE_EVENT, UPDATE_RSVP} from '../../utils/mutations';
+import { UPDATE_EVENT, DELETE_EVENT, UPDATE_RSVP, ADD_GUEST, REMOVE_GUEST} from '../../utils/mutations';
 
 // Import Styling
 import '../../styles/EventOverview.css';
@@ -38,6 +38,7 @@ const EventOverview = () => {
   let [hostID, setHostID] = useState('')
   let [userResponse, setUserResponse] = useState({hostBool:false, rsvp:""})
   let [guestRSVP, setGuestRSVP] = useState(userResponse.rsvp)
+  let [inviteList, setInviteList] = useState('')
   const [isEditable, setIsEditable] = useState(false)
 
   const toggleEditable = () => {
@@ -47,6 +48,8 @@ const EventOverview = () => {
   const [updateEvent, {eventError}] = useMutation(UPDATE_EVENT)
   const [deleteEvent, {deleteError}] = useMutation(DELETE_EVENT)
   const [updateRSVP, {rsvpError}] = useMutation(UPDATE_RSVP)
+  const [addGuest, {addError}] = useMutation(ADD_GUEST)
+  const [removeGuest, {removeError}] = useMutation(REMOVE_GUEST)
 
 
   const saveEventDetails = () => {
@@ -81,6 +84,7 @@ const EventOverview = () => {
   }
 
   const saveRSVP=(value) =>{
+    console.log("NO BEFORE", rsvpNo)
     toggleEditable()
     try {
         const {data} = updateRSVP({
@@ -97,8 +101,37 @@ const EventOverview = () => {
     
         } 
         setGuestRSVP(value)
-    }
+        console.log("NO AFTER", rsvpNo)
 
+    }
+const inviteGuests =() => {
+  const guestArray = inviteList.split(',')
+  guestArray.forEach(async (invitee) => {
+    invitee.trim();
+    const {data} = addGuest({
+      variables:{
+        eventId:eventId,
+        email:invitee,
+      }
+    })
+  })
+  setInviteList('')
+}
+
+const delGuest = (e) => {
+  try {
+    const {data} = removeGuest({
+      variables:{
+        eventId:eventId,
+        guestId: e.target.getAttribute("data-guest-id")
+      }
+    })
+
+  }catch (removeError) {
+    console.error ("Unable to remove guest", removeError)
+  }
+rsvp.pop()
+}
   // Query the event data
   const {loading, data} = useQuery(EVENT_DATA, {
     variables:{id: eventId}
@@ -106,6 +139,7 @@ const EventOverview = () => {
 // wait for the event data to be returned, then set all the values
   useEffect(()=>{
     if (loading===false && data){
+      console.log("UPDATING")
       const events = data?.getEventData|| {};
       setTitle(events.title);
       setDate(events.date);
@@ -127,6 +161,9 @@ const EventOverview = () => {
       setUserResponse(getUserRole(hostID, rsvp, user.data._id))
     }
   },[hostID, rsvp]) 
+
+
+  console.log(rsvp)
 
   return (
     <div>
@@ -191,10 +228,28 @@ const EventOverview = () => {
       <section className='rsvp-container'>
       {userResponse.hostBool?(
         <>
+        <div>
             <h3>RSVPs</h3>
             <p>Yes: {rsvpYes.length}</p>
             <p>No: {rsvpNo.length}</p>
             <p>Maybe: {rsvpMaybe.length}</p>
+          </div>
+          {isEditable? (
+            <div>
+            <textarea placeholder="Add emails, separated by commas" value={inviteList} onChange={(event) => setInviteList(event.target.value)}></textarea>
+            <button onClick={inviteGuests}>Invite Guests</button>
+            <p>Guest List</p>
+            {rsvp &&
+            rsvp.map((response)=> (
+              <div>
+              <p>{response.userId}</p>
+              <button data-guest-id={response.userId} onClick={delGuest}>Remove Guest</button>
+              </div>
+            ))}
+          </div>
+
+          ):(<></>)}
+        
         </>
 
         ):(
