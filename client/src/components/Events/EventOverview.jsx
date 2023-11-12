@@ -182,11 +182,15 @@ const EventOverview = () => {
     />
 </>      
 </section>
+<aside className='contributions-container'>
+        {contributions && (
+           <Contribution contributions={contributions} eventId={eventId} user={user}/>
+        )}
+      </aside>
 
       <section className='rsvp-container'>
       {userResponse.hostBool?(
         <>
-            <p>You're not a guest</p>
             <h3>RSVPs</h3>
             <p>Yes: {rsvpYes.length}</p>
             <p>No: {rsvpNo.length}</p>
@@ -195,7 +199,6 @@ const EventOverview = () => {
 
         ):(
         <>
-            <p>You're a guest</p>
             <h3>Your RSVP:{guestRSVP||userResponse.rsvp}</h3>
             <button onClick={toggleEditable} hidden={isEditable}>Change RSVP</button>
             <EasyEdit
@@ -215,11 +218,7 @@ const EventOverview = () => {
 
         )}      </section>
 
-      <section className='contributions-container'>
-        {contributions && (
-           <Contribution contributions={contributions} eventId={eventId} user={user}/>
-        )}
-      </section>
+   
 
       <section className="comments-container">
         {comments &&

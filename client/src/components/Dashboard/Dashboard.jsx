@@ -4,15 +4,23 @@ import Auth from "../../utils/auth"
 import { EVENT_DATA, GET_USER_EVENTS } from '../../utils/queries';
 import { useQuery } from '@apollo/client';
 import { USERS } from '../../utils/queries'
+import getUserRole from '../../utils/userRole';
+import DashboardListItem from './DashboardListItem';
 
 
 const Dashboard = () => {
      const user = Auth.getProfile()
-
+     const [events, setEvents] = useState()
      const {loading, data} = useQuery(GET_USER_EVENTS)
+     useEffect(() =>{
+        if (loading === false && data){
+            const events = data?.getUserEvents || {}
+            setEvents(events.event)
+        }
+     },[loading, data])
 
-     const events = data?.getUserEvents || {}
-    console.log(events)
+     console.log(events)
+
 
     return (
         <div>
@@ -22,17 +30,15 @@ const Dashboard = () => {
                     <h2>Welcome, {user.data.name}</h2>
                 </div>
                 <div className="events-overview">
-                    <h2>Your Events</h2>
+                    <h2 className='event-list__heading'>Your Events</h2>
                     <div className="upcoming-events">
                         {/* <h3>Upcoming Events</h3> */}
-                        {events.event &&
-                        events.event.map ((events) => (
-                            <div key={events._id}>
-                                <a href={`/event/${events._id}`}><p>{events.title} hosted by {events.hostID}</p></a>
-                                <p>{events.date} at {events.time}, {events.location}</p>
-                                </div>
-                        )
-                        )}
+                        {events && 
+                        events.map((events)=> (
+                            <DashboardListItem events={events} user={user}/>
+                        ))}
+                      
+                       
                     </div>
                     {/* <div className="past-events">
                         <h3>Past Events</h3>

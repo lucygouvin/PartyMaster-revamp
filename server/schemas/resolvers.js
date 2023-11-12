@@ -82,7 +82,7 @@ const resolvers = {
             { _id: event._id },
             {
               $addToSet: {
-                RSVP: { userId: guest._id.toHexString(), invite: 'maybe' },
+                RSVP: { userId: guest._id.toHexString(), invite: 'Maybe' },
               },
             },
             { new: true }
