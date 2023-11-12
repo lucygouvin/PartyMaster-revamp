@@ -5,7 +5,7 @@ import { useQuery, useMutation } from '@apollo/client';
 
 // Import Queries and Mutations
 import { EVENT_DATA } from '../../utils/queries';
-import { UPDATE_EVENT, DELETE_EVENT} from '../../utils/mutations';
+import { UPDATE_EVENT, DELETE_EVENT, UPDATE_RSVP} from '../../utils/mutations';
 
 // Import Styling
 import '../../styles/EventOverview.css';
@@ -16,8 +16,7 @@ import getUserRole from '../../utils/userRole';
 import Comment from '../Communication/Comments'
 import CommentForm from '../Communication/CommentForm';
 import Contribution from '../Contributions/ContributionCoordination';
-import RSVP from '../Communication/RSVP';
-import EventDetails from './EventDetails';
+import EasyEdit from 'react-easy-edit';
 
 const EventOverview = () => {
   // Get the logged in user
@@ -38,6 +37,7 @@ const EventOverview = () => {
   let [contributions, setContributions] = useState([])
   let [hostID, setHostID] = useState('')
   let [userResponse, setUserResponse] = useState({hostBool:false, rsvp:""})
+  let [guestRSVP, setGuestRSVP] = useState(userResponse.rsvp)
   const [isEditable, setIsEditable] = useState(false)
 
   const toggleEditable = () => {
@@ -46,6 +46,8 @@ const EventOverview = () => {
   // Set up mutations
   const [updateEvent, {eventError}] = useMutation(UPDATE_EVENT)
   const [deleteEvent, {deleteError}] = useMutation(DELETE_EVENT)
+  const [updateRSVP, {rsvpError}] = useMutation(UPDATE_RSVP)
+
 
   const saveEventDetails = () => {
     try {
@@ -77,7 +79,26 @@ const EventOverview = () => {
       console.error('Unable to delete event', eventError)
     }
   }
-  
+
+  const saveRSVP=(value) =>{
+    toggleEditable()
+    try {
+        const {data} = updateRSVP({
+        variables: {
+            id: eventId,
+            rsvp: {
+            userId: user.data._id,
+            invite: value
+            }
+        }
+        })
+        }catch(rsvpError){
+            console.error('Unable to update RSVP', rsvpError)
+    
+        } 
+        setGuestRSVP(value)
+    }
+
   // Query the event data
   const {loading, data} = useQuery(EVENT_DATA, {
     variables:{id: eventId}
@@ -103,7 +124,6 @@ const EventOverview = () => {
 // Wait for the event data to come back, and then derive additional information
   useEffect(()=>{
     if (hostID && rsvp){
-      console.log(hostID)
       setUserResponse(getUserRole(hostID, rsvp, user.data._id))
     }
   },[hostID, rsvp]) 
@@ -119,16 +139,85 @@ const EventOverview = () => {
       ):(<></>)}
 
       <section className="post-full mt-5 p-3 rounded bg-white border">
-        <EventDetails title={title} date={date} time={time} location={location} description={description} isEditable={isEditable}/>
-      </section>
+<>
+        <h2 className="display-4" >
+        <EasyEdit
+      type="text"
+      value={title}
+      saveOnBlur={true}
+      allowEdit={isEditable}
+      onSave={(value)=>setTitle(value)}
+    />
+        </h2>
+        <p className="text-muted"><small>Hosted by: {"Host Name"}</small></p>
+        <div className="time-section">
+        <EasyEdit
+      type="date"
+      value={date}
+      saveOnBlur={true}
+      allowEdit={isEditable}
+      onSave={(value)=>setDate(value)}
+    />
+         <EasyEdit
+      type="time"
+      value={time}
+      saveOnBlur={true}
+      allowEdit={isEditable}
+      onSave={(value)=>setTime(value)}
+    />
+        </div>
+        <EasyEdit
+      type="text"
+      saveOnBlur={true}
+      value={location}
+      allowEdit={isEditable}
+      onSave={(value)=>setLocation(value)}
+    />
+        <EasyEdit
+      type="textarea"
+      value={description}
+      saveOnBlur={true}
+      allowEdit={isEditable}
+      onSave={(value)=>setDescription(value)}
+    />
+</>      
+</section>
 
       <section className='rsvp-container'>
-      <RSVP userResponse={userResponse} rsvpYes={rsvpYes} rsvpNo={rsvpNo} rsvpMaybe={rsvpMaybe} eventId={eventId} user={user} />
-      </section>
+      {userResponse.hostBool?(
+        <>
+            <p>You're not a guest</p>
+            <h3>RSVPs</h3>
+            <p>Yes: {rsvpYes.length}</p>
+            <p>No: {rsvpNo.length}</p>
+            <p>Maybe: {rsvpMaybe.length}</p>
+        </>
+
+        ):(
+        <>
+            <p>You're a guest</p>
+            <h3>Your RSVP:{guestRSVP||userResponse.rsvp}</h3>
+            <button onClick={toggleEditable} hidden={isEditable}>Change RSVP</button>
+            <EasyEdit
+                type="select"
+                options={[
+                    {label: "Yes", value: 'Yes'},
+                    {label: 'No', value: 'No'},
+                    {label: 'Maybe', value: 'Maybe'}]}
+                allowEdit={isEditable}
+                placeholder={userResponse.rsvp}
+                onSave={saveRSVP}
+            />
+            <p>{rsvpYes.length} Going</p>
+            <p>{rsvpNo.length} Not going</p>
+            <p>{rsvpMaybe.length} Maybe going</p>
+        </>
+
+        )}      </section>
 
       <section className='contributions-container'>
         {contributions && (
-           <Contribution contributions={contributions} eventId={eventId}/>
+           <Contribution contributions={contributions} eventId={eventId} user={user}/>
         )}
       </section>
 

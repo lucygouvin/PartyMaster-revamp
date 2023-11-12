@@ -72,9 +72,9 @@ query GetEventData($id: ID!) {
     }
     potluck
     potluckContributions {
-      _id
-      userId
+      name
       item
+      _id
     }
   }
 }`;

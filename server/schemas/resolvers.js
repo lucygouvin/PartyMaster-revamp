@@ -120,8 +120,8 @@ const resolvers = {
       throw AuthenticationError;
     },
 
-    deleteEvent: async (parent, eventInput, context) => {
-      Event.findOneAndDelete({ _id: eventInput })
+    deleteEvent: async (parent, eventInput) => {
+      Event.findOneAndDelete({ _id: eventInput });
     },
 
     addComment: async (parent, args, context) => {
@@ -157,13 +157,13 @@ const resolvers = {
       throw new Error('Not your comment');
     },
 
-    addGuest: async (parent, args, context) => {
+    addGuest: async (parent, args) => {
       const guest = await User.findOne({ email: args.email });
       return Event.findOneAndUpdate(
         { _id: args.eventId },
         {
           $addToSet: {
-            RSVP: { userId: guest._id.toHexString(), invite: 'maybe' },
+            RSVP: { userId: guest._id.toHexString(), invite: 'Maybe' },
           },
         },
         { new: true }
@@ -171,7 +171,7 @@ const resolvers = {
     },
     // TODO Add logic for making sure the currenly logged in user owns the event
 
-    removeGuest: async (parent, args, context) =>
+    removeGuest: async (parent, args) =>
       // TODO Add logic for making sure the currenly logged in user owns the event
       Event.findOneAndUpdate(
         { _id: args.eventId },
@@ -182,15 +182,13 @@ const resolvers = {
     updateRSVP: async (parent, args, context) => {
       if (context.user) {
         const event = await Event.findOneAndUpdate(
-          { _id: args._id, "RSVP.userId":args.RSVP.userId},
-        {$set: {"RSVP.$.invite": args.RSVP.invite}}
+          { _id: args._id, 'RSVP.userId': args.RSVP.userId },
+          { $set: { 'RSVP.$.invite': args.RSVP.invite } }
         );
         return event;
-        }
+      }
 
-        throw new Error('Not logged in');
-      
-      
+      throw new Error('Not logged in');
     },
 
     addContribution: async (parent, args, context) => {
@@ -209,10 +207,17 @@ const resolvers = {
       }
       throw new Error('Not logged in');
     },
-    // Not sure if this needs to be its own function or if it should be part of updateEvent?
+    claimContribution: async (parent, args, context) => {
+      if (true||context.user) {
+        return Event.findOneAndUpdate(
+          { _id: args.eventId, "potluckContributions._id":args.contribution._id },
+          {$set: {"potluckContributions.$.name": context.user.name}},
+          { new: true }
+        );
+      }
+      throw new Error('Not logged in');
+    },
     deleteContribution: async (parent, args, context) => {
-      // TODO Add logic to see if the signed in user is the host
-      // TODO Add an id to contributions, make them their own schema
       if (true || context.user) {
         return Event.findOneAndUpdate(
           { _id: args.eventId },

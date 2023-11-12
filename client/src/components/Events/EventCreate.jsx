@@ -56,7 +56,7 @@ const EventCreate = () => {
                     </div>
                     <div className="mb-3">
                         <label htmlFor="description" className="form-label">Guests:</label>
-                        <textarea className="form-control" id="description" name="description" rows="5" value={guestList} required onChange={(event) => setGuestList(event.target.value)}></textarea>
+                        <textarea className="form-control" id="description" name="description" rows="5" placeholder="Enter email addresses, separated by commas" value={guestList} required onChange={(event) => setGuestList(event.target.value)}></textarea>
                     </div>
                     <button type="submit" className="btn btn-primary">Create Event</button>
                 </form>

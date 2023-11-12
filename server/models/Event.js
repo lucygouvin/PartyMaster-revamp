@@ -74,13 +74,13 @@ const eventSchema = new Schema(
   }
 );
 eventSchema.virtual('rsvpMaybe').get(function () {
-  return this.RSVP.filter((rsvp) => rsvp.invite === 'maybe');
+  return this.RSVP.filter((rsvp) => rsvp.invite === 'Maybe');
 });
 eventSchema.virtual('rsvpYes').get(function () {
-  return this.RSVP.filter((rsvp) => rsvp.invite === 'yes');
+  return this.RSVP.filter((rsvp) => rsvp.invite === 'Yes');
 });
 eventSchema.virtual('rsvpNo').get(function () {
-  return this.RSVP.filter((rsvp) => rsvp.invite === 'no');
+  return this.RSVP.filter((rsvp) => rsvp.invite === 'No');
 });
 
 const Event = model('Event', eventSchema);

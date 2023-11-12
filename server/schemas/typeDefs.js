@@ -44,11 +44,12 @@ const typeDefs = `
 
  type Contribution {
    _id: ID
-   userId: ID
+   name: String
    item: String
 }
 
 input ContributionInput {
+   _id: ID
    item: String
 }
 #TODO Should make userId required
@@ -87,6 +88,7 @@ type Query {
    updateRSVP (_id: ID!, RSVP:RSVPInput): Event
    addContribution (eventId:ID!, contribution: ContributionInput!): Event
    deleteContribution (eventId:ID!, contribution:ContributionInput!): Event
+   claimContribution (eventId:ID!, contribution:ContributionInput!): Event
 
  }
 `;

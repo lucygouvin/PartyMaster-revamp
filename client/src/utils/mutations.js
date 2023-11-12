@@ -155,3 +155,16 @@ mutation DeleteContribution($eventId: ID!, $contribution: ContributionInput!) {
   }
 }
 `;
+
+export const CLAIM_CONTRIBUTION = gql `
+mutation ClaimContribution($eventId: ID!, $contribution: ContributionInput!) {
+  claimContribution(eventId: $eventId, contribution: $contribution) {
+    title
+    _id
+    potluckContributions {
+      name
+      item
+    }
+  }
+}
+`;
