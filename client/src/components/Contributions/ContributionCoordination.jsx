@@ -24,7 +24,6 @@ export default function Contribution({ contributions, eventId, user}) {
       }
     
     const claimItem = (e) => {
-        console.log(e.target)
         try {
             const {data} = claimContribution({
               variables:{

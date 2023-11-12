@@ -5,7 +5,7 @@ import { useQuery, useMutation } from '@apollo/client';
 
 // Import Queries and Mutations
 import { EVENT_DATA } from '../../utils/queries';
-import { UPDATE_EVENT, DELETE_EVENT, UPDATE_RSVP, ADD_GUEST} from '../../utils/mutations';
+import { UPDATE_EVENT, DELETE_EVENT, UPDATE_RSVP, ADD_GUEST, REMOVE_GUEST} from '../../utils/mutations';
 
 // Import Styling
 import '../../styles/EventOverview.css';
@@ -49,6 +49,7 @@ const EventOverview = () => {
   const [deleteEvent, {deleteError}] = useMutation(DELETE_EVENT)
   const [updateRSVP, {rsvpError}] = useMutation(UPDATE_RSVP)
   const [addGuest, {addError}] = useMutation(ADD_GUEST)
+  const [removeGuest, {removeError}] = useMutation(REMOVE_GUEST)
 
 
   const saveEventDetails = () => {
@@ -113,6 +114,21 @@ const inviteGuests =() => {
   })
   setInviteList('')
 }
+
+const delGuest = (e) => {
+  try {
+    const {data} = removeGuest({
+      variables:{
+        eventId:eventId,
+        guestId: e.target.getAttribute("data-guest-id")
+      }
+    })
+
+  }catch (removeError) {
+    console.error ("Unable to remove guest", removeError)
+  }
+
+}
   // Query the event data
   const {loading, data} = useQuery(EVENT_DATA, {
     variables:{id: eventId}
@@ -141,6 +157,8 @@ const inviteGuests =() => {
       setUserResponse(getUserRole(hostID, rsvp, user.data._id))
     }
   },[hostID, rsvp]) 
+
+  console.log(rsvp)
 
   return (
     <div>
@@ -215,6 +233,14 @@ const inviteGuests =() => {
             <div>
             <textarea placeholder="Add emails, separated by commas" value={inviteList} onChange={(event) => setInviteList(event.target.value)}></textarea>
             <button onClick={inviteGuests}>Invite Guests</button>
+            <p>Guest List</p>
+            {rsvp &&
+            rsvp.map((response)=> (
+              <div>
+              <p>{response.userId}</p>
+              <button data-guest-id={response.userId} onClick={delGuest}>Remove Guest</button>
+              </div>
+            ))}
           </div>
 
           ):(<></>)}
