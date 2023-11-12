@@ -1,20 +1,30 @@
-import { useState, useEffect } from 'react';
-import '../../styles/EventOverview.css';
-import {useParams} from 'react-router-dom'
+// Import Hooks
+import { useState } from 'react';
+import {useParams} from 'react-router-dom';
+import { useQuery, useMutation } from '@apollo/client';
+
+// Import Queries and Mutations
 import { EVENT_DATA } from '../../utils/queries';
 import { ADD_COMMENT, UPDATE_EVENT, DELETE_EVENT, UPDATE_RSVP, ADD_CONTRIBUTION } from '../../utils/mutations';
-import { useQuery, useMutation } from '@apollo/client';
+
+// Import Styling
+import '../../styles/EventOverview.css';
+
+// Import utils and custom elements
 import EasyEdit from 'react-easy-edit';
 import Auth from '../../utils/auth';
-import getUserRsvp from '../../utils/userRSVP';
+import getUserRole from '../../utils/userRole';
 
 const EventOverview = ({ postId }) => {
+  // Get the logged in user
+  const user = Auth.getProfile()
+  // Get the event ID from the URL params
   const {eventId} = useParams();
+  // Get Event Data, and store in variables
   const {loading, data} = useQuery(EVENT_DATA, {
     variables:{id: eventId}
   })
   const events = data?.getEventData|| {};
-  console.log(events)
   const comments = events.comment
   const rsvp = events.RSVP ||[]
   const rsvpMaybe = events.rsvpMaybe ||[]
@@ -22,13 +32,18 @@ const EventOverview = ({ postId }) => {
   const rsvpNo=events.rsvpNo || []
   const contributions = events.potluckContributions
 
+  // Establish states and mutations
   const [commentText, setCommentText] = useState('')
+
+
   const [addComment, {error}] = useMutation(ADD_COMMENT)
   const [addContribution, {contribError}] = useMutation(ADD_CONTRIBUTION)
+  const [updateEvent, {eventError}] = useMutation(UPDATE_EVENT)
+  const [deleteEvent, {deleteError}] = useMutation(DELETE_EVENT)
+  const [updateRSVP, {rsvpError}] = useMutation(UPDATE_RSVP)
   
   const handleCommentSubmit = async (event) => {
     event.preventDefault();
-    
     try {
       const {data} = addComment({
         variables: {
@@ -44,8 +59,7 @@ const EventOverview = ({ postId }) => {
     }
   };
 
-  let [description, setDescription] = useState()
-  description = events.description
+  let [description, setDescription] = useState("test description")
 
   let [location, setLocation] = useState()
   location = events.location
@@ -56,80 +70,96 @@ const EventOverview = ({ postId }) => {
   let [time, setTime] = useState()
  time = events.time
 
- let [title, setTitle] = useState()
- title = events.title
+ let [title, setTitle] = useState("test title")
+//  title = events.title
 
-  const [updateEvent, {eventError}] = useMutation(UPDATE_EVENT)
-  const [deleteEvent, {deleteError}] = useMutation(DELETE_EVENT)
-  const [updateRSVP, {rsvpError}] = useMutation(UPDATE_RSVP)
-  const saveDescription = (value) => {
-    try {
-      const {data} = updateEvent({
-        variables: {
-          description: value,
-          id: eventId
-        }
+const saveEventDetails = () => {
+  try {
+    const {data} = updateEvent({
+      variables: {
+        id: eventId,
+        description,
+        title,
+        location,
+        date,
+        time,
         
-      })
-    }catch (eventError) {
-      console.error('Unable to update event', eventError)
-    }
-  }
-  const saveLocation = (value) => {
-    try {
-      const {data} = updateEvent({
-        variables: {
-          location: value,
-          id: eventId
-        }
-        
-      })
-    }catch (eventError) {
-      console.error('Unable to update event', eventError)
-    }
+      }
+      
+    })
+  }catch (eventError) {
+    console.error('Unable to update event', eventError)
   }
 
-  const saveTime = (value) => {
-    try {
-      const {data} = updateEvent({
-        variables: {
-          time: value,
-          id: eventId
-        }
+}
+  // const saveDescription = (value) => {
+  //   try {
+  //     const {data} = updateEvent({
+  //       variables: {
+  //         description: value,
+  //         id: eventId
+  //       }
         
-      })
-    }catch (eventError) {
-      console.error('Unable to update event', eventError)
-    }
-  }
+  //     })
+  //   }catch (eventError) {
+  //     console.error('Unable to update event', eventError)
+  //   }
+  // }
+  // const saveLocation = (value) => {
+  //   try {
+  //     const {data} = updateEvent({
+  //       variables: {
+  //         location: value,
+  //         id: eventId
+  //       }
+        
+  //     })
+  //   }catch (eventError) {
+  //     console.error('Unable to update event', eventError)
+  //   }
+  // }
 
-  const saveDate = (value) => {
-    try {
-      const {data} = updateEvent({
-        variables: {
-          date: value,
-          id: eventId
-        }
+  // const saveTime = (value) => {
+  //   try {
+  //     const {data} = updateEvent({
+  //       variables: {
+  //         time: value,
+  //         id: eventId
+  //       }
         
-      })
-    }catch (eventError) {
-      console.error('Unable to update event', eventError)
-    }
-  }
+  //     })
+  //   }catch (eventError) {
+  //     console.error('Unable to update event', eventError)
+  //   }
+  // }
 
-  const saveTitle = (value) => {
-    try {
-      const {data} = updateEvent({
-        variables: {
-          title: value,
-          id: eventId
-        }
+  // const saveDate = (value) => {
+  //   try {
+  //     const {data} = updateEvent({
+  //       variables: {
+  //         date: value,
+  //         id: eventId
+  //       }
         
-      })
-    }catch (eventError) {
-      console.error('Unable to update event', eventError)
-    }
-  }
+  //     })
+  //   }catch (eventError) {
+  //     console.error('Unable to update event', eventError)
+  //   }
+  // }
+
+  // const saveTitle = (value) => {
+  //   try {
+  //     const {data} = updateEvent({
+  //       variables: {
+  //         title: value,
+  //         id: eventId
+  //       }
+        
+  //     })
+  //   }catch (eventError) {
+  //     console.error('Unable to update event', eventError)
+  //   }
+  // }
 
   const saveContribution = () => {
     try {
@@ -147,11 +177,11 @@ const EventOverview = ({ postId }) => {
     }
   setContrib('')
   }
-const user = Auth.getProfile()
 
-let userResponse = getUserRsvp(rsvp, user.data._id)
+
+let userResponse = getUserRole(events.hostID, rsvp, user.data._id) ||{}
 const [isEditable, setIsEditable] = useState(false)
-let [guestRSVP, setGuestRSVP] = useState(userResponse)
+let [guestRSVP, setGuestRSVP] = useState(userResponse.rsvp)
 const [contrib, setContrib] = useState('')
 
 const save=(value) =>{
@@ -190,11 +220,12 @@ const delEvent = () => {
 }
   return (
     <div>
-      {user.data._id === events.hostID? (
+      {userResponse.hostBool? (
         <>
       
-       <button onClick={toggleEditable}>Edit</button>
+       <button onClick={toggleEditable} >Edit</button>
        <button onClick={delEvent}>Delete</button>
+       <button onClick={saveEventDetails}>Save</button>
         </>
 
       ):(<></>)}
@@ -210,8 +241,11 @@ const delEvent = () => {
       saveButtonLabel="Save"
       cancelButtonLabel="Cancel"
       value={title}
+      saveOnBlur={true}
       allowEdit={isEditable}
-      onSave={saveTitle}
+      onSave={(value)=>{console.log(value);
+        setTitle(value);
+      console.log(title)}}
     />
         </h2>
         <p className="text-muted"><small>Hosted by: {"Host Name"}</small></p>
@@ -221,33 +255,37 @@ const delEvent = () => {
       saveButtonLabel="Save"
       cancelButtonLabel="Cancel"
       value={date}
+      saveOnBlur={true}
       allowEdit={isEditable}
-      onSave={saveDate}
+      onSave={(value)=>value}
     />
          <EasyEdit
       type="time"
       saveButtonLabel="Save"
       cancelButtonLabel="Cancel"
       value={time}
+      saveOnBlur={true}
       allowEdit={isEditable}
-      onSave={saveTime}
+      onSave={(value)=>value}
     />
         </div>
         <EasyEdit
       type="text"
       saveButtonLabel="Save"
       cancelButtonLabel="Cancel"
+      saveOnBlur={true}
       value={location}
       allowEdit={isEditable}
-      onSave={saveLocation}
+      onSave={(value)=>value}
     />
         <EasyEdit
       type="textarea"
       saveButtonLabel="Save"
       cancelButtonLabel="Cancel"
       value={description}
+      saveOnBlur={true}
       allowEdit={isEditable}
-      onSave={saveDescription}
+      onSave={(value)=>value}
     />
         </section>
       <section className='rsvp-container'>
@@ -255,16 +293,16 @@ const delEvent = () => {
         <>
         <p>You're a guest</p>
        
-        <h3>Your RSVP:{guestRSVP||userResponse}</h3>
-        <button onClick={toggleEditable} hidden={!isEditable}>Change RSVP</button>
+        <h3>Your RSVP:{guestRSVP||userResponse.rsvp}</h3>
+        <button onClick={toggleEditable} hidden={isEditable}>Change RSVP</button>
         <EasyEdit
   type="select"
   options={[
-      {label: "Yes", value: 'yes'},
-      {label: 'No', value: 'no'},
-      {label: 'Maybe', value: 'maybe'}]}
+      {label: "Yes", value: 'Yes'},
+      {label: 'No', value: 'No'},
+      {label: 'Maybe', value: 'Maybe'}]}
   allowEdit={isEditable}
-  placeholder={userResponse}
+  placeholder={userResponse.rsvp}
   onSave={save}
 />
         <p>{rsvpYes.length} Going</p>
@@ -290,15 +328,7 @@ const delEvent = () => {
           </div>
           ))}
           <input type='text' value = {contrib} onChange={(event)=> setContrib(event.target.value)}></input> <button onClick={saveContribution}>Add</button>
-          {/* <EasyEdit
-      type="text"
-      saveButtonLabel="Save"
-      cancelButtonLabel="Cancel"
-      onSave={saveContribution}
-      value={''}
-      placeholder={"Add contribution"}
-    /> */}
-
+         
       </section>
 
       <section className="mt-5">

@@ -103,12 +103,14 @@ const resolvers = {
       throw AuthenticationError;
     },
 
-    updateEvent: async (parent, eventInput, context) => {
+    updateEvent: async (parent, args, context) => {
+      console.log("Reached update")
+      console.log(args)
       if (context.user || true) {
         const event = await Event.findOneAndUpdate(
-          { _id: eventInput._id },
+          { _id: "654fb21b39c8ce7002af058f" },
           {
-            $set: eventInput,
+            $set: args,
           },
           {
             runValidators: true,
