@@ -115,8 +115,12 @@ mutation UpdateRSVP($id: ID!, $rsvp: RSVPInput) {
 export const ADD_GUEST = gql `
 mutation AddGuest($eventId: ID!, $email: String!) {
   addGuest(eventId: $eventId, email: $email) {
-    userId
-    invite
+    title
+    _id
+    RSVP {
+      userId
+      invite
+    }
   }
 }
 `;
