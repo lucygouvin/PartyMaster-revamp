@@ -1,35 +1,50 @@
-// import React, { useState } from "react";
+import React, { useState } from "react";
 import "../../styles/Invitation.css";
-// import { useQuery } from '@apollo/client';
-// import { CREATE_EVENT } from '../../utils/mutations';
+import { EVENT_DATA } from "../../utils/queries";
+import { useQuery } from '@apollo/client';
+
+
 
 export function Invitation(props) {
+
+  const { data, loading, error } = useQuery(EVENT_DATA)
+  const eventData = data?.users || []
+  console.log(eventData);
+
+  // const [response, setResponse] = useState('');
+
+  const handleFormSubmit = async(event)=>{
+    event.preventDefault();
+    try {
+      const data = await response({
+        variables: { RSVP }
+      })
+
+      window.location.href="/dashboard";
+    }catch (error) {
+      console.log(error);
+  }
+  };
+
+
+  if (loading) return <h2>Loading....</h2>
 
   return (
     <section>
       <div className="invitation-container">
-      <h2>Create Event</h2>
-        <form className="invitation-form">
+      <h2>You're invited! </h2>
+        <form className="invitation-form" onSubmit = {handleFormSubmit}>
           <div className="form-group">
             <label className="form-label">Event title</label>
-            <input
-              type="text"
-              id="invitation-title"
-              className="form-control"
-              required
-              placeholder="New Event"
-            />
+            <div className="invitation-content">
+              stuff here
+            </div>
+            {eventData.title}
           </div>
 
           <div className="form-group-time">
             <label className="form-label"> Date</label>
-            <input
-              type="text"
-              id="invitation-date"
-              className="form-control-time"
-              required
-              placeholder=""
-            />
+            {eventData.date}
           </div>
 
           <div className="form-group-time">
@@ -37,49 +52,24 @@ export function Invitation(props) {
               {/* {" "} */}
               Time, date and time to be side by side
             </label>
-            <input
-              type="text"
-              id="inviation-time"
-              className="form-control-time"
-              required
-              placeholder=""
-            />
+            {eventData.time}
           </div>
 
           <div className="form-group">
-            <label className="form-label">Address/Location</label>
-            <input
-              type="text"
-              id="invitation-date"
-              className="form-control"
-              required
-            />
+            <label className="form-label">Location</label>
+            {eventData.location}
           </div>
 
           <div className="form-group">
             <label className="form-label"> Description</label>
-            <input
-              type="text"
-              id="invitation-description"
-              className="form-control"
-              required
-            />
+            {eventData.description}
           </div>
-
-          <div className="form-group">
-            <label className="form-label">
-              {" "}
-              Guests, this we need implement how to send invites
-            </label>
-            <input
-              type="text"
-              id="invitation-guest"
-              className="form-control"
-              required
-            />
-          </div>
-
-          <button className="create-btn"> Create</button>
+          
+         <div>
+         <button className="btn" id="accept"> Accept</button>           
+         <button className="btn" id="decline"> Decline</button>
+         <button className="btn" id="maybe"> Maybe</button>
+           </div>
         </form>
       </div>
     </section>
