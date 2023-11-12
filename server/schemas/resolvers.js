@@ -104,8 +104,6 @@ const resolvers = {
     },
 
     updateEvent: async (parent, args, context) => {
-      console.log("Reached update")
-      console.log(args)
       if (context.user || true) {
         const event = await Event.findOneAndUpdate(
           { _id: args._id },
