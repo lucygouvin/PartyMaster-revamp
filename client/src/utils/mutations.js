@@ -130,6 +130,10 @@ mutation RemoveGuest($eventId: ID!, $guestId: ID!) {
   removeGuest(eventId: $eventId, guestId: $guestId) {
     title
     _id
+    RSVP {
+      invite
+      userId
+    }
   }
 }
 `;

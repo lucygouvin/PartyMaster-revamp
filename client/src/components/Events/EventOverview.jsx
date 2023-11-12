@@ -127,7 +127,7 @@ const delGuest = (e) => {
   }catch (removeError) {
     console.error ("Unable to remove guest", removeError)
   }
-
+rsvp.pop()
 }
   // Query the event data
   const {loading, data} = useQuery(EVENT_DATA, {
