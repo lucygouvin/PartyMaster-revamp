@@ -108,6 +108,18 @@ mutation UpdateRSVP($id: ID!, $rsvp: RSVPInput) {
       userId
       invite
     }
+    rsvpYes {
+      userId
+      invite
+    }
+    rsvpNo {
+      userId
+      invite
+    }
+    rsvpMaybe {
+      userId
+      invite
+    }
   }
 }
 `;

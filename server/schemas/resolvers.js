@@ -187,7 +187,8 @@ const resolvers = {
       if (context.user) {
         const event = await Event.findOneAndUpdate(
           { _id: args._id, 'RSVP.userId': args.RSVP.userId },
-          { $set: { 'RSVP.$.invite': args.RSVP.invite } }
+          { $set: { 'RSVP.$.invite': args.RSVP.invite } },
+          {new: true}
         );
         return event;
       }

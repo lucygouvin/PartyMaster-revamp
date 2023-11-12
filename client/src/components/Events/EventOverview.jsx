@@ -84,6 +84,7 @@ const EventOverview = () => {
   }
 
   const saveRSVP=(value) =>{
+    console.log("NO BEFORE", rsvpNo)
     toggleEditable()
     try {
         const {data} = updateRSVP({
@@ -100,6 +101,8 @@ const EventOverview = () => {
     
         } 
         setGuestRSVP(value)
+        console.log("NO AFTER", rsvpNo)
+
     }
 const inviteGuests =() => {
   const guestArray = inviteList.split(',')
@@ -136,6 +139,7 @@ rsvp.pop()
 // wait for the event data to be returned, then set all the values
   useEffect(()=>{
     if (loading===false && data){
+      console.log("UPDATING")
       const events = data?.getEventData|| {};
       setTitle(events.title);
       setDate(events.date);
@@ -157,6 +161,7 @@ rsvp.pop()
       setUserResponse(getUserRole(hostID, rsvp, user.data._id))
     }
   },[hostID, rsvp]) 
+
 
   console.log(rsvp)
 
