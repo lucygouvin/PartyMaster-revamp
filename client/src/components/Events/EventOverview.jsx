@@ -46,6 +46,7 @@ const EventOverview = () => {
   let [guestRSVP, setGuestRSVP] = useState(userResponse.rsvp);
   let [inviteList, setInviteList] = useState("");
   const [isEditable, setIsEditable] = useState(false);
+  const [contribBool, setContribBool] = useState()
 
   const toggleEditable = () => {
     setIsEditable(!isEditable);
@@ -87,8 +88,7 @@ const EventOverview = () => {
   };
 
   const saveRSVP = (value) => {
-    console.log("NO BEFORE", rsvpNo);
-    toggleEditable();
+ toggleEditable();
     try {
       const { data } = updateRSVP({
         variables: {
@@ -103,7 +103,7 @@ const EventOverview = () => {
       console.error("Unable to update RSVP", rsvpError);
     }
     setGuestRSVP(value);
-    console.log("NO AFTER", rsvpNo);
+
   };
   const inviteGuests = () => {
     const guestArray = inviteList.split(",");
@@ -139,7 +139,6 @@ const EventOverview = () => {
   // wait for the event data to be returned, then set all the values
   useEffect(() => {
     if (loading === false && data) {
-      console.log("UPDATING");
       const events = data?.getEventData || {};
       setTitle(events.title);
       setDate(events.date);
@@ -152,6 +151,7 @@ const EventOverview = () => {
       setRsvpYes(events.rsvpYes);
       setRsvpNo(events.rsvpNo);
       setContributions(events.potluckContributions);
+      setContribBool(events.potluck);
       setHostID(events.hostID);
     }
   }, [loading, data]);
@@ -161,8 +161,6 @@ const EventOverview = () => {
       setUserResponse(getUserRole(hostID, rsvp, user.data._id));
     }
   }, [hostID, rsvp]);
-
-  console.log(rsvp);
 
   return (
     <div>
@@ -247,7 +245,7 @@ const EventOverview = () => {
                 {rsvp &&
                   rsvp.map((response) => (
                     <div className="guest-list-group">
-                      <p>{response.userId}</p>
+                      <p>{response.userId} key={response.userId}</p>
                       <button
                         data-guest-id={response.userId}
                         onClick={delGuest}
@@ -291,7 +289,7 @@ const EventOverview = () => {
       </section>
 
       <section className="comments-container">
-        {comments &&
+        {comments && 
           comments.map((comment) => (
             <Comment comment={comment} key={comment.commentId} />
           ))}
@@ -307,6 +305,9 @@ const EventOverview = () => {
             contributions={contributions}
             eventId={eventId}
             user={user}
+            isEditable={isEditable}
+            hostBool={userResponse.hostBool}
+            contribBool = {contribBool}
           />
         )}
       </aside>

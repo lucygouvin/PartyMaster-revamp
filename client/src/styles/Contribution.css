@@ -18,3 +18,7 @@
 .contrib-input{
     flex-grow: 1;
 }
+
+.title-bool-group{
+    display: flex;
+}

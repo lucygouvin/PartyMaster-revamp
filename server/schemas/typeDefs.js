@@ -10,7 +10,7 @@ const typeDefs = `
     location: String!
     comment: [Comment]
     RSVP: [Invite]
-    potluck: Boolean!
+    potluck: Boolean
     potluckContributions: [Contribution]
     rsvpMaybe:[Invite]
     rsvpYes:[Invite]

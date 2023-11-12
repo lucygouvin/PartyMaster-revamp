@@ -60,19 +60,43 @@ mutation DeleteEvent($id: ID!) {
 `;
 
 export const UPDATE_EVENT = gql `
-mutation UpdateEvent($title: String, $description: String, $date: String, $time: String, $location: String, $potluck: Boolean, $id: ID!) {
-  updateEvent(title: $title, description: $description, date: $date, time: $time, location: $location, potluck: $potluck, _id: $id) {
+mutation UpdateEvent($id: ID!, $title: String, $date: String, $description: String, $time: String, $location: String, $potluck: Boolean) {
+  updateEvent(_id: $id, title: $title, date: $date, description: $description, time: $time, location: $location, potluck: $potluck) {
+    _id
+    hostID
     title
     description
-    time
     date
+    time
     location
+    comment {
+      commentId
+      userID
+      content
+    }
+    RSVP {
+      userId
+      invite
+    }
     potluck
     potluckContributions {
       _id
+      name
       item
-      userId
     }
+    rsvpMaybe {
+      userId
+      invite
+    }
+    rsvpYes {
+      userId
+      invite
+    }
+    rsvpNo {
+      userId
+      invite
+    }
+    
   }
 }
 `;
