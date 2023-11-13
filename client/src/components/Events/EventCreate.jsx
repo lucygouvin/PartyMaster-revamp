@@ -33,9 +33,9 @@ const EventCreate = () => {
             await addEvent({
                 variables: { title, date, time, location, description, guestList: guestList.join(',') },
             });
+            window.location.href = "/dashboard";
 
             sendInvitationEmails(guestList, title, date, location);
-            window.location.href = "/dashboard";
         } catch (err) {
             console.error(err);
         }
