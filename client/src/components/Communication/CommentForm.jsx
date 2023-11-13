@@ -1,6 +1,7 @@
 import { useMutation } from "@apollo/client";
 import { useState} from 'react';
 import { ADD_COMMENT } from "../../utils/mutations";
+import "../../styles/CommentForm.css"
 
 export default function CommentForm ({eventId}){
     const [addComment, {error}] = useMutation(ADD_COMMENT)
@@ -28,7 +29,7 @@ export default function CommentForm ({eventId}){
         <form onSubmit={handleCommentSubmit} className="p-3 rounded bg-white border">
           <div className="form-group">
             <label htmlFor="comment_text">Add a comment:</label>
-            <textarea className="form-control" id="comment_text" name="comment_text" rows="3" resize= "none" value={commentText} required onChange={(event)=> setCommentText(event.target.value)}></textarea>
+            <textarea className="form-control" id="comment_text" name="comment_text" rows="3" value={commentText} required onChange={(event)=> setCommentText(event.target.value)}></textarea>
           </div>
           <button type="submit" className="btn btn-primary">Submit</button>
         </form>
