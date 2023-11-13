@@ -10,14 +10,17 @@ export function Invitation(props) {
   const { data, loading, error } = useQuery(EVENT_DATA)
   const eventData = data?.users || []
   console.log(eventData);
+  console.log(data)
 
-  // const [response, setResponse] = useState('');
+  const [response, setResponse] = useState('');
 
   const handleFormSubmit = async(event)=>{
     event.preventDefault();
     try {
-      const data = await response({
-        variables: { RSVP }
+      const data = await setResponse({
+        variables: { RSVP : {
+          response : response
+        } }
       })
 
       window.location.href="/dashboard";
@@ -38,8 +41,8 @@ export function Invitation(props) {
             <label className="form-label">Event title</label>
             <div className="invitation-content">
               stuff here
+              {eventData.title}
             </div>
-            {eventData.title}
           </div>
 
           <div className="form-group-time">
