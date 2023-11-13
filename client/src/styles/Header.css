@@ -50,7 +50,6 @@
 .dropdown-content {
   position: absolute;
   top: 100%;
-  /* Aligns dropdown right below the header */
   left: 0;
   background-color: #f9f9f9;
   min-width: 160px;
