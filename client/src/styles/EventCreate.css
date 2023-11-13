@@ -23,7 +23,7 @@ body {
     border-radius: 12px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     position: absolute;
-    top: 50%;
+    top: 63.5%;
     left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
