@@ -1,42 +1,40 @@
 import React, { useState } from "react";
 import "../../styles/Invitation.css";
 import { EVENT_DATA } from "../../utils/queries";
-import { useQuery } from '@apollo/client';
-
-
+import { useQuery } from "@apollo/client";
 
 export function Invitation(props) {
-
-  const { data, loading, error } = useQuery(EVENT_DATA)
-  const eventData = data?.users || []
+  const { data, loading, error } = useQuery(EVENT_DATA);
+  const eventData = data?.EVENT_DATA || [];
   console.log(eventData);
-  console.log(data)
+  console.log(data);
 
-  const [response, setResponse] = useState('');
+  const [response, setResponse] = useState("");
 
-  const handleFormSubmit = async(event)=>{
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
     try {
       const data = await setResponse({
-        variables: { RSVP : {
-          response : response
-        } }
-      })
+        variables: {
+          RSVP: {
+            response: response,
+          },
+        },
+      });
 
-      window.location.href="/dashboard";
-    }catch (error) {
+      window.location.href = "/dashboard";
+    } catch (error) {
       console.log(error);
-  }
+    }
   };
 
-
-  if (loading) return <h2>Loading....</h2>
+  if (loading) return <h2>Loading....</h2>;
 
   return (
     <section>
       <div className="invitation-container">
-      <h2>You're invited! </h2>
-        <form className="invitation-form" onSubmit = {handleFormSubmit}>
+        <h2>You're invited! </h2>
+        <form className="invitation-form" onSubmit={handleFormSubmit}>
           <div className="form-group">
             <label className="form-label">Event title</label>
             <div className="invitation-content">
@@ -67,12 +65,21 @@ export function Invitation(props) {
             <label className="form-label"> Description</label>
             {eventData.description}
           </div>
-          
-         <div>
-         <button className="btn" id="accept"> Accept</button>           
-         <button className="btn" id="decline"> Decline</button>
-         <button className="btn" id="maybe"> Maybe</button>
-           </div>
+
+          <div>
+            <button className="btn" id="accept">
+              {" "}
+              Accept
+            </button>
+            <button className="btn" id="decline">
+              {" "}
+              Decline
+            </button>
+            <button className="btn" id="maybe">
+              {" "}
+              Maybe
+            </button>
+          </div>
         </form>
       </div>
     </section>
