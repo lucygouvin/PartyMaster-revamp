@@ -60,19 +60,43 @@ mutation DeleteEvent($id: ID!) {
 `;
 
 export const UPDATE_EVENT = gql `
-mutation UpdateEvent($title: String, $description: String, $date: String, $time: String, $location: String, $potluck: Boolean, $id: ID!) {
-  updateEvent(title: $title, description: $description, date: $date, time: $time, location: $location, potluck: $potluck, _id: $id) {
+mutation UpdateEvent($id: ID!, $title: String, $date: String, $description: String, $time: String, $location: String, $potluck: Boolean) {
+  updateEvent(_id: $id, title: $title, date: $date, description: $description, time: $time, location: $location, potluck: $potluck) {
+    _id
+    hostID
     title
     description
-    time
     date
+    time
     location
+    comment {
+      commentId
+      userId
+      content
+    }
+    RSVP {
+      userId
+      invite
+    }
     potluck
     potluckContributions {
       _id
+      name
       item
-      userId
     }
+    rsvpMaybe {
+      userId
+      invite
+    }
+    rsvpYes {
+      userId
+      invite
+    }
+    rsvpNo {
+      userId
+      invite
+    }
+    
   }
 }
 `;
@@ -83,7 +107,7 @@ mutation AddComment($id: ID!, $comment: CommentInput!) {
     title
     comment {
       commentId
-      userID
+      userId
       content
     }
   }
@@ -93,8 +117,11 @@ mutation AddComment($id: ID!, $comment: CommentInput!) {
 export const DELETE_COMMENT = gql `
 mutation DeleteComment($id: ID!, $commentId: ID!) {
   deleteComment(_id: $id, commentId: $commentId) {
-    _id
-   
+    comment {
+      commentId
+      userId
+      content
+    }
   }
 }
 `;
@@ -184,6 +211,18 @@ mutation ClaimContribution($eventId: ID!, $contribution: ContributionInput!) {
     potluckContributions {
       name
       item
+    }
+  }
+}
+`;
+
+export const UPDATE_COMMENT = gql `
+mutation UpdateComment($id: ID!, $comment: CommentInput!) {
+  updateComment(_id: $id, comment: $comment) {
+    comment {
+      commentId
+      userId
+      content
     }
   }
 }
