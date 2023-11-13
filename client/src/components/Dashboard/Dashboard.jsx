@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import '../../styles/Dashboard.css';
 import Auth from "../../utils/auth"
-import { EVENT_DATA, GET_USER_EVENTS } from '../../utils/queries';
+import { GET_USER_EVENTS } from '../../utils/queries';
 import { useQuery } from '@apollo/client';
-import { USERS } from '../../utils/queries'
-import getUserRole from '../../utils/userRole';
 import DashboardListItem from './DashboardListItem';
 
 
