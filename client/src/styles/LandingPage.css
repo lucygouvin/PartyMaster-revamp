@@ -18,10 +18,15 @@ body {
 .features-overview {
   display: flex;
   justify-content: space-around;
-  align-items: flex-start;
+  align-items: center;
   flex-wrap: wrap;
   gap: 1rem;
   flex-direction: column;
+}
+
+.img {
+  max-width: 100%;
+  max-height: 100% ;
 }
 
 .feature {
@@ -44,8 +49,8 @@ body {
 }
 
 .landing-page {
-  display: flex;
-  flex-direction: column;
+   display: flex; 
+   flex-direction: column; 
   min-height: 100vh;
 }
 
@@ -56,19 +61,20 @@ body {
 }
 
 .landing-page .features-overview {
-  display: flex;
-  justify-content: space-around;
+   display: flex; 
+  justify-content: space-around; 
   padding: 0px 50px 0px 50px;
 }
 
 .landing-page .features-overview .feature {
   background-color: #fff;
-  border-radius: 8px;
-  padding: 20px;
-  width: 98%;
+  border-radius: 10px;
+  padding: 35px;
+  width: 70%;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   text-align: center;
   transition: all 0.3s;
+  justify-content:center ;
 }
 
 .landing-page .features-overview .feature:hover {
@@ -98,4 +104,30 @@ body {
 
 .landing-page .cta-section .cta-button:hover {
   background-color: #27ae60;
+}
+
+.start-button {
+  width: 25%;
+  padding: 25px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 22px;
+  box-sizing: border-box;
+  text-decoration: none;
+  text-align: center;
+  display: inline-block;
+  background-color: #2ecc71;
+  color: #fff;
+}
+
+.start-button:hover {
+  background-color: #2fbd6a;
+}
+
+.landing-icon {
+  
+    max-width: 100%;
+    max-height: 100%; 
+
 }

@@ -1,0 +1,38 @@
+.form-control {
+    resize: none;
+}
+
+.comment-item {
+    font-size: larger;
+    background: white;
+}
+
+.delete-btn {
+    width: 10%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 17px;
+    box-sizing: border-box;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+    background-color: #cc462e;
+    color: #fff;
+}
+
+.edit-btn {
+    width: 10%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 17px;
+    box-sizing: border-box;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+    background-color: #2437e2;
+    color: #fff;
+}

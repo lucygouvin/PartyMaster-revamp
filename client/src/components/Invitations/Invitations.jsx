@@ -2,22 +2,29 @@ import React, { useState } from "react";
 import "../../styles/Invitation.css";
 import { EVENT_DATA } from "../../utils/queries";
 import { useQuery } from "@apollo/client";
+import { useParams } from "react-router-dom";
 
 export function Invitation(props) {
-  const { data, loading, error } = useQuery(EVENT_DATA);
-  const eventData = data?.EVENT_DATA || [];
-  console.log(eventData);
-  console.log(data);
+  const { eventId } = useParams();
+
+  const { data, loading, error } = useQuery(EVENT_DATA, {
+    variables: {
+      id:eventId,
+    },
+  });
 
   const [response, setResponse] = useState("");
-
+  const eventData = data?.EVENT_DATA || [];
+  console.log(eventId);
+  console.log(data);
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     try {
       const data = await setResponse({
         variables: {
           RSVP: {
-            response: response,
+            response: ['rsvpMaybe', 'rsvpYes', 'rsvpNo'],
+            // response: 'rsvpMaybe'
           },
         },
       });

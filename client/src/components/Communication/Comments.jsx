@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { UPDATE_COMMENT, DELETE_COMMENT } from "../../utils/mutations";
 import { useParams } from "react-router-dom";
-
+import "../../styles/CommentForm.css"
 
 export default function Comment({ comment, user, hostID }) {
     const { eventId } = useParams();
@@ -64,8 +64,8 @@ window.location.reload()
       />
       {comment.userId === user.data._id && (
         <>
-        <button onClick={removeComment}>Delete</button>
-        <button onClick={toggleEditable} hidden={editing}>Edit</button>
+        <button className="delete-btn" onClick={removeComment}>Delete</button>
+        <button className="edit-btn" onClick={toggleEditable} hidden={editing}>Edit</button>
         </>
 
       )}

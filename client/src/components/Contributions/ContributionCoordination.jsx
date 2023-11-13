@@ -126,7 +126,7 @@ export default function Contribution({
               className="contrib-input"
             ></input>
 
-            <button onClick={saveContribution}>Add</button>
+            <button className="contribute-btn" onClick={saveContribution}>Add</button>
           </div>
         </>
       ) : (
