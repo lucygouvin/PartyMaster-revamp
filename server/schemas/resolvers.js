@@ -145,16 +145,12 @@ const resolvers = {
       throw AuthenticationError;
     },
 
-    deleteComment: async (parent, args, context) => {
-      // TODO check to see if the logged in user wrote the comment
-      if (true || context.user) {
+    deleteComment: async (parent, args) => {
         return Event.findOneAndUpdate(
           { _id: args._id },
           { $pull: { comment: { commentId: args.commentId } } },
           { new: true }
         );
-      }
-      throw new Error('Not your comment');
     },
 
     addGuest: async (parent, args) => {

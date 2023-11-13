@@ -155,12 +155,15 @@ const EventOverview = () => {
       setHostID(events.hostID);
     }
   }, [loading, data]);
+
   // Wait for the event data to come back, and then derive additional information
   useEffect(() => {
     if (hostID && rsvp) {
       setUserResponse(getUserRole(hostID, rsvp, user.data._id));
     }
   }, [hostID, rsvp]);
+
+  
 
 
   return (
@@ -292,7 +295,7 @@ const EventOverview = () => {
       <section className="comments-container">
         {comments && 
           comments.map((comment) => (
-            <Comment comment={comment} user={user} key={comment.commentId} />
+            <Comment comment={comment} user={user} hostID = {hostID}key={comment.commentId} />
           ))}
       </section>
 

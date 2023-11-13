@@ -117,8 +117,11 @@ mutation AddComment($id: ID!, $comment: CommentInput!) {
 export const DELETE_COMMENT = gql `
 mutation DeleteComment($id: ID!, $commentId: ID!) {
   deleteComment(_id: $id, commentId: $commentId) {
-    _id
-   
+    comment {
+      commentId
+      userId
+      content
+    }
   }
 }
 `;
