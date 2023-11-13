@@ -57,7 +57,7 @@ export function Login(props) {
               />
             </div>
             <button type="submit" className="signin-button">Sign In</button>
-            <a href="/signup" className="signup-button">Create New Account</a>
+            <a href="/signup" className="signup-button-two">Create New Account</a>
           </form>
         </div>
       </main>
