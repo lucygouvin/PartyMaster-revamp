@@ -60,9 +60,6 @@ const eventSchema = new Schema(
       // split potluck check list with users with those who
       // need to find out how to sort contributions
     ],
-    test: {
-      type: String,
-    },
   },
   {
     toJSON: {

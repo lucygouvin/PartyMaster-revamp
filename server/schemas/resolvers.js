@@ -18,7 +18,7 @@ const resolvers = {
 
     getEventData: async (parent, eventInput, context) => {
       if (context.user) {
-        return Event.findOne(eventInput).populate('comment','user');
+        return Event.findOne(eventInput).populate('comment', 'user');
       }
     },
 
@@ -145,16 +145,12 @@ const resolvers = {
       throw AuthenticationError;
     },
 
-    deleteComment: async (parent, args, context) => {
-      // TODO check to see if the logged in user wrote the comment
-      if (true || context.user) {
+    deleteComment: async (parent, args) => {
         return Event.findOneAndUpdate(
           { _id: args._id },
           { $pull: { comment: { commentId: args.commentId } } },
           { new: true }
         );
-      }
-      throw new Error('Not your comment');
     },
 
     addGuest: async (parent, args) => {
@@ -223,7 +219,7 @@ const resolvers = {
       throw new Error('Not logged in');
     },
     deleteContribution: async (parent, args, context) => {
-      if (true || context.user) {
+      if (context.user) {
         return Event.findOneAndUpdate(
           { _id: args.eventId },
           { $pull: { contribution: { item: args.contribution.item } } },
@@ -232,6 +228,14 @@ const resolvers = {
       }
       throw new Error('Not logged in');
     },
+
+    updateComment: async (parent, args) => {
+      return Event.findOneAndUpdate(
+        {_id: args._id, "comment.commentId": args.comment.commentId},
+        {$set: {"comment.$.content": args.comment.content}},
+        {new: true}
+      );
+    }
   },
 };
 
