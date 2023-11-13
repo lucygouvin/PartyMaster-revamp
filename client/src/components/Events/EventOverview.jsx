@@ -46,7 +46,8 @@ const EventOverview = () => {
   let [guestRSVP, setGuestRSVP] = useState(userResponse.rsvp);
   let [inviteList, setInviteList] = useState("");
   const [isEditable, setIsEditable] = useState(false);
-  const [contribBool, setContribBool] = useState()
+  const [contribBool, setContribBool] = useState();
+  let [rsvpType, setRsvpType] = useState("yes");
 
   const toggleEditable = () => {
     setIsEditable(!isEditable);
@@ -88,7 +89,7 @@ const EventOverview = () => {
   };
 
   const saveRSVP = (value) => {
- toggleEditable();
+    toggleEditable();
     try {
       const { data } = updateRSVP({
         variables: {
@@ -103,7 +104,6 @@ const EventOverview = () => {
       console.error("Unable to update RSVP", rsvpError);
     }
     setGuestRSVP(value);
-
   };
   const inviteGuests = () => {
     const guestArray = inviteList.split(",");
@@ -163,10 +163,8 @@ const EventOverview = () => {
     }
   }, [hostID, rsvp]);
 
-  
-
-
   return (
+    <>
     <div>
       {userResponse.hostBool ? (
         <div className="edit-buttons">
@@ -177,150 +175,238 @@ const EventOverview = () => {
       ) : (
         <></>
       )}
-      <div className="flex-container">
-        <div className="left-column"> 
-        <section className="post-full mt-5 p-3 rounded bg-white border event-container">
-        <>
-          <h2 className="display-4">
-            <EasyEdit
-              type="text"
-              value={title}
-              saveOnBlur={true}
-              allowEdit={isEditable}
-              onSave={(value) => setTitle(value)}
-            />
-          </h2>
-          <p className="text-muted">
-            <small>Hosted by: {"Host Name"}</small>
-          </p>
-          <div className="time-section">
-            <EasyEdit
-              type="date"
-              value={date}
-              saveOnBlur={true}
-              allowEdit={isEditable}
-              onSave={(value) => setDate(value)}
-            />
-            <EasyEdit
-              type="time"
-              value={time}
-              saveOnBlur={true}
-              allowEdit={isEditable}
-              onSave={(value) => setTime(value)}
-            />
-          </div>
-          <EasyEdit
-            type="text"
-            saveOnBlur={true}
-            value={location}
-            allowEdit={isEditable}
-            onSave={(value) => setLocation(value)}
-          />
-          <EasyEdit
-            type="textarea"
-            value={description}
-            saveOnBlur={true}
-            allowEdit={isEditable}
-            onSave={(value) => setDescription(value)}
-          />
-        </>
-      </section>
-      <section className="rsvp-container">
-        {userResponse.hostBool ? (
-          <>
-            <div>
-              <h3>RSVPs</h3>
-              <div className="rsvp-response-group">
-              <p>Yes: {rsvpYes.length}</p>
-              <p>No: {rsvpNo.length}</p>
-              <p>Maybe: {rsvpMaybe.length}</p>
-              </div>
-            </div>
-            {isEditable ? (
-              <div>
-                <h3>Guest List</h3>
-                <textarea
-                  placeholder="Add emails, separated by commas"
-                  value={inviteList}
-                  onChange={(event) => setInviteList(event.target.value)}
-                ></textarea>
-                <button onClick={inviteGuests}>Invite Guests</button>
-                
-                {rsvp &&
-                  rsvp.map((response) => (
-                    <div className="guest-list-group">
-                      <p>{response.userId} key={response.userId}</p>
-                      <button
-                        data-guest-id={response.userId}
-                        onClick={delGuest}
-                      >
-                        Remove Guest
-                      </button>
-                    </div>
-                  ))}
-              </div>
-            ) : (
-              <></>
-            )}
-          </>
-        ) : (
-          <>
-          <div className="edit-rsvp-group">
-            <h3>Your RSVP: </h3>
-            
-            <EasyEdit
-              type="select"
-              options={[
-                { label: "Yes", value: "Yes" },
-                { label: "No", value: "No" },
-                { label: "Maybe", value: "Maybe" },
-              ]}
-              allowEdit={isEditable}
-              placeholder={userResponse.rsvp}
-              onSave={saveRSVP}
-            />
-            <button onClick={toggleEditable} hidden={isEditable}>
-              Change RSVP
-            </button>
-            </div>
-            <div className="rsvp-response-group">
-            <p>{rsvpYes.length} Going</p>
-            <p>{rsvpNo.length} Not going</p>
-            <p>{rsvpMaybe.length} Maybe going</p>
-            </div>
-          </>
-        )}{" "}
-      </section>
-
-      <section className="comments-container">
-        {comments && 
-          comments.map((comment) => (
-            <Comment comment={comment} user={user} hostID = {hostID}key={comment.commentId} />
-          ))}
-      </section>
-
-      <section className="commentForm">
-        <CommentForm eventId={eventId} />
-      </section>
     </div>
-        <aside className="contributions-container">
-        {contributions && (
-          <Contribution
-            contributions={contributions}
-            eventId={eventId}
-            user={user}
-            isEditable={isEditable}
-            hostBool={userResponse.hostBool}
-            contribBool = {contribBool}
-          />
-        )}
-      </aside>
-        </div>
+    <div className="flex-container">
 
+    </div>
+    <div>
      
-      
+      <div className="flex-container">
+        <div className="left-column">
+          <section className="post-full mt-5 p-3 rounded bg-white border event-container">
+            <>
+              <h2 className="display-4">
+                <EasyEdit
+                  type="text"
+                  value={title}
+                  saveOnBlur={true}
+                  allowEdit={isEditable}
+                  onSave={(value) => setTitle(value)}
+                />
+              </h2>
+              <p className="text-muted">
+                <small>Hosted by: {"Host Name"}</small>
+              </p>
+              <div className="time-section">
+                <EasyEdit
+                  type="date"
+                  value={date}
+                  saveOnBlur={true}
+                  allowEdit={isEditable}
+                  onSave={(value) => setDate(value)}
+                />
+                <EasyEdit
+                  type="time"
+                  value={time}
+                  saveOnBlur={true}
+                  allowEdit={isEditable}
+                  onSave={(value) => setTime(value)}
+                />
+              </div>
+              <EasyEdit
+                type="text"
+                saveOnBlur={true}
+                value={location}
+                allowEdit={isEditable}
+                onSave={(value) => setLocation(value)}
+              />
+              <EasyEdit
+                type="textarea"
+                value={description}
+                saveOnBlur={true}
+                allowEdit={isEditable}
+                onSave={(value) => setDescription(value)}
+              />
+            </>
+          </section>
+          <section className="rsvp-container">
+            {userResponse.hostBool ? (
+              <>
+                <div>
+                  <div className="rsvp-response-group">
+                    <h3>RSVPs</h3>
+                    <div className="show-rsvp">
+                      <button
+                        className="dropdown=button"
+                        onClick={() => setRsvpType("yes")}
+                      >
+                        <img src="/dropdown_arrow.png" />
+                      </button>
+                      <p onClick={() => setRsvpType("yes")}>
+                        Yes: {rsvpYes.length}
+                      </p>
+                    </div>
+                    <div className="show-rsvp">
+                      <button
+                        className="dropdown=button"
+                        onClick={() => setRsvpType("no")}
+                      >
+                        <img src="/dropdown_arrow.png" />
+                      </button>
+                      <p> No: {rsvpNo.length}</p>
+                    </div>
+                    <div className="show-rsvp">
+                      <button
+                        className="dropdown=button"
+                        onClick={() => setRsvpType("maybe")}
+                      >
+                        <img src="/dropdown_arrow.png" />
+                      </button>
+                      <p onClick={() => setRsvpType("maybe")}>
+                        Maybe: {rsvpMaybe.length}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="rsvp-response-list">
+                    <div className="yes-list" hidden={rsvpType != "yes"}>
+                      {rsvpYes && rsvpYes.map((yes) => <p>{yes.userId}</p>)}
+                    </div>
+                    <div className="no-list" hidden={rsvpType != "no"}>
+                      {rsvpNo && rsvpNo.map((no) => <p>{no.userId}</p>)}
+                    </div>
+                    <div className="maybe-list" hidden={rsvpType != "maybe"}>
+                      {rsvpMaybe &&
+                        rsvpMaybe.map((maybe) => <p>{maybe.userId}</p>)}
+                    </div>
+                  </div>
+                </div>
+                {isEditable ? (
+                  <div>
+                    <h3>Guest List</h3>
+                    <textarea
+                      placeholder="Add emails, separated by commas"
+                      value={inviteList}
+                      onChange={(event) => setInviteList(event.target.value)}
+                    ></textarea>
+                    <button onClick={inviteGuests}>Invite Guests</button>
+
+                    {rsvp &&
+                      rsvp.map((response) => (
+                        <div className="guest-list-group">
+                          <p>
+                            {response.userId} key={response.userId}
+                          </p>
+                          <button
+                            data-guest-id={response.userId}
+                            onClick={delGuest}
+                          >
+                            Remove Guest
+                          </button>
+                        </div>
+                      ))}
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </>
+            ) : (
+              <>
+                <div className="edit-rsvp-group">
+                  <h3>Your RSVP: </h3>
+
+                  <EasyEdit
+                    type="select"
+                    options={[
+                      { label: "Yes", value: "Yes" },
+                      { label: "No", value: "No" },
+                      { label: "Maybe", value: "Maybe" },
+                    ]}
+                    allowEdit={isEditable}
+                    placeholder={userResponse.rsvp}
+                    onCancel={toggleEditable}
+                    onSave={saveRSVP}
+                  />
+                  <button onClick={toggleEditable} hidden={isEditable}>
+                    Change RSVP
+                  </button>
+                </div>
+                <div className="rsvp-response-group">
+                  <div className="show-rsvp">
+                    <button
+                      className="dropdown=button"
+                      onClick={() => setRsvpType("yes")}
+                    >
+                      <img src="/dropdown_arrow.png" />
+                    </button>
+
+                    <p>{rsvpYes.length} Going</p>
+                  </div>
+                  <div className="show-rsvp">
+                    <button
+                      className="dropdown=button"
+                      onClick={() => setRsvpType("no")}
+                    >
+                      <img src="/dropdown_arrow.png" />
+                    </button>
+
+                    <p>{rsvpNo.length} Not going</p>
+                  </div>
+                  <div className="show-rsvp">
+                    <button
+                      className="dropdown=button"
+                      onClick={() => setRsvpType("maybe")}
+                    >
+                      <img src="/dropdown_arrow.png" />
+                    </button>
+
+                    <p>{rsvpMaybe.length} Maybe going</p>
+                  </div>
+                </div>
+                <div className="rsvp-response-list">
+                    <div className="yes-list" hidden={rsvpType != "yes"}>
+                      {rsvpYes && rsvpYes.map((yes) => <p>{yes.userId}</p>)}
+                    </div>
+                    <div className="no-list" hidden={rsvpType != "no"}>
+                      {rsvpNo && rsvpNo.map((no) => <p>{no.userId}</p>)}
+                    </div>
+                    <div className="maybe-list" hidden={rsvpType != "maybe"}>
+                      {rsvpMaybe &&
+                        rsvpMaybe.map((maybe) => <p>{maybe.userId}</p>)}
+                    </div>
+                  </div>
+              </>
+            )}{" "}
+          </section>
+          <section className="commentForm">
+            <CommentForm eventId={eventId} />
+          </section>
+          <section className="comments-container">
+            {comments &&
+              comments.map((comment) => (
+                <Comment
+                  comment={comment}
+                  user={user}
+                  hostID={hostID}
+                  key={comment.commentId}
+                />
+              ))}
+          </section>
+        </div>
+        <aside className="contributions-container">
+          {contributions && (
+            <Contribution
+              contributions={contributions}
+              eventId={eventId}
+              user={user}
+              isEditable={isEditable}
+              hostBool={userResponse.hostBool}
+              contribBool={contribBool}
+            />
+          )}
+        </aside>
       </div>
-      
+    </div>
+</>
   );
 };
 

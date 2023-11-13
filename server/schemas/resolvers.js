@@ -18,7 +18,12 @@ const resolvers = {
 
     getEventData: async (parent, eventInput, context) => {
       if (context.user) {
-        return Event.findOne(eventInput).populate('comment', 'user');
+        const event = Event.findOne(eventInput).populate('comment', 'user');
+        console.log(event)
+        if (!event){
+          console.log("couldn't find")
+        }
+        return event
       }
     },
 
