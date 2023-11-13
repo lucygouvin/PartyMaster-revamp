@@ -162,6 +162,7 @@ const EventOverview = () => {
     }
   }, [hostID, rsvp]);
 
+
   return (
     <div>
       {userResponse.hostBool ? (
@@ -291,7 +292,7 @@ const EventOverview = () => {
       <section className="comments-container">
         {comments && 
           comments.map((comment) => (
-            <Comment comment={comment} key={comment.commentId} />
+            <Comment comment={comment} user={user} key={comment.commentId} />
           ))}
       </section>
 

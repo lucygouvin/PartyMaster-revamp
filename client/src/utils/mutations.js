@@ -71,7 +71,7 @@ mutation UpdateEvent($id: ID!, $title: String, $date: String, $description: Stri
     location
     comment {
       commentId
-      userID
+      userId
       content
     }
     RSVP {
@@ -107,7 +107,7 @@ mutation AddComment($id: ID!, $comment: CommentInput!) {
     title
     comment {
       commentId
-      userID
+      userId
       content
     }
   }
@@ -208,6 +208,18 @@ mutation ClaimContribution($eventId: ID!, $contribution: ContributionInput!) {
     potluckContributions {
       name
       item
+    }
+  }
+}
+`;
+
+export const UPDATE_COMMENT = gql `
+mutation UpdateComment($id: ID!, $comment: CommentInput!) {
+  updateComment(_id: $id, comment: $comment) {
+    comment {
+      commentId
+      userId
+      content
     }
   }
 }

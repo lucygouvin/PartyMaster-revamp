@@ -42,20 +42,8 @@ query Events {
 export const EVENT_DATA = gql `
 query GetEventData($id: ID!) {
   getEventData(_id: $id) {
-    rsvpMaybe{
-      userId
-      invite
-    }
-    rsvpYes{
-      userId
-      invite
-    }
-    rsvpNo{
-      userId
-      invite
-    }
     _id
-    hostID 
+    hostID
     title
     description
     date
@@ -63,8 +51,8 @@ query GetEventData($id: ID!) {
     location
     comment {
       commentId
+      userId
       content
-      userID
     }
     RSVP {
       userId
@@ -72,9 +60,21 @@ query GetEventData($id: ID!) {
     }
     potluck
     potluckContributions {
+      _id
       name
       item
-      _id
+    }
+    rsvpMaybe {
+      userId
+      invite
+    }
+    rsvpYes {
+      userId
+      invite
+    }
+    rsvpNo {
+      userId
+      invite
     }
   }
 }`;

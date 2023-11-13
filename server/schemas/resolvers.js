@@ -18,7 +18,7 @@ const resolvers = {
 
     getEventData: async (parent, eventInput, context) => {
       if (context.user) {
-        return Event.findOne(eventInput).populate('comment','user');
+        return Event.findOne(eventInput).populate('comment', 'user');
       }
     },
 
@@ -104,8 +104,6 @@ const resolvers = {
     },
 
     updateEvent: async (parent, args, context) => {
-      console.log("REACHED UPDATE")
-      console.log(args)
       if (context.user || true) {
         const event = await Event.findOneAndUpdate(
           { _id: args._id },
@@ -225,7 +223,7 @@ const resolvers = {
       throw new Error('Not logged in');
     },
     deleteContribution: async (parent, args, context) => {
-      if (true || context.user) {
+      if (context.user) {
         return Event.findOneAndUpdate(
           { _id: args.eventId },
           { $pull: { contribution: { item: args.contribution.item } } },
@@ -234,6 +232,14 @@ const resolvers = {
       }
       throw new Error('Not logged in');
     },
+
+    updateComment: async (parent, args) => {
+      return Event.findOneAndUpdate(
+        {_id: args._id, "comment.commentId": args.comment.commentId},
+        {$set: {"comment.$.content": args.comment.content}},
+        {new: true}
+      );
+    }
   },
 };
 

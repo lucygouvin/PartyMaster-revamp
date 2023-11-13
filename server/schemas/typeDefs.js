@@ -28,11 +28,12 @@ const typeDefs = `
 
  type Comment {
    commentId: ID
-    userID: ID
-    content: String
+   userId: ID
+   content: String
  }
 
  input CommentInput {
+   commentId: ID
    content: String!
  }
 
@@ -81,6 +82,7 @@ type Query {
    deleteEvent(_id: ID!): Event
    addComment(_id: ID!, comment: CommentInput!): Event
    deleteComment(_id:ID!, commentId: ID!): Event
+   updateComment(_id:ID!, comment: CommentInput!): Event
    addGuest(eventId: ID!, email:String!) : Event
    removeGuest(eventId:ID!, guestId:ID!) : Event
    updateRSVP (_id: ID!, RSVP:RSVPInput): Event
