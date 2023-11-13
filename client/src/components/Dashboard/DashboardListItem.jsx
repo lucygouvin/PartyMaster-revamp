@@ -1,21 +1,83 @@
+import { useState } from "react";
+import { useMutation } from "@apollo/client";
 import getUserRole from "../../utils/userRole";
+import { UPDATE_RSVP } from "../../utils/mutations";
 
 export default function DashboardListItem({ events, user }) {
-  const userResult = getUserRole(events.hostID, events.RSVP, user.data._id);
+  const { hostBool, rsvp } = getUserRole(
+    events.hostID,
+    events.RSVP,
+    user.data._id
+  );
+  let [guestRSVP, setGuestRSVP] = useState(rsvp)
+  const [updateRSVP, {rsvpError}] = useMutation(UPDATE_RSVP)
+
+  const saveRSVP = (value) => {
+    console.log("BEFORE", value)
+    setGuestRSVP(value)
+    try {
+      const { data } = updateRSVP({
+        variables: {
+          id: events._id,
+          rsvp: {
+            userId: user.data._id,
+            invite: value,
+          },
+        },
+      });
+      console.log("AFTER", value)
+
+    } catch (rsvpError) {
+      console.error("Unable to update RSVP", rsvpError);
+    }
+  };
 
   return (
     <div key={events._id} className="event-list__item">
       <div className="event-info">
         <a href={`/event/${events._id}`}>
           <p>
-           <span  className="title-text"> {events.title} </span> <span className="muted-text">hosted by {events.hostID}</span>
+            <span className="title-text"> {events.title} </span>{" "}
+            <span className="muted-text">hosted by {events.hostID}</span>
           </p>
         </a>
         <p>
           {events.date} at {events.time}, {events.location}
         </p>
       </div>
-      <div className="user-role">{userResult.hostBool ? <p>Host</p> : <p>{userResult.rsvp}</p>}</div>
+      <div className="user-role">
+        {!hostBool ? (
+          <>
+            {guestRSVP === "Maybe" ? (
+              <>
+                <div className="quick-rsvp">
+                  <h3>RSVP</h3>
+                  <div className="button-group">
+                    <button>
+                      <img src="/checkmark_icon.png" onClick={()=>saveRSVP("Yes")}/>
+                    </button>
+                    <button>
+                      <img src="/x_icon.svg" onClick={()=>saveRSVP("No")}/>
+                    </button>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <p>RSVP</p>
+                {guestRSVP === "Yes" ? (
+                  <img src="/checkmark_icon.png" />
+                ) : (
+                  <img src="/x_icon.svg" />
+                )}
+              </>
+            )}
+          </>
+        ) : (
+          <p>Host</p>
+        )}
+      </div>
+      {/* <div className="user-role">{userResult.hostBool ? <p>Host</p> : <p>{userResult.rsvp}</p>}</div> */}
     </div>
   );
 }

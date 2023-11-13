@@ -18,12 +18,7 @@ const resolvers = {
 
     getEventData: async (parent, eventInput, context) => {
       if (context.user) {
-        const event = Event.findOne(eventInput).populate('comment', 'user');
-        console.log(event)
-        if (!event){
-          console.log("couldn't find")
-        }
-        return event
+        return  Event.findOne(eventInput).populate('comment', 'user');
       }
     },
 
@@ -126,7 +121,8 @@ const resolvers = {
     },
 
     deleteEvent: async (parent, eventInput) => {
-      Event.findOneAndDelete({ _id: eventInput });
+      console.log("REACHED")
+      return Event.findOneAndDelete({ _id: eventInput });
     },
 
     addComment: async (parent, args, context) => {
