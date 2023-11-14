@@ -95,7 +95,7 @@ const EventCreate = () => {
                     </div>
                     <div>
                         <label htmlFor="guestEmail" className="form-label">Add Guest Email:</label>
-                        <input type="email" className="form-control" id="guestEmail" placeholder="Enter Guest Email" value={guestEmail} onChange={(e) => setGuestEmail(e.target.value)} />
+                        <input type="email" className="form-control" id="guestEmail" placeholder="Enter Guest Email" value={guestEmail} required onChange={(e) => setGuestEmail(e.target.value)} />
                         <button type="button" className="btn btn-secondary mt-2" style={{ margin: '0px 0px 16px 0px', padding: '8px' }} onClick={handleEmailAddition}>Add Email</button>
                     </div>
                     <div>
