@@ -15,13 +15,6 @@ body {
     overflow-y: scroll;
 }
 
-.page-container {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    min-height: 78vh;
-}
-
 .dashboard {
     max-width: 600px;
     width: 100%;
