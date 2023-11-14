@@ -47,10 +47,12 @@ export default function Contribution({
   };
 
   const claimItem = (e) => {
+    console.log(eventId)
+    console.log(e.target.getAttribute("data-item-id"))
     try {
       const { data } = claimContribution({
         variables: {
-          id: eventId,
+          eventId: eventId,
           contribution: {
             _id: e.target.getAttribute("data-item-id"),
           },
