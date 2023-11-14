@@ -210,7 +210,7 @@ const resolvers = {
       throw new Error('Not logged in');
     },
     claimContribution: async (parent, args, context) => {
-      if (true||context.user) {
+      if (context.user) {
         return Event.findOneAndUpdate(
           { _id: args.eventId, "potluckContributions._id":args.contribution._id },
           {$set: {"potluckContributions.$.name": context.user.name}},
@@ -221,11 +221,13 @@ const resolvers = {
     },
     deleteContribution: async (parent, args, context) => {
       if (context.user) {
-        return Event.findOneAndUpdate(
+         const event = await Event.findOneAndUpdate(
           { _id: args.eventId },
-          { $pull: { contribution: { item: args.contribution.item } } },
+          { $pull: { contribution: { _id: args.contribution._id } } },
           { new: true }
         );
+        console.log(event)
+        return event 
       }
       throw new Error('Not logged in');
     },

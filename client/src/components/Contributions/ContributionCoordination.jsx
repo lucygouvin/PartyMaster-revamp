@@ -50,7 +50,7 @@ export default function Contribution({
     try {
       const { data } = claimContribution({
         variables: {
-          id: eventId,
+          eventId: eventId,
           contribution: {
             _id: e.target.getAttribute("data-item-id"),
           },

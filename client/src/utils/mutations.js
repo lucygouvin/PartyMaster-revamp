@@ -180,13 +180,13 @@ mutation RemoveGuest($eventId: ID!, $guestId: ID!) {
 export const ADD_CONTRIBUTION = gql `
 mutation AddContribution($eventId: ID!, $contribution: ContributionInput!) {
   addContribution(eventId: $eventId, contribution: $contribution) {
-    title
-    _id
+    
     potluckContributions {
       _id
-      userId
+      name
       item
     }
+    _id
   }
 }
 `;
@@ -206,9 +206,9 @@ mutation DeleteContribution($eventId: ID!, $contribution: ContributionInput!) {
 export const CLAIM_CONTRIBUTION = gql `
 mutation ClaimContribution($eventId: ID!, $contribution: ContributionInput!) {
   claimContribution(eventId: $eventId, contribution: $contribution) {
-    title
     _id
     potluckContributions {
+      _id
       name
       item
     }
