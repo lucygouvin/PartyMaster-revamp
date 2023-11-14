@@ -45,8 +45,8 @@ const EventCreate = () => {
         } else if (window.confirm("Do you want to send invitations via Outlook?")) {
             window.open(outlookUrl, '_blank');
         }
-        // Redirect to the event detail page
-        window.location.href = `/event/${uniqueEventId}`;
+        // Redirect to the user's dashboard
+        window.location.href = `/dashboard`;
     };
 
     // Function to submit the event creation form
@@ -57,6 +57,7 @@ const EventCreate = () => {
             const result = await addEvent({
                 variables: { title, date, time, location, description, guestList: guestList.join(',') },
             });
+            console.log(result)
 
             // Assuming result.data.addEvent returns the event ID or other identifier
             const eventID = result.data.addEvent.id || uuidv4(); // Fallback to uuid if necessary
