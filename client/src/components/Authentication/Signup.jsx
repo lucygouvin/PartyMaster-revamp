@@ -8,6 +8,7 @@ export function Signup(props) {
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [addUser, { error }] = useMutation(ADD_USER);
 
     const handleFormSubmit = async(event)=>{
@@ -60,8 +61,8 @@ export function Signup(props) {
                             <label htmlFor="password-signup" className="form-label">Confirm Password</label>
                             <input type="password" id="password-signup" className="form-control" required 
                              placeholder="Re-enter New Password"
-                             value = {password}
-                             onChange={(event) =>setPassword(event.target.value)}
+                             value = {confirmPassword}
+                             onChange={(event) =>setConfirmPassword(event.target.value)}
                             />
                         </div>
                        <button className="signup-button" type="submit">Sign Up</button>
