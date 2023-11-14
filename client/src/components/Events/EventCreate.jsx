@@ -115,7 +115,7 @@ const EventCreate = () => {
                             ))}
                         </ol>
                     </div>
-                    <button type="submit" className="btn btn-primary" style={{ margin: '0px 0px 16px 0px', padding: '8px' }} onClick={handleSubmit}>Create Event</button>
+                    <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Create Event</button>
                     {error && <p>Error: {error.message}</p>}
                 </form>
             </div>
