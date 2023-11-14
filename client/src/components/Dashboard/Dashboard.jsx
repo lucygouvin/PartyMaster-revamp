@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import '../../styles/Dashboard.css';
 import Auth from "../../utils/auth"
-import { GET_USER_EVENTS } from '../../utils/queries';
+import { GET_USER_EVENTS} from '../../utils/queries';
 import { useQuery } from '@apollo/client';
 import DashboardListItem from './DashboardListItem';
 
@@ -10,6 +10,8 @@ const Dashboard = () => {
      const user = Auth.getProfile()
      const [events, setEvents] = useState()
      const {loading, data} = useQuery(GET_USER_EVENTS)
+     console.log(data)
+  
      useEffect(() =>{
         if (loading === false && data){
             const events = data?.getUserEvents || {}
