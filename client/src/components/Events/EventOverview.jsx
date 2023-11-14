@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
 
 // Import Queries and Mutations
-import { EVENT_DATA } from "../../utils/queries";
+import { EVENT_DATA, LOOKUP_USER } from "../../utils/queries";
 import {
   UPDATE_EVENT,
   DELETE_EVENT,
@@ -42,6 +42,7 @@ const EventOverview = () => {
   let [rsvpNo, setRsvpNo] = useState([]);
   let [contributions, setContributions] = useState([]);
   let [hostID, setHostID] = useState("");
+  let [hostName, setHostName] = useState('')
   let [userResponse, setUserResponse] = useState({ hostBool: false, rsvp: "" });
   let [guestRSVP, setGuestRSVP] = useState(userResponse.rsvp);
   let [inviteList, setInviteList] = useState("");
@@ -146,6 +147,7 @@ const EventOverview = () => {
   // wait for the event data to be returned, then set all the values
   useEffect(() => {
     if (loading === false && data) {
+      
       const events = data?.getEventData || {};
       setTitle(events.title);
       setDate(events.date);
@@ -162,6 +164,7 @@ const EventOverview = () => {
       setHostID(events.hostID);
     }
   }, [loading, data]);
+
 
   // Wait for the event data to come back, and then derive additional information
   useEffect(() => {

@@ -99,3 +99,11 @@ query GetUserEvents {
   }
 }
 `;
+
+export const LOOKUP_USER = gql`
+query LookupUser($id: ID!) {
+  lookupUser(_id: $id) {
+    name
+  }
+}
+`;
