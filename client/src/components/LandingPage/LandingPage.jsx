@@ -22,27 +22,27 @@ export function LandingPage(props) {
         <section className="features-overview">
           <h1 className="landing-page-header">What Can Party Master Do For You?</h1>
           <div className="feature">
-            <img src={exampleImage} alt="Description" style={{ height: '200px', }} />
+            <img className='landing-icon' src={exampleImage} alt="Description" style={{ height: '200px', }} />
             <div style={{ justifyContent: 'space-between', }}>
               <h2>Plan Events Effortlessly</h2>
               <p>Create events, manage guest lists, and coordinate contributions all in one place.</p>
             </div>
           </div>
           <div className="feature">
-            <img src={exampleImage2} alt="Description" style={{ height: '200px', }} />
+            <img className='landing-icon' src={exampleImage2} alt="Description" style={{ height: '200px', }} />
             <div style={{ justifyContent: 'space-between', }}>
               <h2>Stay Connected</h2>
               <p>Communicate with guests, send invitations, and receive RSVPs in real-time.</p>
             </div>
           </div>
           <div className="feature">
-            <img src={exampleImage3} alt="Description" style={{ height: '200px', }} />
+            <img className='landing-icon' src={exampleImage3} alt="Description" style={{ height: '200px', }} />
             <div style={{ justifyContent: 'space-between', }}>
               <h2>Plan Events Effortlessly</h2>
               <p>Create events, manage guest lists, and coordinate contributions all in one place.</p>
             </div>
           </div>
-          <a href="/signup" className="signup-button">Get Started</a>
+          <a href="/signup" className="start-button">Get Started</a>
         </section>
         {/* <section className="features-overview">
         <div className="feature">
