@@ -210,11 +210,10 @@ const resolvers = {
       throw new Error('Not logged in');
     },
     claimContribution: async (parent, args, context) => {
-      console.log("reached")
-      if (true||context.user) {
+      if (context.user) {
         return Event.findOneAndUpdate(
           { _id: args.eventId, "potluckContributions._id":args.contribution._id },
-          {$set: {"potluckContributions.$.name": "Test"}},
+          {$set: {"potluckContributions.$.name": context.user.name}},
           { new: true }
         );
       }
