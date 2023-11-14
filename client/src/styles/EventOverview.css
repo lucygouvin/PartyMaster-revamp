@@ -123,6 +123,7 @@ body {
 .rsvp-response-group{
     display: flex;
     gap: 5%;
+    font-size: 20px;
 }
 
 .guest-list-group {
@@ -134,16 +135,113 @@ body {
 .guest-list-group button {
     max-height: 20px;
 }
-
+button{
+    box-sizing: border-box;
+    font-family: inherit;
+}
 button img{
-    max-height: 10px;
+    width: 20px;
+    height: 20px;
 }
 
-.drowpdown-button{
+.dropdown-button{
     max-height: 10px;
+    font-size: 100%;
+    background-color: transparent;
+    border: none;
+
 }
 
 .show-rsvp{
     display: flex;
+    align-items: baseline;
+    align-content: center;
+}
 
+.title-edit-group{
+    display: flex;
+    justify-content: space-between;
+    min-height: 31.5px;
+}
+
+.edit-buttons{
+    
+}
+
+.invite-button{
+    background-color: var(--primary-color);
+    border: none;
+    color: white;
+    padding: 2%;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.easy-edit-wrapper::after{
+    cursor:  url('../../public/edit_icon.png');
+
+}
+
+.easy-edit-wrapper:hover{
+    /* border: 1px solid red; */
+}
+
+input:not(.styling-exclude){
+    font-size: 100%;
+    font-family: inherit;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    line-height: 1;
+    border: none;
+    outline: none;
+}
+
+textarea{
+    border: none;
+    outline: none;
+    width: 100%;
+
+}
+
+.rsvp-response-list{
+    background-color: lightgray;
+}
+
+#guest-input{
+background-color: #ECF0F1;
+padding: 2%;
+box-sizing: border-box;
+}
+
+h3{
+    margin: 20px;
+}
+
+.remove-guest-button{
+    background-color: #cc462e;
+    border: none;
+    border-radius: 4px;
+    color: white;
+}
+
+.update-rsvp-group{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+select{
+    font-size: 20px;
+    padding: 3%;
+    width: fit-content;
+}
+
+.save-rsvp-button{
+    background-color: #2ecc71;
+    border: none;
+    border-radius: 5px;
+    font-size: 20px;
+    padding: 3%;
+    color: white;
 }

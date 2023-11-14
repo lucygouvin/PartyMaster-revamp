@@ -18,7 +18,8 @@ export default function Comment({ comment, user, hostID }) {
   };
 
   const saveComment = (value) => {
-    setContent(value)
+    if(typeof(value) === String){
+      setContent(value)
     try{
         const {data} = updateComment({
             variables:{
@@ -34,6 +35,9 @@ export default function Comment({ comment, user, hostID }) {
     }catch(updateError){
         console.error("Unable to update comment", updateError)
     }
+
+    }
+    
   }
 
   const removeComment = ()=> {
@@ -50,28 +54,45 @@ export default function Comment({ comment, user, hostID }) {
     }
 window.location.reload()
   }
+
+  const editStyles = {
+    margin: "1%",
+    border: editing
+    ?"1px solid black"
+    : "2px",
+    padding: editing
+    ?"1%"
+    : 0,
+    borderRadius:"5px",
+  }
+console.log(editing)
   return (
     <div
       className="post p-3 rounded bg-light border mb-3 comment-item"
       key={comment.commentId}
     >
       <p>by {comment.userId} </p>
+      <div className="content-button-group">
+      <div style={editStyles} className="comment-content">
       <EasyEdit
         type="textarea"
         value={content}
         allowEdit={editing}
-        onSave={saveComment }
-      />
+        saveOnBlur
+        onSave={saveComment}
+      /></div>
       {comment.userId === user.data._id && (
-        <>
+        <div className="comment-button-group">
         <button className="delete-btn" onClick={removeComment}>Delete</button>
         <button className="edit-btn" onClick={toggleEditable} hidden={editing}>Edit</button>
-        </>
+        <button className="save-btn" onClick={saveComment} hidden={!editing}>Save</button>
+        </div>
 
       )}
       {comment.userId === user.data._id || user.data._id === hostID && (
         <button onClick={removeComment} >Delete</button>
       )}
+      </div>
     </div>
   );
 }
