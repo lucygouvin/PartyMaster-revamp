@@ -28,6 +28,13 @@ const resolvers = {
       }
       throw AuthenticationError;
     },
+
+    lookupUser: async (parent, args) => {
+      console.log(args)
+      const user = await User.findById(args._id)
+      console.log(user)
+      return user
+    }
   },
 
   Mutation: {

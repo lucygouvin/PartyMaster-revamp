@@ -70,6 +70,7 @@ type Query {
    me: User
    getEventData(_id: ID!): Event
    getUserEvents: User
+   lookupUser (_id:ID!): User
    
  }
 

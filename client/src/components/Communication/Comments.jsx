@@ -1,7 +1,8 @@
 import EasyEdit from "react-easy-edit";
-import { useState } from "react";
-import { useMutation } from "@apollo/client";
+import { useEffect, useState } from "react";
+import { useMutation, useQuery } from "@apollo/client";
 import { UPDATE_COMMENT, DELETE_COMMENT } from "../../utils/mutations";
+import { LOOKUP_USER } from "../../utils/queries";
 import { useParams } from "react-router-dom";
 import "../../styles/CommentForm.css"
 
@@ -12,6 +13,18 @@ export default function Comment({ comment, user, hostID }) {
 
   const [updateComment, {updateError}] = useMutation(UPDATE_COMMENT)
   const [deleteComment, {deleteError}] = useMutation(DELETE_COMMENT)
+  let [authorName, setAuthorName] = useState()
+
+  const {loading, data} = useQuery(LOOKUP_USER, {
+    variables:{
+      id: hostID
+    }
+  })
+useEffect(()=> {
+if (loading === false && data){
+  setAuthorName(data.lookupUser.name)
+}
+},[loading, data])
 
   const toggleEditable = () => {
     setEditing(!editing);
@@ -65,13 +78,12 @@ window.location.reload()
     : 0,
     borderRadius:"5px",
   }
-console.log(editing)
   return (
     <div
       className="post p-3 rounded bg-light border mb-3 comment-item"
       key={comment.commentId}
     >
-      <p>by {comment.userId} </p>
+      <p>by {authorName} </p>
       <div className="content-button-group">
       <div style={editStyles} className="comment-content">
       <EasyEdit
