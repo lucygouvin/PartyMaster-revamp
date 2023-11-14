@@ -74,6 +74,7 @@ const EventOverview = () => {
     } catch (eventError) {
       console.error("Unable to update event", eventError);
     }
+    toggleEditable()
   };
   const delEvent = () => {
     try {
@@ -293,8 +294,8 @@ const EventOverview = () => {
                     {rsvp &&
                       rsvp.map((response) => (
                         <div className="guest-list-group">
-                          <p>
-                            {response.userId} key={response.userId}
+                          <p key={response.userId}>
+                            {response.userId} 
                           </p>
                           <button
                             data-guest-id={response.userId}
