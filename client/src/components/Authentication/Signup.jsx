@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../styles/Signup.css';
 import { useMutation } from '@apollo/client';
 import { ADD_USER } from '../../utils/mutations';
@@ -10,17 +10,30 @@ export function Signup(props) {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [addUser, { error }] = useMutation(ADD_USER);
+    const [errorMessage, setErrorMessage] = useState('')
+
+
+
 
     const handleFormSubmit = async(event)=>{
         event.preventDefault();
+         if(password !== confirmPassword){
+        
+            setErrorMessage("Your password must match confirm password")
+                console.log(errorMessage)
+                window.location.assign("/signup")
+    
+        }
         try {
+           
             const { data } = await addUser({
                 variables: { email, name, password },
             });
             Auth.login(data.addUser.token)
 
-       
-            window.location.href="/dashboard";
+     
+                window.location.href="/dashboard";
+            
          
         } catch (error) {
             console.log(error);
@@ -65,6 +78,13 @@ export function Signup(props) {
                              onChange={(event) =>setConfirmPassword(event.target.value)}
                             />
                         </div>
+                        {
+                            errorMessage && (
+                                <div>
+                                    <p>{errorMessage}</p>
+                                </div>
+                            )
+                        }
                        <button className="signup-button" type="submit">Sign Up</button>
                     </form>
                 </div>

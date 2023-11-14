@@ -2,8 +2,10 @@ import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import getUserRole from "../../utils/userRole";
 import { UPDATE_RSVP } from "../../utils/mutations";
+import Auth from '../../utils/auth'
 
 export default function DashboardListItem({ events, user }) {
+  const userName = Auth.getProfile()
   const { hostBool, rsvp } = getUserRole(
     events.hostID,
     events.RSVP,
@@ -38,7 +40,7 @@ export default function DashboardListItem({ events, user }) {
         <a href={`/event/${events._id}`}>
           <p>
             <span className="title-text"> {events.title} </span>{" "}
-            <span className="muted-text">hosted by {events.hostID}</span>
+            <span className="muted-text">hosted by {user.hostID} {userName.data.name}</span>
           </p>
         </a>
         <p>
