@@ -53,11 +53,11 @@ export default function DashboardListItem({ events, user }) {
                 <div className="quick-rsvp">
                   <h3>RSVP</h3>
                   <div className="button-group">
-                    <button>
+                    <button  id="quick-rsvp-yes">
                       <img src="/checkmark_icon.png" onClick={()=>saveRSVP("Yes")}/>
                     </button>
-                    <button>
-                      <img src="/x_icon.svg" onClick={()=>saveRSVP("No")}/>
+                    <button id="quick-rsvp-no">
+                      <img src="/x_icon.svg" onClick={()=>saveRSVP("No")} />
                     </button>
                   </div>
                 </div>
@@ -74,7 +74,7 @@ export default function DashboardListItem({ events, user }) {
             )}
           </>
         ) : (
-          <p>Host</p>
+          <h3>Host</h3>
         )}
       </div>
       {/* <div className="user-role">{userResult.hostBool ? <p>Host</p> : <p>{userResult.rsvp}</p>}</div> */}

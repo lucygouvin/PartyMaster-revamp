@@ -110,7 +110,7 @@ export default function Contribution({
                     {`claimed by ${contrib.name}`}
                   </span>
                 ) : (
-                  <button data-item-id={contrib._id} onClick={claimItem}>
+                  <button data-item-id={contrib._id} onClick={claimItem} className="claim-button">
                     Claim
                   </button>
                 )}
@@ -123,7 +123,8 @@ export default function Contribution({
               value={contribution}
               onChange={(event) => setContrib(event.target.value)}
               placeholder="I want to bring..."
-              className="contrib-input"
+              className="contrib-input styling-exclude"
+              
             ></input>
 
             <button className="contribute-btn" onClick={saveContribution}>Add</button>
