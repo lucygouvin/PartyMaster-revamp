@@ -26,10 +26,10 @@ export default function CommentForm ({eventId}){
       };
     return (
         <section className="comment-form" id="commentForm">
-        <form onSubmit={handleCommentSubmit} className="p-3 rounded bg-white border">
+        <form onSubmit={handleCommentSubmit} className="p-3 rounded bg-white border ">
           <div className="form-group">
             <label htmlFor="comment_text">Add a comment:</label>
-            <textarea className="form-control" id="comment_text" name="comment_text" rows="3" value={commentText} required onChange={(event)=> setCommentText(event.target.value)}></textarea>
+            <textarea className="form-control" id="comment_text" name="comment_text" rows="3" placeholder="Enter comment" value={commentText} required onChange={(event)=> setCommentText(event.target.value)}></textarea>
           </div>
           <button type="submit" className="btn btn-primary">Submit</button>
         </form>

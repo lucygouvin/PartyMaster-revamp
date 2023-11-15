@@ -43,7 +43,7 @@ export default function Contribution({
     } catch (eventError) {
       console.error("Unable to update event", eventError);
     }
-    setContrib("");
+   setContrib("");
   };
 
   const claimItem = (e) => {
@@ -118,13 +118,12 @@ export default function Contribution({
             ))}
           {/* UI for adding contributions */}
           <div className="contrib-input-group">
-            <input
+            <input 
               type="text"
               value={contribution}
               onChange={(event) => setContrib(event.target.value)}
               placeholder="I want to bring..."
               className="contrib-input styling-exclude"
-              
             ></input>
 
             <button className="contribute-btn" onClick={saveContribution}>Add</button>
