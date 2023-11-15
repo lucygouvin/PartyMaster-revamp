@@ -33,7 +33,7 @@ const EventCreate = () => {
     // Function to handle the event creation process
     const handleEventCreated = (uniqueEventId) => {
         const emailSubject = encodeURIComponent("You're Invited to My Event");
-        const emailBody = encodeURIComponent(`Hello,\n\nYou have been invited to an event. Please sign up to join us!\n\nEvent ID: ${uniqueEventId}\n\nBest regards,`);
+        const emailBody = encodeURIComponent(`Hello,\n\nYou have been invited to an event. Please sign up to join us!\n\nhttps://stark-hamlet-78991-77b45feb1011.herokuapp.com\n\nBest regards,`);
 
         // Constructing the webmail URLs
         const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=&su=${emailSubject}&body=${emailBody}`;
