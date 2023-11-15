@@ -112,7 +112,10 @@ const EventOverview = () => {
     } catch (rsvpError) {
       console.error("Unable to update RSVP", rsvpError);
     }
-    setGuestRSVP(value);
+    if(typeof(value)===String){
+      setRSVP(value)
+
+    }
   };
   const inviteGuests = () => {
     const guestArray = inviteList.split(",");
@@ -171,6 +174,7 @@ const EventOverview = () => {
   useEffect(() => {
     if (hostID && rsvp) {
       setUserResponse(getUserRole(hostID, rsvp, user.data._id));
+      setGuestRSVP(userResponse.rsvp)
     }
   }, [hostID, rsvp]);
 
@@ -204,7 +208,6 @@ const EventOverview = () => {
     : 0,
     borderRadius:"5px",
   }
-
   return (
     <>
       <div className="flex-container"></div>
@@ -239,7 +242,6 @@ const EventOverview = () => {
                   </div>
                 </h2>
                 <p className="text-muted">
-                  <small>Hosted by: {name}</small>
                 </p>
                 <div className="time-section">
                 <div style={editStyles} className="eady-edit-override">

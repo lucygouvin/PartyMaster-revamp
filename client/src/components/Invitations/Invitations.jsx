@@ -15,8 +15,7 @@ export function Invitation(props) {
 
   const [response, setResponse] = useState("");
   const eventData = data?.EVENT_DATA || [];
-  console.log(eventId);
-  console.log(data);
+ 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -31,7 +30,7 @@ export function Invitation(props) {
 
       window.location.href = "/dashboard";
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

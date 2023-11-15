@@ -10,7 +10,6 @@ const Dashboard = () => {
     const user = Auth.getProfile()
     const [events, setEvents] = useState()
     const { loading, data } = useQuery(GET_USER_EVENTS)
-    console.log(data)
 
     useEffect(() => {
         if (loading === false && data) {
@@ -19,7 +18,6 @@ const Dashboard = () => {
         }
     }, [loading, data])
 
-    console.log(events)
 
 
     return (

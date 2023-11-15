@@ -33,6 +33,7 @@ if (loading === false && data){
   const saveComment = (value) => {
     if(typeof(value) === String){
       setContent(value)
+    }
     try{
         const {data} = updateComment({
             variables:{
@@ -49,7 +50,7 @@ if (loading === false && data){
         console.error("Unable to update comment", updateError)
     }
 
-    }
+    
     
   }
 

@@ -30,10 +30,7 @@ const resolvers = {
     },
 
     lookupUser: async (parent, args) => {
-      console.log(args)
-      const user = await User.findById(args._id)
-      console.log(user)
-      return user
+      return user = await User.findById(args._id)
     }
   },
 
@@ -128,7 +125,6 @@ const resolvers = {
     },
 
     deleteEvent: async (parent, eventInput) => {
-      console.log("REACHED")
       return Event.findOneAndDelete({ _id: eventInput });
     },
 
@@ -233,7 +229,6 @@ const resolvers = {
           { $pull: { contribution: { _id: args.contribution._id } } },
           { new: true }
         );
-        console.log(event)
         return event 
       }
       throw new Error('Not logged in');
