@@ -2,23 +2,28 @@
 
 ## Description
 
-PartyMaster is a MERN Stack single-page application that serves as a one stop shop to make your party happening. Instead of playing phone tag with overlapping group chats and competing social media series, start your party here! Create your event and invite users via email to join the application and  a. RSVP, b. comment on the event details, and c. notate their contributions to your potluck.  
-Once a user has created their account they will notice a user dashboard that will list all of the events they are either hosting or have RSVP’d for.  
+PartyMaster is a dynamic MERN Stack single-page application, designed to streamline party planning and coordination. This platform simplifies the party organization process by eliminating the need for multiple communication channels like group chats and social media. Here's how PartyMaster stands out:
 
+1. Centralized Event Management: PartyMaster allows users to create and manage events in one place. Users can invite others via email to join the app where they can RSVP, discuss event details, and coordinate contributions for potluck-style gatherings.
+2. User-Friendly Dashboard: Upon account creation, users are greeted with a personalized dashboard. This dashboard neatly displays all events they're hosting or attending, providing a clear overview of their social calendar.
+3. Advanced Frontend Technology: The front end of PartyMaster is built using React, offering a responsive and intuitive user interface. React's component-based architecture ensures a smooth user experience.
+4. Efficient Data Handling: At its core, PartyMaster utilizes a GraphQL API, managed by a robust Node.js and Express.js server. This setup allows for efficient data operations like fetching, adding, updating, and removing information, ensuring real-time updates and seamless data management.
+5. Reliable Database Structure: MongoDB, coupled with the Mongoose ODM (Object Data Modeling), forms the backbone of PartyMaster's database. This combination offers flexibility and scalability, making it ideal for handling complex data structures needed for event management.
+6. Secure User Authentication: Security is a top priority for PartyMaster. It incorporates JSON Web Token (JWT) for user authentication, ensuring secure access and protecting user data.
 
-To create PartyMaster we used React for the front end of the application. The app also relies on a GraphQL API with a Node.js and Express.js server. Thus, PartyMaster uses queries and mutations for retrieving, adding, updating, and deleting data. For our database, we used MongoDB and the Mongoose ODM. PartyMaster also includes user authentication through the use of JSON WebToken.
+PartyMaster is more than just an event planning tool; it's a comprehensive platform that brings simplicity, efficiency, and security to the forefront of social event management.
 
+## Table of Contents
 
-## Installation
-
-If one is interested in getting PartyMaster's development envirenment running locally one can visit our github repo at this link: https://github.com/Albyhua/Project-3 
-
-After obtaining a copy of the repository, one must run an npm install to install all of the necesarry dependencies.  One can then seed the application by running npm seed in the terminal. Once seeded, one must simply enter npm run dev which will run concurrently thus allowing our server and client sides to run. In the terminal one will notice a link to localhost:3000 which will bring them to the PartyMaster landing page. 
+- [Usage](#usage)
+- [License](#license)
+- [Installation](#installation)
+- [Credits](#credits)
+- [Link to the Deployed Application](#link-to-the-deployed-application)
 
 ## Usage
 
-Provide instructions and examples for use. Include screenshots as needed.
-A user can begin planning their party on PartyMaster at this link: https://stark-hamlet-78991-77b45feb1011.herokuapp.com/ 
+Instructions and examples for use can be found below:
 
 ![landing page demo](assets/landing-page.img.png)
 ![sign-up page demo](assets/sign-up-page.img.png)
@@ -27,11 +32,32 @@ A user can begin planning their party on PartyMaster at this link: https://stark
 ![create event page demo](assets/create-event.img.png)
 ![event details page demo](assets/event-details-page.img.png)
 
+## License
+
+This project is licensed under the MIT License. For more details, please see the LICENSE file.
+
+## Installation
+
+For those eager to explore and contribute to PartyMaster's development, setting up the local environment is a straightforward process. Interested developers can begin by accessing our comprehensive GitHub repository here: https://github.com/Albyhua/Project-3
+
+Here's a step-by-step guide to get you started:
+
+1. Clone the Repository: First, clone the repository to your local machine. This step ensures you have all the necessary files to begin.
+2. Install Dependencies: Once the repository is cloned, navigate to the project directory and execute npm install. This command will install all the dependencies required for PartyMaster to run smoothly.
+3. Seed the Application: To populate the application with initial data, run npm seed in your terminal. This step is crucial for setting up a mock environment that resembles the actual application.
+4. Start the Application: Launch the application by entering npm run dev in your terminal. This command runs both the server and client sides concurrently, thanks to the integrated functionality of the concurrently package.
+5. Access the Local Version: After running the above command, a link to localhost:3000 will appear in your terminal. Clicking this link will take you directly to the PartyMaster landing page, allowing you to interact with your local version of the application.
+
+By following these steps, developers can efficiently set up PartyMaster's development environment on their local machine, opening up opportunities for exploration, modification, and contribution to this innovative party planning platform.
+
 ## Credits
+
 Contributors: 
 - Lucy Gouvin, Github Link: https://github.com/lucygouvin
 - Albert Hua, Github Link: https://github.com/Albyhua
 - Kojo Otchere, Github Link: https://github.com/kojootchere 
-- Angela Figueroa, Github Link: https://github.com/AngelaFig 
+- Angela Figueroa, Github Link: https://github.com/AngelaFig
 
+## Link to Deployed Appliciation
 
+Begin planning your next event on PartyMaster: https://stark-hamlet-78991-77b45feb1011.herokuapp.com

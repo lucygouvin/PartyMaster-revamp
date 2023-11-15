@@ -10,7 +10,7 @@ import Signup from './components/Authentication/Signup.jsx';
 import EventCreate from './components/Events/EventCreate.jsx';
 import EventOverview from './components/Events/EventOverview.jsx';
 import Invitation from './components/Invitations/Invitations.jsx';
-import ContactUs from './components/Help/ContactUs.jsx';
+import AboutPage from './components/Help/AboutPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -40,8 +40,8 @@ const router = createBrowserRouter([
         path: '/invitation/:eventId',
         element: <Invitation />
       },{
-        path: '/contact-us',
-        element: <ContactUs />
+        path: '/about',
+        element: <AboutPage />
       }
     ]
   }
