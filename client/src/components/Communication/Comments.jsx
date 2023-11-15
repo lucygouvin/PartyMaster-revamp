@@ -17,7 +17,7 @@ export default function Comment({ comment, user, hostID }) {
 
   const {loading, data} = useQuery(LOOKUP_USER, {
     variables:{
-      id: hostID
+      id: comment.userId
     }
   })
 useEffect(()=> {
@@ -103,7 +103,8 @@ window.location.reload()
 
       )}
       {comment.userId === user.data._id || user.data._id === hostID && (
-        <button onClick={removeComment} >Delete</button>
+                <button className="delete-btn" onClick={removeComment}>Delete</button>
+
       )}
       </div>
     </div>

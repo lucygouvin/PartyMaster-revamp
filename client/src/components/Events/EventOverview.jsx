@@ -10,7 +10,6 @@ import {
   DELETE_EVENT,
   UPDATE_RSVP,
   ADD_GUEST,
-  REMOVE_GUEST,
 } from "../../utils/mutations";
 
 // Import Styling
@@ -65,7 +64,6 @@ const EventOverview = () => {
   const [deleteEvent, { deleteError }] = useMutation(DELETE_EVENT);
   const [updateRSVP, { rsvpError }] = useMutation(UPDATE_RSVP);
   const [addGuest, { addError }] = useMutation(ADD_GUEST);
-  const [removeGuest, { removeError }] = useMutation(REMOVE_GUEST);
 
   const saveEventDetails = () => {
     try {
@@ -131,19 +129,7 @@ const EventOverview = () => {
     setInviteList("");
   };
 
-  const delGuest = (e) => {
-    try {
-      const { data } = removeGuest({
-        variables: {
-          eventId: eventId,
-          guestId: e.target.getAttribute("data-guest-id"),
-        },
-      });
-    } catch (removeError) {
-      console.error("Unable to remove guest", removeError);
-    }
-    rsvp.pop();
-  };
+
   // Query the event data
   const { loading, data } = useQuery(EVENT_DATA, {
     variables: { id: eventId },
@@ -178,14 +164,6 @@ const EventOverview = () => {
     }
   }, [hostID, rsvp]);
 
-  const hideOrShowRSVP = (val) => {
-    if (val === rsvpType){
-      setRsvpType("false")
-    }else{
-      setRsvpType(val)
-    }
-
-  }
 
   const editStyles = {
     margin: "1%",
@@ -288,71 +266,34 @@ const EventOverview = () => {
                   <div>
                     <div className="rsvp-response-group">
                       <h3>RSVPs</h3>
-                      <div className="show-rsvp" onClick={()=>hideOrShowRSVP("yes")}>
-                        <button
-                          className="dropdown-button">
-                          <img src="/dropdown_arrow.png" />
-                        </button>
+                      <div className="show-rsvp">
+                        
                         <p>
                           Yes: {rsvpYes.length}
                         </p>
                       </div>
-                      <div className="show-rsvp" onClick={()=>hideOrShowRSVP("no")}>
-                        <button
-                          className="dropdown-button"
-                        >
-                          <img src="/dropdown_arrow.png" />
-                        </button>
+                      <div className="show-rsvp">
+                       
                         <p> No: {rsvpNo.length}</p>
                       </div>
-                      <div className="show-rsvp" onClick={()=>hideOrShowRSVP("maybe")}>
-                        <button
-                          className="dropdown-button"
-                          
-                        >
-                          <img src="/dropdown_arrow.png" />
-                        </button>
+                      <div className="show-rsvp" >
+                      
                         <p>
                           Maybe: {rsvpMaybe.length}
                         </p>
                       </div>
                     </div>
-                    <div className="rsvp-response-list">
-                      <div className="yes-list" hidden={rsvpType != "yes"}>
-                        {rsvpYes && rsvpYes.map((yes) => <p>{yes.userId}</p>)}
-                      </div>
-                      <div className="no-list" hidden={rsvpType != "no"}>
-                        {rsvpNo && rsvpNo.map((no) => <p>{no.userId}</p>)}
-                      </div>
-                      <div className="maybe-list" hidden={rsvpType != "maybe"}>
-                        {rsvpMaybe &&
-                          rsvpMaybe.map((maybe) => <p>{maybe.userId}</p>)}
-                      </div>
-                    </div>
+                    
                   </div>
                   {isEditable ? (
                     <div>
-                      <h3>Guest List</h3>
                       <textarea
                         placeholder="Add emails, separated by commas"
                         value={inviteList}
                         onChange={(event) => setInviteList(event.target.value)}
                         id="guest-input"
                       ></textarea>
-                      <button onClick={inviteGuests} className="invite-button">Invite Guests</button>
-
-                      {rsvp &&
-                        rsvp.map((response) => (
-                          <div className="guest-list-group">
-                            <p key={response.userId}>{response.userId}</p>
-                            <button
-                              data-guest-id={response.userId}
-                              onClick={delGuest} className="remove-guest-button"
-                            >
-                              Remove Guest
-                            </button>
-                          </div>
-                        ))}
+                      <button onClick={inviteGuests} className="invite-button">Invite Guests</button>        
                     </div>
                   ) : (
                     <></>
@@ -385,48 +326,23 @@ const EventOverview = () => {
                    
                   </div>
                   <div className="rsvp-response-group">
-                    <div className="show-rsvp"  onClick={()=>hideOrShowRSVP("yes")}>
-                      <button
-                        className="dropdown-button"
-                      >
-                        <img src="/dropdown_arrow.png" />
-                      </button>
+                    <div className="show-rsvp">
+                    
 
                       <p>{rsvpYes.length} Going</p>
                     </div>
-                    <div className="show-rsvp"  onClick={()=>hideOrShowRSVP("no")}>
-                      <button
-                        className="dropdown-button"
-                        
-                      >
-                        <img src="/dropdown_arrow.png" />
-                      </button>
+                    <div className="show-rsvp" >
+                      
 
                       <p>{rsvpNo.length} Not going</p>
                     </div>
-                    <div className="show-rsvp"  onClick={()=>hideOrShowRSVP("yes")}>
-                      <button
-                        className="dropdown-button"
-                        
-                      >
-                        <img src="/dropdown_arrow.png" />
-                      </button>
+                    <div className="show-rsvp"  >
+                     
 
                       <p>{rsvpMaybe.length} Maybe going</p>
                     </div>
                   </div>
-                  <div className="rsvp-response-list">
-                    <div className="yes-list" hidden={rsvpType != "yes"}>
-                      {rsvpYes && rsvpYes.map((yes) => <p>{yes.userId}</p>)}
-                    </div>
-                    <div className="no-list" hidden={rsvpType != "no"}>
-                      {rsvpNo && rsvpNo.map((no) => <p>{no.userId}</p>)}
-                    </div>
-                    <div className="maybe-list" hidden={rsvpType != "maybe"}>
-                      {rsvpMaybe &&
-                        rsvpMaybe.map((maybe) => <p>{maybe.userId}</p>)}
-                    </div>
-                  </div>
+                  
                 </>
               )}{" "}
             </section>

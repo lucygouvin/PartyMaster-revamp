@@ -5,6 +5,7 @@ import { UPDATE_RSVP } from "../../utils/mutations";
 import Auth from '../../utils/auth'
 
 export default function DashboardListItem({ events, user }) {
+  console.log(events)
   const userName = Auth.getProfile()
   const { hostBool, rsvp } = getUserRole(
     events.hostID,
