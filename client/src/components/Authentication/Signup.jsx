@@ -48,7 +48,7 @@ export function Signup(props) {
                     >
                         <div className="form-group">
                             <label htmlFor="username-signup" className="form-label">Username:</label>
-                            <input type="text" id="username-signup" className="form-control" required 
+                            <input type="text" id="username-signup" className="form-control styling-exclude" required 
                             placeholder="Enter New Username"
                             value = {name}
                             onChange={(event) =>setName(event.target.value)}
@@ -56,7 +56,7 @@ export function Signup(props) {
                         </div>
                         <div className="form-group">
                             <label htmlFor="email-signup" className="form-label">Email Address</label>
-                            <input type="email" id="email-signup" className="form-control" required 
+                            <input type="email" id="email-signup" className="form-control styling-exclude" required 
                              placeholder="Enter Email Address"
                              value = {email}
                              onChange={(event) =>setEmail(event.target.value)}
@@ -64,7 +64,7 @@ export function Signup(props) {
                         </div>
                         <div className="form-group">
                             <label htmlFor="password-signup" className="form-label">Password</label>
-                            <input type="password" id="password-signup" className="form-control" required 
+                            <input type="password" id="password-signup" className="form-control styling-exclude" required 
                              placeholder="Enter New Password"
                              value = {password}
                              onChange={(event) =>setPassword(event.target.value)}
@@ -72,7 +72,7 @@ export function Signup(props) {
                         </div>
                         <div className="form-group">
                             <label htmlFor="password-signup" className="form-label">Confirm Password</label>
-                            <input type="password" id="password-signup" className="form-control" required 
+                            <input type="password" id="password-signup" className="form-control styling-exclude" required 
                              placeholder="Re-enter New Password"
                              value = {confirmPassword}
                              onChange={(event) =>setConfirmPassword(event.target.value)}
