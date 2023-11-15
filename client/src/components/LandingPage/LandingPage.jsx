@@ -10,8 +10,6 @@ export function LandingPage(props) {
 
   const { data, loading, error } = useQuery(USERS)
   const userData = data?.users || []
-  // console log i sent you a pic of
-  console.log(userData);
 
   if (loading) return <h2>Loading....</h2>
 

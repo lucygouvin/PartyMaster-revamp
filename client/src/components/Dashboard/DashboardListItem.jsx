@@ -15,7 +15,6 @@ export default function DashboardListItem({ events, user }) {
   const [updateRSVP, {rsvpError}] = useMutation(UPDATE_RSVP)
 
   const saveRSVP = (value) => {
-    console.log("BEFORE", value)
     setGuestRSVP(value)
     try {
       const { data } = updateRSVP({
@@ -27,7 +26,6 @@ export default function DashboardListItem({ events, user }) {
           },
         },
       });
-      console.log("AFTER", value)
 
     } catch (rsvpError) {
       console.error("Unable to update RSVP", rsvpError);

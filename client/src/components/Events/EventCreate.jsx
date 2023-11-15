@@ -66,8 +66,7 @@ const EventCreate = () => {
         }
     };
 
-    console.log(date)
-    console.log(time)
+
 
     // JSX for rendering the event creation form
     return (

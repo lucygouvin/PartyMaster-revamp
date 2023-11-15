@@ -62,11 +62,8 @@ export default function Contribution({
   };
 
   const saveBool = () => {
-    console.log(checked);
-    console.log(eventId);
 
     try {
-      console.log("trying");
       const { data } = updateEvent({
         variables: {
           id: eventId,

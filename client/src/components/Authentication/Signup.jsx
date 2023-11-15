@@ -20,7 +20,7 @@ export function Signup(props) {
          if(password !== confirmPassword){
         
             setErrorMessage("Your password must match confirm password")
-                console.log(errorMessage)
+                console.error(errorMessage)
                 window.location.assign("/signup")
     
         }
@@ -36,7 +36,7 @@ export function Signup(props) {
             
          
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     };
     return (

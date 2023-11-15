@@ -239,7 +239,6 @@ const EventOverview = () => {
                   </div>
                 </h2>
                 <p className="text-muted">
-                  <small>Hosted by: {name}</small>
                 </p>
                 <div className="time-section">
                 <div style={editStyles} className="eady-edit-override">
