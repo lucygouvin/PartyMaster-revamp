@@ -71,58 +71,6 @@ const EventCreate = () => {
 
     // JSX for rendering the event creation form
     return (
-        <div className="landing-page">
-            <div style={{ alignItems: 'center', display: 'flex', justifyContent: 'center', minHeight: '100vh' }}>
-                <div className="container">
-                    <h2>Create a New Event</h2>
-                    <form onSubmit={handleSubmit}>
-                        <div>
-                            <label htmlFor="title" className="form-label">Event Title:</label>
-                            <input type="text" className="form-control styling-exclude" id="title" name="title" value={title} required onChange={(e) => setTitle(e.target.value)} />
-                        </div>
-                        <div>
-                            <label htmlFor="date" className="form-label">Date:</label>
-                            <input type="date" className="form-control styling-exclude" id="date" name="date" value={date} required onChange={(e) => setDate(e.target.value)} />
-                        </div>
-                        <div>
-                            <label htmlFor="time" className="form-label">Time:</label>
-                            <input type="time" className="form-control styling-exclude" id="time" name="time" value={time} required onChange={(e) => setTime(e.target.value)} />
-                        </div>
-                        <div>
-                            <label htmlFor="location" className="form-label">Location:</label>
-                            <input type="text" className="form-control styling-exclude" id="location" name="location" value={location} required onChange={(e) => setLocation(e.target.value)} />
-                        </div>
-                        <div>
-                            <label htmlFor="description" className="form-label">Description:</label>
-                            <textarea className="form-control styling-exclude" id="description" name="description" rows="5" value={description} required onChange={(e) => setDescription(e.target.value)}></textarea>
-                        </div>
-                        <div>
-                            <label htmlFor="guestEmail" className="form-label">Add Guest Email:</label>
-                            <input type="email" className="form-control styling-exclude" id="guestEmail" placeholder="Enter Guest Email" value={guestEmail} required onChange={(e) => setGuestEmail(e.target.value)} />
-                            <button type="button" className="btn btn-secondary mt-2" style={{ margin: '0px 0px 16px 0px', padding: '8px' }} onClick={handleEmailAddition}>Add Email</button>
-                        </div>
-                        <div>
-                            <label>Guest Emails:</label>
-                            <ol>
-                                {guestList.map((email, index) => (
-                                    <li key={index} style={{ listStyleType: "decimal" }}>
-                                        {email}
-                                        <button
-                                            type="button"
-                                            className="btn btn-danger btn-sm ml-3"
-                                            style={{ margin: '8px', padding: '8px' }}
-                                            onClick={() => handleEmailRemoval(email)}
-                                        >
-                                            Remove
-                                        </button>
-                                    </li>
-                                ))}
-                            </ol>
-                        </div>
-                        <button type="submit" className="btn btn-primary" onClick={handleSubmit}>Create Event</button>
-                        {error && <p>Error: {error.message}</p>}
-                    </form>
-                </div>
             <div className="container">
                 <h2>Create a New Event</h2>
                 <form onSubmit={handleSubmit}>
@@ -173,7 +121,6 @@ const EventCreate = () => {
                     {error && <p>Error: {error.message}</p>}
                 </form>
             </div>
-        </div>
     );
 };
 
