@@ -246,3 +246,7 @@ input:not(.styling-exclude){
     border: none;
     outline: none;
     }
+
+textarea {
+    resize: none;
+}
