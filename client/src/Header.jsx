@@ -62,10 +62,12 @@ function Header() {
       {/* Dropdown Menu */}
       {showDropdown && (
         <div className="dropdown-content" ref={dropdownRef}>
-          {Auth.loggedIn ()? (
+          {Auth.loggedIn() ? (
             <>
+              <Link to="/">Home</Link>
               <Link to="/dashboard" onClick={closeDropdown}>Dashboard</Link>
               <Link to="/create-event" onClick={closeDropdown}>Create Event</Link>
+              <Link to="/about" onClick={closeDropdown}>About PartyMaster</Link>
               <Link onClick={Auth.logout}>Logout</Link>
             </>
           ) : (
@@ -74,7 +76,7 @@ function Header() {
               <Link to="/">Home</Link>
               <Link to="/login" onClick={closeDropdown}>Sign In</Link>
               <Link to="/signup" onClick={closeDropdown}>Sign Up</Link>
-              <Link to="/about" onClick={closeDropdown}>About</Link>
+              <Link to="/about" onClick={closeDropdown}>About PartyMaster</Link>
             </>
           )}
         </div>

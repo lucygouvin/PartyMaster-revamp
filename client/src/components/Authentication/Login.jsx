@@ -43,14 +43,14 @@ export function Login(props) {
           <form className="login-form" onSubmit={handleFormSubmit}>
             <div className="form-group">
               <label htmlFor="email-login" className="form-label">Email address</label>
-              <input type="email" className="form-control" id="email-login" placeholder="Your Email" required
+              <input type="email" className="form-control styling-exclude" id="email-login" placeholder="Your Email" required
               name="email"
               value= {formState.email}
               onChange={handleChange}/>
             </div>
             <div className="form-group">
               <label htmlFor="password-login" className="form-label">Password</label>
-              <input type="password" className="form-control" id="password-login" placeholder="****" required 
+              <input type="password" className="form-control styling-exclude" id="password-login" placeholder="****" required 
               name="password"
               value={formState.password}
               onChange={handleChange}
@@ -61,10 +61,6 @@ export function Login(props) {
           </form>
         </div>
       </main>
-
-      <footer className="landing-footer">
-        <p>&copy; 2023 PartyMaster</p>
-      </footer>
     </div >
   );
 };

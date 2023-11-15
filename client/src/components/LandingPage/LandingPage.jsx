@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import '../../styles/LandingPage.css';
-import exampleImage from '../../assets/create-new-event.png';
-import exampleImage2 from '../../assets/checklist.png';
-import exampleImage3 from '../../assets/contributions.png';
+import exampleImage from '../../../../assets/create-new-event.png';
+import exampleImage2 from '../../../../assets/checklist.png';
+import exampleImage3 from '../../../../assets/contributions.png';
 import { useQuery } from '@apollo/client';
 import { USERS } from '../../utils/queries';
 
