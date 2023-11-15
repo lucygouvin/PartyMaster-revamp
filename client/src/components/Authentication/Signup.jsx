@@ -89,10 +89,6 @@ export function Signup(props) {
                     </form>
                 </div>
             </main>
-
-            <footer className="landing-footer">
-                <p>&copy; 2023 PartyMaster</p>
-            </footer>
         </div >
     );
 };

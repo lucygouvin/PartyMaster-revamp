@@ -2,5 +2,3 @@ node_modules
 .env
 package-lock.json
 client/src/components/Authentication/PasswordRecovery.jsx
-client/src/components/Help/AboutPage.jsx
-client/src/components/Events/saf

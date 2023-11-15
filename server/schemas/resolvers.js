@@ -89,13 +89,13 @@ const resolvers = {
             { _id: event._id },
             {
               $addToSet: {
-                RSVP: { userId: guest._id.toHexString(), invite: 'Maybe' },
+                RSVP: { userId: guest?._id.toHexString(), invite: 'Maybe' },
               },
             },
             { new: true }
           );
 
-          await User.findByIdAndUpdate(guest._id.toHexString(), {
+          await User.findByIdAndUpdate(guest?._id.toHexString(), {
             $push: { event: event._id },
           });
         });
@@ -170,7 +170,7 @@ const resolvers = {
         { _id: args.eventId },
         {
           $addToSet: {
-            RSVP: { userId: guest._id.toHexString(), invite: 'Maybe' },
+            RSVP: { userId: guest?._id.toHexString(), invite: 'Maybe' },
           },
         },
         { new: true }
