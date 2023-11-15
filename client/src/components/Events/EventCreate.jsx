@@ -76,27 +76,27 @@ const EventCreate = () => {
                 <form onSubmit={handleSubmit}>
                     <div>
                         <label htmlFor="title" className="form-label">Event Title:</label>
-                        <input type="text" className="form-controls" id="title" name="title" value={title} required onChange={(e) => setTitle(e.target.value)} />
+                        <input type="text" className="form-controls styling-exclude" id="title" name="title" value={title} required onChange={(e) => setTitle(e.target.value)} />
                     </div>
                     <div>
                         <label htmlFor="date" className="form-label">Date:</label>
-                        <input type="date" className="form-controls" id="date" name="date" value={date} required onChange={(e) => setDate(e.target.value)} />
+                        <input type="date" className="form-controls styling-exclude" id="date" name="date" value={date} required onChange={(e) => setDate(e.target.value)} />
                     </div>
                     <div>
                         <label htmlFor="time" className="form-label">Time:</label>
-                        <input type="time" className="form-controls" id="time" name="time" value={time} required onChange={(e) => setTime(e.target.value)} />
+                        <input type="time" className="form-controls styling-exclude" id="time" name="time" value={time} required onChange={(e) => setTime(e.target.value)} />
                     </div>
                     <div>
                         <label htmlFor="location" className="form-label">Location:</label>
-                        <input type="text" className="form-controls" id="location" name="location" value={location} required onChange={(e) => setLocation(e.target.value)} />
+                        <input type="text" className="form-controls styling-exclude" id="location" name="location" value={location} required onChange={(e) => setLocation(e.target.value)} />
                     </div>
                     <div>
                         <label htmlFor="description" className="form-label">Description:</label>
-                        <textarea className="form-controls" id="description" name="description" rows="5" value={description} required onChange={(e) => setDescription(e.target.value)}></textarea>
+                        <textarea className="form-controls styling-exclude" id="description" name="description" rows="5" value={description} required onChange={(e) => setDescription(e.target.value)}></textarea>
                     </div>
                     <div>
                         <label htmlFor="guestEmail" className="form-label">Add Guest Email:</label>
-                        <input type="email" className="form-controls" id="guestEmail" placeholder="Enter Guest Email" value={guestEmail} required onChange={(e) => setGuestEmail(e.target.value)} />
+                        <input type="email" className="form-controls styling-exclude" id="guestEmail" placeholder="Enter Guest Email" value={guestEmail} required onChange={(e) => setGuestEmail(e.target.value)} />
                         <button type="button" className="btn btn-secondary mt-2" style={{ margin: '0px 0px 16px 0px', padding: '8px' }} onClick={handleEmailAddition}>Add Email</button>
                     </div>
                     <div>
