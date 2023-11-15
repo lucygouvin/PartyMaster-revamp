@@ -97,7 +97,7 @@ function Contact() {
           <form className='contact-us-form' onSubmit={handleFormSubmit}>
             <div className="form-group">
               <label htmlFor="email" className="form-label">Email</label>
-              <input type="email" className="form-control" required
+              <input type="email" className="form-control styling-exclude" required
                 value={email}
                 name="email"
                 onChange={handleInputChange}
@@ -105,7 +105,7 @@ function Contact() {
             </div>
             <div className="form-group">
               <label htmlFor="name" className="form-label">Name</label>
-              <input type="name" className="form-control" required
+              <input type="name" className="form-control styling-exclude" required
                 value={name}
                 name="name"
                 onChange={handleInputChange}
@@ -114,7 +114,7 @@ function Contact() {
             </div>
             <div className="form-group">
               <label htmlFor="message" className="form-label">Message</label>
-              <input type="message" className="form-control" required
+              <input type="message" className="form-control styling-exclude" required
                 value={message}
                 name="message"
                 onChange={handleInputChange}
