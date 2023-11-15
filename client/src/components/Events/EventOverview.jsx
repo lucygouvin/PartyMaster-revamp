@@ -237,9 +237,9 @@ const EventOverview = () => {
                     )}
                   </div>
                 </h2>
-                <p className="text-muted">
+                {/* <p className="text-muted">
                   <small>Hosted by: {hostID}</small>
-                </p>
+                </p> */}
                 <div className="time-section">
                 <div style={editStyles} className="eady-edit-override">
                   <EasyEdit
