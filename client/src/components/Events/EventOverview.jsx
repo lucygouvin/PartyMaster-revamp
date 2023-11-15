@@ -27,6 +27,7 @@ import EasyEdit from "react-easy-edit";
 const EventOverview = () => {
   // Get the logged in user
   const user = Auth.getProfile();
+  const { name } = user.data;
   // Get the event ID from the URL params
   const { eventId } = useParams();
   // Set up useState hooks for the data we'll need
@@ -237,9 +238,9 @@ const EventOverview = () => {
                     )}
                   </div>
                 </h2>
-                {/* <p className="text-muted">
-                  <small>Hosted by: {hostID}</small>
-                </p> */}
+                <p className="text-muted">
+                  <small>Hosted by: {name}</small>
+                </p>
                 <div className="time-section">
                 <div style={editStyles} className="eady-edit-override">
                   <EasyEdit
