@@ -29,8 +29,8 @@ Instructions and examples for use can be found below:
 ![sign-up page demo](assets/sign-up-page.img.png)
 ![login page demo](assets/login-page.img.png)
 ![dashboard demo](assets/dashboard-demo.img.png)
-![create event page demo](assets/create-event.img.png)
-![event details page demo](assets/event-details-page.img.png)
+![create event page demo](assets/create-event-demo.img.png)
+![event details page demo](assets/event-details.img.png)
 
 ## License
 
