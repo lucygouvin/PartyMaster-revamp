@@ -55,7 +55,7 @@ function Header() {
       </div>
 
       <div className="header-text">
-        <h1 className={isHovered ? 'hide' : ''}>Welcome to PartyMaster 2.0</h1>
+        <h1 className={isHovered ? 'hide' : ''}>Welcome to PartyMaster</h1>
         <h1 className={isHovered ? '' : 'hide'}>Your go-to for planning and managing social events.</h1>
       </div>
 
