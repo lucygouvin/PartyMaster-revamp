@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './styles/Header.css';
 import Auth from "../src/utils/auth";
-]//force rebuild again again
+//force rebuild again again
 function Header() {
   const [isHovered, setIsHovered] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
