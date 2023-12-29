@@ -1,6 +1,7 @@
 # PartyMaster
 
 ## Description
+This fork represents ongoing additional work done by Lucy Gouvin. This work is building off a group project, called PartyMaster, originally created as the final project for a Full Stack Development bootcamp.
 
 PartyMaster is a dynamic MERN Stack single-page application, designed to streamline party planning and coordination. This platform simplifies the party organization process by eliminating the need for multiple communication channels like group chats and social media. Here's how PartyMaster stands out:
 
