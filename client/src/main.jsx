@@ -12,6 +12,9 @@ import EventOverview from './components/Events/EventOverview.jsx';
 import Invitation from './components/Invitations/Invitations.jsx';
 import AboutPage from './components/Help/AboutPage.jsx';
 
+import './styles/index.css'
+
+
 const router = createBrowserRouter([
   {
     path: '/',

@@ -1,18 +1,15 @@
 /* Header.css */
 
 .header {
-  background-color: #2c3e50;
-  color: #ecf0f1;
+  background-color: var(--dark-color);
+  color: var(--light-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
   position: relative;
   padding: 30px;
-  /* border-bottom: 3px solid #3498db;  */
-  border-bottom: 3px solid rgb(17, 38, 109);
-  transition: background-color 0.3s, box-shadow 0.3s; 
-  /* overflow: hidden; */
+
 }
 
 .menu-icon {
@@ -40,7 +37,7 @@
 .header-text {
   flex-grow: 1; 
   text-align: center;
-  font-family: 'Arial', sans-serif; 
+  font-size: 24px;
 }
 
 .header h1 {
@@ -48,11 +45,6 @@
   padding: 0;
   font-size: 1.5em; 
 }
-
-.header .hide {
-  display: none;
-}
-
 .dropdown-content {
   position: absolute;
   top: 100%; 
