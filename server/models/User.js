@@ -1,7 +1,7 @@
-const { Schema, model } = require('mongoose');
+const {Schema, model} = require('mongoose');
 const bcrypt = require('bcrypt');
 
-const userSchema = new Schema({
+const userSchema = new Schema ({
   name: {
     type: String,
     required: true,
@@ -24,12 +24,6 @@ const userSchema = new Schema({
       'invalid password',
     ], // spec char, numb, capital
   },
-  event: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Event',
-    },
-  ],
 });
 
 userSchema.pre('save', async function (next) {

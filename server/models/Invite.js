@@ -1,21 +1,19 @@
-const { Schema } = require('mongoose');
+const { Schema, Types } = require('mongoose');
 
 const inviteSchema = new Schema({
+  inviteId: {
+    type: Schema.Types.ObjectId,
+    default: () => new Types.ObjectId(),
+  },
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    // required: true,
   },
   invite: {
     type: String,
-    enum: ['Yes', 'No', 'Maybe'],
     required: true,
     default: 'Maybe',
   },
-  // notified: { A boolean to check if a user has been notified or not, stretch goal
-  //     type: Boolean,
-  //     default: false
-  // }
 
   // need time for comment? maybe add notification?
 });

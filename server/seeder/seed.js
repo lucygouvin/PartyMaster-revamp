@@ -1,17 +1,26 @@
 const db = require('../config/connection');
-const { User } = require('../models');
-const modelSeeds = require('./modelSeeds.json');
+const { User, Event } = require('../models');
+const eventData = require('./eventSeeds.json');
+const userData = require('./userSeeds.json')
 const cleanDB = require('./cleanDB');
 
 db.once('open', async () => {
-  try {
-    await cleanDB('User', 'modelSeeds');
+  await cleanDB("Event", "events");
+  await cleanDB("User", "users");
 
-    await User.create(modelSeeds);
+  const events = await Event.create(eventData);
+  const users = await User.create(userData);
 
-    console.log('all done!');
-    process.exit(0);
-  } catch (err) {
-    throw err;
+  for (const newEvent of events) {
+    const temp = users[Math.floor(Math.random() * users.length)];
+  
+    temp.hostID = temp._id;
+    console.log(newEvent)
+    await newEvent.save();
+
   }
+
+  console.log('all done!');
+  process.exit(0);
+ 
 });
