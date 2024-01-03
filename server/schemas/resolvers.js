@@ -1,18 +1,16 @@
 const { Event, User } = require("../models");
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const resolvers = {
   Query: {
     events: async () => {
-      const test = await Event.find().populate("hostID");
-
-      console.log(test[3]);
-      return test;
+      const event = await Event.find().populate({path : "hostID"}).populate({path: "comment", populate:{path: 'userId'}});
+      return event;
     },
 
-    event: async(parent, input) => {
-      const event = await Event.findById(input.id).populate("hostID")
-      return event
+    event: async (parent, input) => {
+      const event = await Event.findById(input.id).populate({path : "hostID"}).populate({path: "comment", populate:{path: 'userId'}});
+      return event;
     },
 
     users: async () => {
@@ -27,11 +25,8 @@ const resolvers = {
 
   Mutation: {
     addEvent: async (parent, input) => {
-      console.log(input)
-      console.log(input.hostID._id)
-      const id = new mongoose.Types.ObjectId(input.hostID._id)
-      console.log(typeof id)
-      const user = await User.findById(id)
+      const id = new mongoose.Types.ObjectId(input.hostID._id);
+      const user = await User.findById(id);
       const event = await Event.create({
         hostID: user,
         title: input.title,
@@ -39,11 +34,35 @@ const resolvers = {
         date: input.date,
         time: input.time,
         location: input.location,
+      });
+      return event;
+    },
 
-      })
-      return event
-    }
-  }
+    addComment: async (parent, input) => {
+      // console.log(input)
+      const userId = new mongoose.Types.ObjectId(input.userID._id);
+      const user = await User.findById(userId);
+console.log("USER")
+      console.log(user.name)
+      const test = await Event.findById(input.eventID);
+      // console.log(test)
+      const event = await Event.findOneAndUpdate(
+        { _id: input.eventID },
+        {
+          $addToSet: {
+            comment: {
+              userId: user,
+              content: input.content.content,
+            },
+          },
+        },
+        { new: true }
+      ).populate({path : "hostID"}).populate({path: "comment", populate:{path: 'userId'}});
+      // console.log("RESULT")
+      // console.log(event)
+      return event;
+    },
+  },
 };
 
 module.exports = resolvers;

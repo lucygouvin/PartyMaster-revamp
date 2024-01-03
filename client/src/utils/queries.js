@@ -2,9 +2,9 @@ import {gql} from '@apollo/client';
 
 export const EVENTS = gql `
 query Events {
-  events{
+  events {
     _id
-    hostID{
+    hostID {
       _id
       name
       email
@@ -15,6 +15,44 @@ query Events {
     date
     time
     location
+    comment {
+      _id
+      userId {
+        _id
+        name
+        email
+        password
+      }
+      content
+    }
+  }
+}`;
+
+export const EVENT = gql `
+query Event($eventId: ID!) {
+  event(id: $eventId) {
+    _id
+    hostID {
+      _id
+      name
+      email
+      password
+    }
+    title
+    description
+    date
+    time
+    location
+    comment {
+      _id
+      userId {
+        _id
+        name
+        email
+        password
+      }
+      content
+    }
   }
 }`;
 

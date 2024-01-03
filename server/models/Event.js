@@ -1,5 +1,6 @@
 const { Schema, model } = require("mongoose");
-const User = require('./User')
+const User = require('./User');
+const commentSchema = require("./Comment");
 
 const eventSchema = new Schema({
   hostID: {
@@ -27,6 +28,7 @@ const eventSchema = new Schema({
     type: String,
     required: true,
   },
+  comment: [commentSchema],
 });
 
 const Event = model("Event", eventSchema);
