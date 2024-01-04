@@ -1,15 +1,21 @@
-const { Event, User } = require("../models");
 const mongoose = require("mongoose");
+const { Event, User } = require("../models");
 
 const resolvers = {
   Query: {
     events: async () => {
-      const event = await Event.find().populate({path : "hostID"}).populate({path: "comment", populate:{path: 'userId'}});
+      const event = await Event.find()
+        .populate({ path: "hostID" })
+        .populate({ path: "comment", populate: { path: "userId" } })
+        .populate({ path: "RSVP", populate: { path: "userId" } });
       return event;
     },
 
     event: async (parent, input) => {
-      const event = await Event.findById(input.id).populate({path : "hostID"}).populate({path: "comment", populate:{path: 'userId'}});
+      const event = await Event.findById(input.id)
+        .populate({ path: "hostID" })
+        .populate({ path: "comment", populate: { path: "userId" } })
+        .populate({ path: "RSVP", populate: { path: "userId" } });
       return event;
     },
 
@@ -35,17 +41,34 @@ const resolvers = {
         time: input.time,
         location: input.location,
       });
+
+      const guestArray = input.guestList.split(",");
+
+      guestArray.forEach(async (invitee) => {
+        invitee.trim();
+        const guest = await User.findOne({ email: invitee });
+        await Event.findOneAndUpdate(
+          { _id: event._id },
+          {
+            $addToSet: {
+              RSVP: {
+                userId: guest,
+                invite: "Not Responded",
+              },
+            },
+          },
+          { new: true }
+        );
+        // TODO: Add to a guest and host event lists on the User model
+      });
+
       return event;
     },
 
     addComment: async (parent, input) => {
-      // console.log(input)
       const userId = new mongoose.Types.ObjectId(input.userID._id);
       const user = await User.findById(userId);
-console.log("USER")
-      console.log(user.name)
       const test = await Event.findById(input.eventID);
-      // console.log(test)
       const event = await Event.findOneAndUpdate(
         { _id: input.eventID },
         {
@@ -57,9 +80,10 @@ console.log("USER")
           },
         },
         { new: true }
-      ).populate({path : "hostID"}).populate({path: "comment", populate:{path: 'userId'}});
-      // console.log("RESULT")
-      // console.log(event)
+      )
+        .populate({ path: "hostID" })
+        .populate({ path: "comment", populate: { path: "userId" } })
+        .populate({ path: "RSVP", populate: { path: "userId" } });
       return event;
     },
   },

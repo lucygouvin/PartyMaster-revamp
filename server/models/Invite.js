@@ -1,18 +1,15 @@
 const { Schema, Types } = require('mongoose');
 
 const inviteSchema = new Schema({
-  inviteId: {
-    type: Schema.Types.ObjectId,
-    default: () => new Types.ObjectId(),
-  },
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
   },
   invite: {
     type: String,
+    enum: ['Yes', 'No', 'Maybe', 'Not Responded'],
     required: true,
-    default: 'Maybe',
+    default: 'Not Responded',
   },
 
   // need time for comment? maybe add notification?
