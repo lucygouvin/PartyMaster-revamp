@@ -7,7 +7,8 @@ const resolvers = {
       const event = await Event.find()
         .populate({ path: "hostID" })
         .populate({ path: "comment", populate: { path: "userId" } })
-        .populate({ path: "RSVP", populate: { path: "userId" } });
+        .populate({ path: "RSVP", populate: { path: "userId" } })
+        .populate({ path: "contribution", populate: { path: "userId"}});
       return event;
     },
 
@@ -15,7 +16,8 @@ const resolvers = {
       const event = await Event.findById(input.id)
         .populate({ path: "hostID" })
         .populate({ path: "comment", populate: { path: "userId" } })
-        .populate({ path: "RSVP", populate: { path: "userId" } });
+        .populate({ path: "RSVP", populate: { path: "userId" } })
+        .populate({ path: "contribution", populate: { path: "userId"}});
       return event;
     },
 
@@ -68,7 +70,6 @@ const resolvers = {
     addComment: async (parent, input) => {
       const userId = new mongoose.Types.ObjectId(input.userID._id);
       const user = await User.findById(userId);
-      const test = await Event.findById(input.eventID);
       const event = await Event.findOneAndUpdate(
         { _id: input.eventID },
         {
@@ -84,6 +85,27 @@ const resolvers = {
         .populate({ path: "hostID" })
         .populate({ path: "comment", populate: { path: "userId" } })
         .populate({ path: "RSVP", populate: { path: "userId" } });
+      return event;
+    },
+
+    addContribution: async (parent, input) => {
+      const user = await User.findById(input.userID);
+      const event = await Event.findOneAndUpdate(
+        { _id: input.eventID },
+        {
+          $addToSet: {
+            contribution: {
+              userId: user,
+              item: input.contribution.item,
+            },
+          },
+        },
+        { new: true }
+      )
+        .populate({ path: "hostID" })
+        .populate({ path: "comment", populate: { path: "userId" } })
+        .populate({ path: "RSVP", populate: { path: "userId" } })
+        .populate({ path: "contribution", populate: { path: "userId"}});
       return event;
     },
   },

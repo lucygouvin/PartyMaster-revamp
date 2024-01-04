@@ -26,7 +26,7 @@ const userSchema = new Schema(
       ], // spec char, numb, capital
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 userSchema.pre("save", async function (next) {

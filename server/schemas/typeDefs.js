@@ -9,6 +9,8 @@ type Event{
   location: String!
   comment: [Comment]
   RSVP: [Invite]
+  potluck: Boolean
+  contribution: [Contribution]
 }
 
 type User{
@@ -37,6 +39,17 @@ type Invite{
   userId: User
   invite: String!
 }
+
+type Contribution{
+  _id: ID!
+  userId: User
+  item: String!
+}
+
+input ContributionInput{
+  item: String!
+}
+
 type Query{
   events: [Event]
   event(id:ID!): Event
@@ -47,7 +60,7 @@ type Query{
 type Mutation{
   addEvent(hostID: UserInput!, title: String!, description: String!, date: String!, time: String!, location: String!, guestList: String): Event
   addComment(eventID:ID!, userID:UserInput!, content:CommentInput!):Event
-
+  addContribution(eventID: ID!, userID:UserInput!, contribution:ContributionInput!):Event
 }
 
 `;

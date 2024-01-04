@@ -35,6 +35,17 @@ query Events {
       }
       invite
     }
+    potluck
+    contribution {
+      _id
+      userId {
+        _id
+        name
+        email
+        password
+      }
+      item
+    }
   }
 }`;
 
@@ -72,6 +83,17 @@ query Event($eventId: ID!) {
         password
       }
       invite
+    }
+    potluck
+    contribution {
+      _id
+      userId {
+        _id
+        name
+        email
+        password
+      }
+      item
     }
   }
 }`;

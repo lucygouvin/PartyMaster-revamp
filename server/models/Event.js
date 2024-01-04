@@ -1,7 +1,8 @@
 const { Schema, model } = require("mongoose");
 const User = require("./User");
 const commentSchema = require("./Comment");
-const inviteSchema = require("./Invite")
+const inviteSchema = require("./Invite");
+const contributionSchema = require("./Contribution");
 
 const eventSchema = new Schema(
   {
@@ -32,9 +33,39 @@ const eventSchema = new Schema(
     },
     comment: [commentSchema],
     RSVP: [inviteSchema],
+    potluck: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
+    contribution: [contributionSchema],
   },
-  { timestamps: true }
+  { timestamps: true },
+  {
+    toJSON: {
+      virtuals: true,
+    },
+    toObject: {
+      virtuals: true,
+    },
+  }
 );
+// TODO: Consider reworking with virtuals to move calculation to server
+eventSchema.virtual("rsvpMaybe").get(function () {
+  return this.RSVP.filter((rsvp) => rsvp.invite === "Maybe");
+});
+eventSchema.virtual("rsvpYes").get(function () {
+  return this.RSVP.filter((rsvp) => rsvp.invite === "Yes");
+});
+eventSchema.virtual("rsvpNo").get(function () {
+  return this.RSVP.filter((rsvp) => rsvp.invite === "No");
+});
+eventSchema.virtual("rsvpNotResponded").get(function () {
+  return this.RSVP.filter((rsvp) => rsvp.invite === "Not Responded");
+});
+eventSchema.virtual("guestNumber").get(function () {
+  return this.RSVP.length;
+});
 
 const Event = model("Event", eventSchema);
 

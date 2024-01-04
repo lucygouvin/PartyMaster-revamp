@@ -13,6 +13,8 @@ const inviteSchema = new Schema({
   },
 
   // need time for comment? maybe add notification?
-});
+},
+{timestamps: true},
+);
 
 module.exports = inviteSchema;
