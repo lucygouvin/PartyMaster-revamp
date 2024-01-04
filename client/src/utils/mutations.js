@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 export const ADD_EVENT = gql `
-mutation AddEvent($hostId: UserInput!, $title: String!, $description: String!, $date: String!, $time: String!, $location: String!) {
-  addEvent(hostID: $hostId, title: $title, description: $description, date: $date, time: $time, location: $location) {
+mutation AddEvent($hostId: UserInput!, $title: String!, $description: String!, $date: String!, $time: String!, $location: String!, $guestList: String) {
+  addEvent(hostID: $hostId, title: $title, description: $description, date: $date, time: $time, location: $location, guestList: $guestList) {
     _id
     hostID {
       _id
@@ -14,7 +14,7 @@ mutation AddEvent($hostId: UserInput!, $title: String!, $description: String!, $
     description
     date
     time
-    location
+    location 
   }
 }
 `;
@@ -43,6 +43,16 @@ mutation AddComment($eventId: ID!, $userId: UserInput!, $content: CommentInput!)
         password
       }
       content
+    }
+    RSVP {
+      _id
+      userId {
+        _id
+        name
+        email
+        password
+      }
+      invite
     }
   }
 }

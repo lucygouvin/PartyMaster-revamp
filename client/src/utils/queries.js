@@ -25,6 +25,16 @@ query Events {
       }
       content
     }
+    RSVP {
+      _id
+      userId {
+        _id
+        name
+        email
+        password
+      }
+      invite
+    }
   }
 }`;
 
@@ -52,6 +62,16 @@ query Event($eventId: ID!) {
         password
       }
       content
+    }
+    RSVP {
+      _id
+      userId {
+        _id
+        name
+        email
+        password
+      }
+      invite
     }
   }
 }`;
