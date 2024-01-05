@@ -1,14 +1,13 @@
-const { Schema, model } = require("mongoose");
-const User = require("./User");
-const commentSchema = require("./Comment");
-const inviteSchema = require("./Invite");
-const contributionSchema = require("./Contribution");
+const { Schema, model } = require('mongoose');
+const commentSchema = require('./Comment');
+const inviteSchema = require('./Invite');
+const contributionSchema = require('./Contribution');
 
 const eventSchema = new Schema(
   {
     hostID: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       // default: '65933a0e32a8085eda2a3516',
     },
     title: {
@@ -51,22 +50,22 @@ const eventSchema = new Schema(
   }
 );
 // TODO: Consider reworking with virtuals to move calculation to server
-eventSchema.virtual("rsvpMaybe").get(function () {
-  return this.RSVP.filter((rsvp) => rsvp.invite === "Maybe");
+eventSchema.virtual('rsvpMaybe').get(function () {
+  return this.RSVP.filter((rsvp) => rsvp.invite === 'Maybe');
 });
-eventSchema.virtual("rsvpYes").get(function () {
-  return this.RSVP.filter((rsvp) => rsvp.invite === "Yes");
+eventSchema.virtual('rsvpYes').get(function () {
+  return this.RSVP.filter((rsvp) => rsvp.invite === 'Yes');
 });
-eventSchema.virtual("rsvpNo").get(function () {
-  return this.RSVP.filter((rsvp) => rsvp.invite === "No");
+eventSchema.virtual('rsvpNo').get(function () {
+  return this.RSVP.filter((rsvp) => rsvp.invite === 'No');
 });
-eventSchema.virtual("rsvpNotResponded").get(function () {
-  return this.RSVP.filter((rsvp) => rsvp.invite === "Not Responded");
+eventSchema.virtual('rsvpNotResponded').get(function () {
+  return this.RSVP.filter((rsvp) => rsvp.invite === 'Not Responded');
 });
-eventSchema.virtual("guestNumber").get(function () {
+eventSchema.virtual('guestNumber').get(function () {
   return this.RSVP.length;
 });
 
-const Event = model("Event", eventSchema);
+const Event = model('Event', eventSchema);
 
 module.exports = Event;

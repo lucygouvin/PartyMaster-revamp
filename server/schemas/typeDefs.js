@@ -15,9 +15,11 @@ type Event{
 
 type User{
   _id: ID
-  name: String!
+  name: String
   email: String!
-  password: String!
+  password: String
+  event: [Event]
+  prevSignIn: Boolean
 }
 
 input UserInput{
@@ -50,6 +52,11 @@ input ContributionInput{
   item: String!
 }
 
+type Auth {
+  token: ID
+  user: User
+}
+
 type Query{
   events: [Event]
   event(id:ID!): Event
@@ -58,6 +65,8 @@ type Query{
 }
 
 type Mutation{
+  addUser(name: String, email: String!, password: String, params: String!): Auth
+  login(email: String!, password: String!): Auth
   addEvent(hostID: UserInput!, title: String!, description: String!, date: String!, time: String!, location: String!, guestList: String): Event
   addComment(eventID:ID!, userID:UserInput!, content:CommentInput!):Event
   addContribution(eventID: ID!, userID:UserInput!, contribution:ContributionInput!):Event

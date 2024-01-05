@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 const models = require('../models');
 const db = require('../config/connection');
 
