@@ -1,7 +1,5 @@
-const mongoose = require("mongoose");
 const { Event, User } = require("../models");
 const { signToken, AuthenticationError } = require("../utils/auth");
-const { findOneAndDelete } = require("../models/Event");
 
 const resolvers = {
   Query: {
@@ -75,7 +73,7 @@ const resolvers = {
     },
 
     deleteUser: async (parent, args) => {
-      await User.findOneAndDelete({_id:args.id})
+      return await User.findOneAndDelete({ _id: args.id });
     },
 
     // TODO Stretch: Edit user
@@ -84,14 +82,14 @@ const resolvers = {
     // TODO Stretch: Delete contrib
     // TODO Stretch: Edit contrib
     // TODO: Update event
-    // TODO: Delete event
     // TODO: Add guest
     // TODO: Remove guest
     // TODO: Update RSVP
 
+    // EVENT MUTATIONS
+
     addEvent: async (parent, args) => {
-      const id = new mongoose.Types.ObjectId(args.hostID._id);
-      const user = await User.findById(id);
+      const user = await User.findById(args.hostID._id);
       const event = await Event.create({
         hostID: user,
         title: args.title,
@@ -124,9 +122,12 @@ const resolvers = {
       return event;
     },
 
+    deleteEvent: async (parent, args) => {
+      return await Event.findOneAndDelete({ _id: args.id });
+    },
+
     addComment: async (parent, args) => {
-      const userId = new mongoose.Types.ObjectId(args.userID._id);
-      const user = await User.findById(userId);
+      const user = await User.findById(args.userID._id);
       const event = await Event.findOneAndUpdate(
         { _id: args.eventID },
         {
