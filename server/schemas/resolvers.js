@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { Event, User } = require("../models");
 const { signToken, AuthenticationError } = require("../utils/auth");
+const { findOneAndDelete } = require("../models/Event");
 
 const resolvers = {
   Query: {
@@ -39,27 +40,6 @@ const resolvers = {
 
   Mutation: {
     // USER MUTATIONS
-
-    addUser: async (parent, args) => {
-      console.log("REACHED");
-      console.log(args);
-      // If this mutation was called from /signup, then sign the user in automatically
-      const login = args.params === "signup";
-      const user = await User.create({
-        name: args.name,
-        email: args.email,
-        password: args.password,
-        prevSignIn: login,
-      });
-      console.log(user);
-      if (login) {
-        const token = signToken(user);
-        return { token, user };
-      } else {
-        return { user };
-      }
-    },
-
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
 
@@ -78,8 +58,26 @@ const resolvers = {
       return { token, user };
     },
 
-    // TODO: Log in
-    // TODO: Delete user
+    addUser: async (parent, args) => {
+      // If this mutation was called from /signup, then sign the user in automatically
+      const login = args.params === "signup";
+      const user = await User.create({
+        name: args.name,
+        email: args.email,
+        password: args.password,
+        prevSignIn: login,
+      });
+      if (login) {
+        const token = signToken(user);
+        return { token, user };
+      }
+      return { user };
+    },
+
+    deleteUser: async (parent, args) => {
+      await User.findOneAndDelete({_id:args.id})
+    },
+
     // TODO Stretch: Edit user
     // TODO: Delete comment
     // TODO: Edit comment

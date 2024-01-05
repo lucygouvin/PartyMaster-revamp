@@ -12,6 +12,13 @@ mutation AddUser($email: String!, $name: String, $password: String, $params: Str
   }
 }`;
 
+export const DELETE_USER = gql `
+mutation DeleteUser($deleteUserId: ID!) {
+  deleteUser(id: $deleteUserId) {
+    _id
+  }
+}`;
+
 export const LOGIN = gql `
 mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
