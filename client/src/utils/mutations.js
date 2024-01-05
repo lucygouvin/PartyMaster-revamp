@@ -52,6 +52,13 @@ mutation AddEvent($hostId: UserInput!, $title: String!, $description: String!, $
 }
 `;
 
+export const DELETE_EVENT = gql `
+mutation DeleteEvent($deleteEventId: ID!) {
+  deleteEvent(id: $deleteEventId) {
+    _id
+  }
+}`;
+
 export const ADD_COMMENT = gql `
 mutation AddComment($eventId: ID!, $userId: UserInput!, $content: CommentInput!) {
   addComment(eventID: $eventId, userID: $userId, content: $content) {
@@ -90,4 +97,13 @@ mutation AddComment($eventId: ID!, $userId: UserInput!, $content: CommentInput!)
   }
 }
 `;
+
+export const DELETE_COMMENT = gql `
+mutation DeleteComment($eventId: ID!, $commentId: ID!) {
+  deleteComment(eventId: $eventId, commentId: $commentId) {
+    comment {
+      _id
+    }
+  }
+}`;
 

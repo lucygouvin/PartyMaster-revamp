@@ -126,6 +126,7 @@ const resolvers = {
       return await Event.findOneAndDelete({ _id: args.id });
     },
 
+    // COMMENT MUTATIONS
     addComment: async (parent, args) => {
       const user = await User.findById(args.userID._id);
       const event = await Event.findOneAndUpdate(
@@ -145,6 +146,14 @@ const resolvers = {
         .populate({ path: "RSVP", populate: { path: "userId" } });
       return event;
     },
+
+    deleteComment: async (parent, args) => {
+      return Event.findOneAndUpdate(
+        { _id: args.eventId },
+        { $pull: { comment: { _id: args.commentId } } },
+        { new: true }
+      );
+  },
 
     addContribution: async (parent, args) => {
       const user = await User.findById(args.userID);

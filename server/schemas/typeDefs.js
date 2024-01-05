@@ -71,6 +71,7 @@ type Mutation{
   addEvent(hostID: UserInput!, title: String!, description: String!, date: String!, time: String!, location: String!, guestList: String): Event
   deleteEvent(id:ID!): Event
   addComment(eventID:ID!, userID:UserInput!, content:CommentInput!):Event
+  deleteComment(eventId:ID!, commentId: ID!): Event
   addContribution(eventID: ID!, userID:UserInput!, contribution:ContributionInput!):Event
 }
 
