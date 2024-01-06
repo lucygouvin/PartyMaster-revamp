@@ -107,3 +107,16 @@ mutation DeleteComment($eventId: ID!, $commentId: ID!) {
   }
 }`;
 
+export const EDIT_COMMENT = gql `
+mutation EditComment($eventId: ID!, $comment: CommentInput!) {
+  editComment(eventId: $eventId, comment: $comment) {
+    comment {
+      _id
+      content
+      userId {
+        _id
+      }
+    }
+  }
+}`;
+

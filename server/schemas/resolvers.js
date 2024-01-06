@@ -6,19 +6,19 @@ const resolvers = {
     // EVENT QUERIES
     events: async () => {
       const event = await Event.find()
-        .populate({ path: 'hostID' })
-        .populate({ path: 'comment', populate: { path: 'userId' } })
-        .populate({ path: 'RSVP', populate: { path: 'userId' } })
-        .populate({ path: 'contribution', populate: { path: 'userId' } });
+        .populate({ path: "hostID" })
+        .populate({ path: "comment", populate: { path: "userId" } })
+        .populate({ path: "RSVP", populate: { path: "userId" } })
+        .populate({ path: "contribution", populate: { path: "userId" } });
       return event;
     },
 
     event: async (parent, args) => {
       const event = await Event.findById(args.id)
-        .populate({ path: 'hostID' })
-        .populate({ path: 'comment', populate: { path: 'userId' } })
-        .populate({ path: 'RSVP', populate: { path: 'userId' } })
-        .populate({ path: 'contribution', populate: { path: 'userId' } });
+        .populate({ path: "hostID" })
+        .populate({ path: "comment", populate: { path: "userId" } })
+        .populate({ path: "RSVP", populate: { path: "userId" } })
+        .populate({ path: "contribution", populate: { path: "userId" } });
       return event;
     },
 
@@ -58,7 +58,7 @@ const resolvers = {
 
     addUser: async (parent, args) => {
       // If this mutation was called from /signup, then sign the user in automatically
-      const login = args.params === 'signup';
+      const login = args.params === "signup";
       const user = await User.create({
         name: args.name,
         email: args.email,
@@ -95,7 +95,7 @@ const resolvers = {
         location: args.location,
       });
 
-      const guestArray = args.guestList.split(',');
+      const guestArray = args.guestList.split(",");
 
       guestArray.forEach(async (invitee) => {
         invitee.trim();
@@ -106,7 +106,7 @@ const resolvers = {
             $addToSet: {
               RSVP: {
                 userId: guest,
-                invite: 'Not Responded',
+                invite: "Not Responded",
               },
             },
           },
@@ -115,6 +115,20 @@ const resolvers = {
         // TODO: Add to a guest and host event lists on the User model
       });
 
+      return event;
+    },
+
+    editEvent: async (parent, args, context) => {
+      const event = await Event.findOneAndUpdate(
+        { _id: args._id },
+        {
+          $set: args,
+        },
+        {
+          runValidators: true,
+          new: true,
+        }
+      );
       return event;
     },
 
@@ -136,9 +150,9 @@ const resolvers = {
         },
         { new: true }
       )
-        .populate({ path: 'hostID' })
-        .populate({ path: 'comment', populate: { path: 'userId' } })
-        .populate({ path: 'RSVP', populate: { path: 'userId' } });
+        .populate({ path: "hostID" })
+        .populate({ path: "comment", populate: { path: "userId" } })
+        .populate({ path: "RSVP", populate: { path: "userId" } });
       return event;
     },
 
@@ -149,10 +163,10 @@ const resolvers = {
         { new: true }
       ),
 
-   editComment: async (parent, args) => {
+    editComment: async (parent, args) => {
       return Event.findOneAndUpdate(
-        { _id: args.eventId, 'comment._id': args.comment._id },
-        { $set: { 'comment.$.content': args.comment.content } },
+        { _id: args.eventId, "comment._id": args.comment._id },
+        { $set: { "comment.$.content": args.comment.content } },
         { new: true }
       );
     },
@@ -173,10 +187,10 @@ const resolvers = {
         },
         { new: true }
       )
-        .populate({ path: 'hostID' })
-        .populate({ path: 'comment', populate: { path: 'userId' } })
-        .populate({ path: 'RSVP', populate: { path: 'userId' } })
-        .populate({ path: 'contribution', populate: { path: 'userId' } });
+        .populate({ path: "hostID" })
+        .populate({ path: "comment", populate: { path: "userId" } })
+        .populate({ path: "RSVP", populate: { path: "userId" } })
+        .populate({ path: "contribution", populate: { path: "userId" } });
       return event;
     },
   },

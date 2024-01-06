@@ -70,6 +70,7 @@ type Mutation{
   addUser(name: String, email: String!, password: String, params: String!): Auth
   deleteUser(id:ID!): User
   addEvent(hostID: UserInput!, title: String!, description: String!, date: String!, time: String!, location: String!, guestList: String): Event
+  editEvent(_id: ID!, title: String, description:String, date: String, time: String, location: String, potluck: Boolean): Event
   deleteEvent(id:ID!): Event
   addComment(eventID:ID!, userID:UserInput!, content:CommentInput!):Event
   deleteComment(eventId:ID!, commentId: ID!): Event
