@@ -1,56 +1,45 @@
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
 import '../../styles/LandingPage.css';
-import exampleImage from '../../../../assets/create-new-event.png';
-import exampleImage2 from '../../../../assets/checklist.png';
-import exampleImage3 from '../../../../assets/contributions.png';
-import { useQuery } from '@apollo/client';
-import { USERS } from '../../utils/queries';
+import FeatureCard from './FeatureCard';
 
-export function LandingPage(props) {
-
-  const { data, loading, error } = useQuery(USERS)
-  const userData = data?.users || []
-
-  if (loading) return <h2>Loading....</h2>
-
+export function LandingPage() {
   return (
     <div className="landing-page">
       <main className="main-content">
-        {/* <div> {userData[0].name} </div> */}
-        <section className="features-overview">
-          <h1 className="landing-page-header">What Can Party Master Do For You?</h1>
-          <div className="feature">
-            <img className='landing-icon' src={exampleImage} alt="Description" style={{ height: '200px', }} />
-            <div style={{ justifyContent: 'space-between', }}>
-              <h2>Plan Events Effortlessly</h2>
-              <p>Create events, manage guest lists, and coordinate contributions all in one place.</p>
-            </div>
-          </div>
-          <div className="feature">
-            <img className='landing-icon' src={exampleImage2} alt="Description" style={{ height: '200px', }} />
-            <div style={{ justifyContent: 'space-between', }}>
-              <h2>Stay Connected</h2>
-              <p>Communicate with guests, send invitations, and receive RSVPs in real-time.</p>
-            </div>
-          </div>
-          <div className="feature">
-            <img className='landing-icon' src={exampleImage3} alt="Description" style={{ height: '200px', }} />
-            <div style={{ justifyContent: 'space-between', }}>
-              <h2>Plan Events Effortlessly</h2>
-              <p>Create events, manage guest lists, and coordinate contributions all in one place.</p>
-            </div>
-          </div>
-          <a href="/signup" className="start-button">Get Started</a>
-        </section>
-        {/* <section className="features-overview">
-        <div className="feature">
-          <h2>Sign Up</h2>
+        <h1 className="landing-page-header">What Will You Plan?</h1>
+        <div className="features-overview">
+          <FeatureCard feature={{
+            image: "./create-new-event.png",
+            alt:"Description",
+            title:"Create Events",
+            subheading:"Effortlessly plan events of any size",
+            text:"From boardgame night to BBQ bash, it's sure to be a hit!"
+          }} />
+           <FeatureCard feature={{
+            image: "./invite.png",
+            alt:"Description",
+            title:"Invite Your Friends",
+            subheading:"The more the merrier!",
+            text:"Your guests can send RSVPs from the app"
+          }} />
+           <FeatureCard feature={{
+            image: "./bring.png",
+            alt:"Description",
+            title:`"Can I Bring Anything?"`,
+            subheading:"Easily manage who's bringing what",
+            text:"Let your guests volunteer to bring things -- or let them know you've got it covered."
+          }} />
+           <FeatureCard feature={{
+            image: "./contact.jpeg",
+            alt:"Description",
+            title:"Keep In Contact",
+            subheading:"Post updates and ask questions",
+            text:"Add comments to build the excitement and share information"
+          }} />
         </div>
-        <div className="feature">
-          <h2>Sign In</h2>
-          <p>Communicate with guests, send invitations, and receive RSVPs in real-time.</p>
-        </div>
-      </section> */}
+        
+        <a href="/signup" className="start-button">Join the Party!</a>
+        {/* <button className='start-button'>Join the party</button> */}
       </main>
     </div>
   );

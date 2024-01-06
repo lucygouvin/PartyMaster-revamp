@@ -1,0 +1,60 @@
+:root {
+    --light-color: #F4F4F7;
+    --dark-color: #7B296F;
+    --light-accent: #E4B294;
+    --dark-accent: #329FE6;
+    --color-pop: #EA7B76;
+    --font-stack: 'Arial', sans-serif;
+    --border-radius: 15px;
+    --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+}
+
+* {
+    font-family: 'Heebo', sans-serif;
+}
+
+main {
+    /* border: 1px solid red; */
+    width: 55rem;
+    margin: auto;
+}
+
+.cta-button,
+.cta-button:hover,
+.start-button {
+    background-color: var(--dark-accent);
+    color: var(--light-color);
+}
+
+/* button {
+    width: 25%;
+    padding: 25px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 22px;
+    box-sizing: border-box;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+} */
+
+.start-button {
+    width: 25%;
+    padding: 25px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 22px;
+    box-sizing: border-box;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+}
+
+@media screen and (max-width: 890px){
+    main{
+        max-width: 95%;
+    }
+}
