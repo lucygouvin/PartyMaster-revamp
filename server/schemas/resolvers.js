@@ -77,7 +77,6 @@ const resolvers = {
     // TODO Stretch: Edit user
     // TODO Stretch: Delete contrib
     // TODO Stretch: Edit contrib
-    // TODO: Update event
     // TODO: Add guest
     // TODO: Remove guest
     // TODO: Update RSVP
@@ -91,15 +90,29 @@ const resolvers = {
         title: args.title,
         description: args.description,
         date: args.date,
+        startTime: args.startTime,
+        endTime: args.endTime,
         time: args.time,
         location: args.location,
+        // Add host to RSVP list, set as "Yes"
+        RSVP: {
+          userId: user,
+          invite: "Yes",
+            },
       });
 
       const guestArray = args.guestList.split(",");
 
       guestArray.forEach(async (invitee) => {
         invitee.trim();
-        const guest = await User.findOne({ email: invitee });
+        // If the guest is a user, add this event to their list
+        const guest = await User.findOneAndUpdate(
+          { email: invitee },
+          { $push: { event: event._id } },
+          // If the user does not exist, create them, and add the event to their list
+          { upsert: true, new: true }
+        );
+        // Add each invitee to the event's RSVP list. Set as "Not Responded"
         await Event.findOneAndUpdate(
           { _id: event._id },
           {
@@ -112,7 +125,6 @@ const resolvers = {
           },
           { new: true }
         );
-        // TODO: Add to a guest and host event lists on the User model
       });
 
       return event;

@@ -1,5 +1,19 @@
 import { gql } from '@apollo/client';
 
+export const LOGIN = gql `
+mutation Login($email: String!, $password: String!) {
+  login(email: $email, password: $password) {
+    token
+    user {
+      _id
+      name
+      
+      
+    }
+  }
+}
+`;
+
 export const ADD_USER = gql `
 mutation AddUser($email: String!, $name: String, $password: String, $params: String!) {
   addUser(email: $email, name: $name, password: $password, params: $params) {
@@ -19,38 +33,43 @@ mutation DeleteUser($deleteUserId: ID!) {
   }
 }`;
 
-export const LOGIN = gql `
-mutation Login($email: String!, $password: String!) {
-  login(email: $email, password: $password) {
-    token
-    user {
-      _id
-      name
-      
-      
-    }
-  }
-}
-`;
-
 export const ADD_EVENT = gql `
-mutation AddEvent($hostId: UserInput!, $title: String!, $description: String!, $date: String!, $time: String!, $location: String!, $guestList: String) {
-  addEvent(hostID: $hostId, title: $title, description: $description, date: $date, time: $time, location: $location, guestList: $guestList) {
-    _id
+mutation AddEvent($hostId: UserInput!, $title: String!, $description: String!, $date: String!, $startTime: String!, $location: String!, $endTime: String, $guestList: String) {
+  addEvent(hostID: $hostId, title: $title, description: $description, date: $date, startTime: $startTime, location: $location, endTime: $endTime, guestList: $guestList) {
+    title
+    startTime
+    location
     hostID {
       _id
       name
       email
-      password
     }
-    title
+    endTime
     description
     date
-    time
-    location 
+    _id
   }
 }
 `;
+
+export const EDIT_EVENT = gql `
+mutation EditEvent($id: ID!, $title: String, $description: String, $date: String, $potluck: Boolean, $location: String, $startTime: String, $endTime: String) {
+  editEvent(_id: $id, title: $title, description: $description, date: $date, potluck: $potluck, location: $location, startTime: $startTime, endTime: $endTime) {
+    title
+    potluck
+    location
+    hostID {
+      name
+      email
+      _id
+    }
+    description
+    date
+    _id
+    startTime
+    endTime
+  }
+}`;
 
 export const DELETE_EVENT = gql `
 mutation DeleteEvent($deleteEventId: ID!) {
@@ -72,7 +91,8 @@ mutation AddComment($eventId: ID!, $userId: UserInput!, $content: CommentInput!)
     title
     description
     date
-    time
+    startTime
+    endTime
     location
     comment {
       _id
@@ -98,15 +118,6 @@ mutation AddComment($eventId: ID!, $userId: UserInput!, $content: CommentInput!)
 }
 `;
 
-export const DELETE_COMMENT = gql `
-mutation DeleteComment($eventId: ID!, $commentId: ID!) {
-  deleteComment(eventId: $eventId, commentId: $commentId) {
-    comment {
-      _id
-    }
-  }
-}`;
-
 export const EDIT_COMMENT = gql `
 mutation EditComment($eventId: ID!, $comment: CommentInput!) {
   editComment(eventId: $eventId, comment: $comment) {
@@ -119,4 +130,57 @@ mutation EditComment($eventId: ID!, $comment: CommentInput!) {
     }
   }
 }`;
+
+export const DELETE_COMMENT = gql `
+mutation DeleteComment($eventId: ID!, $commentId: ID!) {
+  deleteComment(eventId: $eventId, commentId: $commentId) {
+    comment {
+      _id
+    }
+  }
+}`;
+
+export const ADD_CONTRIB = gql `mutation AddContribution($eventId: ID!, $userId: UserInput!, $contribution: ContributionInput!) {
+  addContribution(eventID: $eventId, userID: $userId, contribution: $contribution) {
+    _id
+    hostID {
+      _id
+      name
+      email
+      password
+    }
+    title
+    description
+    date
+    location
+    comment {
+      _id
+      userId {
+        _id
+        name
+        email
+        password
+      }
+      content
+    }
+    RSVP {
+      _id
+      invite
+    }
+    potluck
+    contribution {
+      _id
+      item
+      userId {
+        _id
+        name
+        email
+        password
+      }
+    }
+    startTime
+    endTime
+  }
+}`;
+
 

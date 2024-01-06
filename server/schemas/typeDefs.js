@@ -5,7 +5,8 @@ type Event{
   title: String!
   description: String!
   date: String!
-  time: String!
+  startTime: String
+  endTime: String
   location: String!
   comment: [Comment]
   RSVP: [Invite]
@@ -69,12 +70,12 @@ type Mutation{
   login(email: String!, password: String!): Auth
   addUser(name: String, email: String!, password: String, params: String!): Auth
   deleteUser(id:ID!): User
-  addEvent(hostID: UserInput!, title: String!, description: String!, date: String!, time: String!, location: String!, guestList: String): Event
-  editEvent(_id: ID!, title: String, description:String, date: String, time: String, location: String, potluck: Boolean): Event
+  addEvent(hostID: UserInput!, title: String!, description: String!, date: String!, startTime: String!, endTime: String, location: String!, guestList: String): Event
+  editEvent(_id: ID!, title: String, description:String, date: String, startTime: String, endTime: String, location: String, potluck: Boolean): Event
   deleteEvent(id:ID!): Event
   addComment(eventID:ID!, userID:UserInput!, content:CommentInput!):Event
-  deleteComment(eventId:ID!, commentId: ID!): Event
   editComment(eventId:ID!, comment: CommentInput!): Event
+  deleteComment(eventId:ID!, commentId: ID!): Event
   addContribution(eventID: ID!, userID:UserInput!, contribution:ContributionInput!):Event
 }
 
