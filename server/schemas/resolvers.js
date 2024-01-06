@@ -1,24 +1,24 @@
-const { Event, User } = require("../models");
-const { signToken, AuthenticationError } = require("../utils/auth");
+const { Event, User } = require('../models');
+const { signToken, AuthenticationError } = require('../utils/auth');
 
 const resolvers = {
   Query: {
     // EVENT QUERIES
     events: async () => {
       const event = await Event.find()
-        .populate({ path: "hostID" })
-        .populate({ path: "comment", populate: { path: "userId" } })
-        .populate({ path: "RSVP", populate: { path: "userId" } })
-        .populate({ path: "contribution", populate: { path: "userId" } });
+        .populate({ path: 'hostID' })
+        .populate({ path: 'comment', populate: { path: 'userId' } })
+        .populate({ path: 'RSVP', populate: { path: 'userId' } })
+        .populate({ path: 'contribution', populate: { path: 'userId' } });
       return event;
     },
 
     event: async (parent, args) => {
       const event = await Event.findById(args.id)
-        .populate({ path: "hostID" })
-        .populate({ path: "comment", populate: { path: "userId" } })
-        .populate({ path: "RSVP", populate: { path: "userId" } })
-        .populate({ path: "contribution", populate: { path: "userId" } });
+        .populate({ path: 'hostID' })
+        .populate({ path: 'comment', populate: { path: 'userId' } })
+        .populate({ path: 'RSVP', populate: { path: 'userId' } })
+        .populate({ path: 'contribution', populate: { path: 'userId' } });
       return event;
     },
 
@@ -58,7 +58,7 @@ const resolvers = {
 
     addUser: async (parent, args) => {
       // If this mutation was called from /signup, then sign the user in automatically
-      const login = args.params === "signup";
+      const login = args.params === 'signup';
       const user = await User.create({
         name: args.name,
         email: args.email,
@@ -72,13 +72,9 @@ const resolvers = {
       return { user };
     },
 
-    deleteUser: async (parent, args) => {
-      return await User.findOneAndDelete({ _id: args.id });
-    },
+    deleteUser: async (parent, args) => User.findOneAndDelete({ _id: args.id }),
 
     // TODO Stretch: Edit user
-    // TODO: Delete comment
-    // TODO: Edit comment
     // TODO Stretch: Delete contrib
     // TODO Stretch: Edit contrib
     // TODO: Update event
@@ -99,7 +95,7 @@ const resolvers = {
         location: args.location,
       });
 
-      const guestArray = args.guestList.split(",");
+      const guestArray = args.guestList.split(',');
 
       guestArray.forEach(async (invitee) => {
         invitee.trim();
@@ -110,7 +106,7 @@ const resolvers = {
             $addToSet: {
               RSVP: {
                 userId: guest,
-                invite: "Not Responded",
+                invite: 'Not Responded',
               },
             },
           },
@@ -122,9 +118,8 @@ const resolvers = {
       return event;
     },
 
-    deleteEvent: async (parent, args) => {
-      return await Event.findOneAndDelete({ _id: args.id });
-    },
+    deleteEvent: async (parent, args) =>
+      Event.findOneAndDelete({ _id: args.id }),
 
     // COMMENT MUTATIONS
     addComment: async (parent, args) => {
@@ -141,19 +136,28 @@ const resolvers = {
         },
         { new: true }
       )
-        .populate({ path: "hostID" })
-        .populate({ path: "comment", populate: { path: "userId" } })
-        .populate({ path: "RSVP", populate: { path: "userId" } });
+        .populate({ path: 'hostID' })
+        .populate({ path: 'comment', populate: { path: 'userId' } })
+        .populate({ path: 'RSVP', populate: { path: 'userId' } });
       return event;
     },
 
-    deleteComment: async (parent, args) => {
-      return Event.findOneAndUpdate(
+    deleteComment: async (parent, args) =>
+      Event.findOneAndUpdate(
         { _id: args.eventId },
         { $pull: { comment: { _id: args.commentId } } },
         { new: true }
+      ),
+
+   editComment: async (parent, args) => {
+      return Event.findOneAndUpdate(
+        { _id: args.eventId, 'comment._id': args.comment._id },
+        { $set: { 'comment.$.content': args.comment.content } },
+        { new: true }
       );
-  },
+    },
+
+    // CONTRIBUTION MUTATIONS
 
     addContribution: async (parent, args) => {
       const user = await User.findById(args.userID);
@@ -169,10 +173,10 @@ const resolvers = {
         },
         { new: true }
       )
-        .populate({ path: "hostID" })
-        .populate({ path: "comment", populate: { path: "userId" } })
-        .populate({ path: "RSVP", populate: { path: "userId" } })
-        .populate({ path: "contribution", populate: { path: "userId" } });
+        .populate({ path: 'hostID' })
+        .populate({ path: 'comment', populate: { path: 'userId' } })
+        .populate({ path: 'RSVP', populate: { path: 'userId' } })
+        .populate({ path: 'contribution', populate: { path: 'userId' } });
       return event;
     },
   },

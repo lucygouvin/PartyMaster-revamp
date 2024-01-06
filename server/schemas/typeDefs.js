@@ -28,11 +28,12 @@ input UserInput{
 
 type Comment{
   _id: ID!
-  userId: User!
-  content: String!
+  userId: User
+  content: String
 }
 
 input CommentInput{
+  _id: ID
   content: String!
 }
 
@@ -45,7 +46,7 @@ type Invite{
 type Contribution{
   _id: ID!
   userId: User
-  item: String!
+  item: String
 }
 
 input ContributionInput{
@@ -72,6 +73,7 @@ type Mutation{
   deleteEvent(id:ID!): Event
   addComment(eventID:ID!, userID:UserInput!, content:CommentInput!):Event
   deleteComment(eventId:ID!, commentId: ID!): Event
+  editComment(eventId:ID!, comment: CommentInput!): Event
   addContribution(eventID: ID!, userID:UserInput!, contribution:ContributionInput!):Event
 }
 
