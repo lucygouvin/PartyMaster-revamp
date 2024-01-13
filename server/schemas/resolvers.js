@@ -1,5 +1,5 @@
-const { Event, User } = require('../models');
-const { signToken, AuthenticationError } = require('../utils/auth');
+const { Event, User } = require("../models");
+const { signToken, AuthenticationError } = require("../utils/auth");
 
 const resolvers = {
   Query: {
@@ -98,7 +98,7 @@ const resolvers = {
         RSVP: {
           userId: user,
           invite: "Yes",
-            },
+        },
       });
 
       const guestArray = args.guestList.split(",");
@@ -146,6 +146,43 @@ const resolvers = {
 
     deleteEvent: async (parent, args) =>
       Event.findOneAndDelete({ _id: args.id }),
+
+    // GUEST MUTATIONS
+    addGuest: async (parent, args) => {
+      const guestArray = args.guests.split(",");
+      const event = Event.findById(args.eventId);
+      guestArray.forEach(async (invitee) => {
+        invitee.trim();
+        // If the guest is a user, add this event to their list
+        const guest = await User.findOneAndUpdate(
+          { email: invitee },
+          { $addToSet: { event: args.eventId } },
+          // If the user does not exist, create them, and add the event to their list
+          { upsert: true, new: true }
+        );
+        // Add each invitee to the event's RSVP list. Set as "Not Responded"
+
+        //  Bulk.find({"_id": event._id,"RSVP.userId": guest._id}).upsert().update({
+        //   $setonInsert: {userId: guest._id,
+        //     invite: "Not Responded",}
+        //  });
+      });
+
+      return event;
+    },
+
+    deleteGuest: async (parent, args) => {
+      const user = User.findOneAndUpdate(
+        { email: args.guestEmail },
+        { $pull: { event: args.eventId } }
+      );
+
+      return Event.findOneAndUpdate(
+        { _id: args.eventId },
+        { $pull: { RSVP: { userId: user._id } } },
+        { new: true }
+      );
+    },
 
     // COMMENT MUTATIONS
     addComment: async (parent, args) => {

@@ -78,6 +78,20 @@ mutation DeleteEvent($deleteEventId: ID!) {
   }
 }`;
 
+export const DELETE_GUEST = gql `
+mutation DeleteGuest($eventId: ID!, $guestEmail: String!) {
+  deleteGuest(eventId: $eventId, guestEmail: $guestEmail) {
+    _id
+    title
+    RSVP {
+      userId {
+        name
+        email
+      }
+    }
+  }
+}`;
+
 export const ADD_COMMENT = gql `
 mutation AddComment($eventId: ID!, $userId: UserInput!, $content: CommentInput!) {
   addComment(eventID: $eventId, userID: $userId, content: $content) {

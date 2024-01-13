@@ -63,8 +63,7 @@ query Event($eventId: ID!) {
     title
     description
     date
-    startTime
-    endTime
+    
     location
     comment {
       _id
@@ -97,6 +96,8 @@ query Event($eventId: ID!) {
       }
       item
     }
+    startTime
+    endTime
   }
 }`;
 
