@@ -78,7 +78,6 @@ const resolvers = {
     // TODO Stretch: Delete contrib
     // TODO Stretch: Edit contrib
     // TODO: Add guest
-    // TODO: Remove guest
     // TODO: Update RSVP
 
     // EVENT MUTATIONS
@@ -149,26 +148,26 @@ const resolvers = {
 
     // GUEST MUTATIONS
     addGuest: async (parent, args) => {
-      const guestArray = args.guests.split(",");
-      const event = Event.findById(args.eventId);
-      guestArray.forEach(async (invitee) => {
-        invitee.trim();
-        // If the guest is a user, add this event to their list
-        const guest = await User.findOneAndUpdate(
-          { email: invitee },
-          { $addToSet: { event: args.eventId } },
-          // If the user does not exist, create them, and add the event to their list
-          { upsert: true, new: true }
-        );
-        // Add each invitee to the event's RSVP list. Set as "Not Responded"
+      // Assume data was sanitized on the front end, one user
 
-        //  Bulk.find({"_id": event._id,"RSVP.userId": guest._id}).upsert().update({
-        //   $setonInsert: {userId: guest._id,
-        //     invite: "Not Responded",}
-        //  });
-      });
+      // If the guest is a user, add this event to their list
+      const guest = await User.findOneAndUpdate(
+        { email: args.guests },
+        { $addToSet: { event: args.eventId } },
+        // If the user does not exist, create them, and add the event to their list
+        { upsert: true, new: true }
+      );
 
-      return event;
+      return Event.findOneAndUpdate(
+        { _id: args.eventId },
+        {
+          $addToSet: {
+            RSVP: { userId: guest._id },
+          },
+        },
+        { new: true }
+      ).populate({ path: "RSVP", populate: { path: "userId" } })
+      ;
     },
 
     deleteGuest: async (parent, args) => {
@@ -199,6 +198,8 @@ const resolvers = {
         },
         { new: true }
       )
+        // TODO Do we need to do all these populations?
+
         .populate({ path: "hostID" })
         .populate({ path: "comment", populate: { path: "userId" } })
         .populate({ path: "RSVP", populate: { path: "userId" } });
@@ -212,13 +213,12 @@ const resolvers = {
         { new: true }
       ),
 
-    editComment: async (parent, args) => {
-      return Event.findOneAndUpdate(
+    editComment: async (parent, args) =>
+      Event.findOneAndUpdate(
         { _id: args.eventId, "comment._id": args.comment._id },
         { $set: { "comment.$.content": args.comment.content } },
         { new: true }
-      );
-    },
+      ),
 
     // CONTRIBUTION MUTATIONS
 
@@ -236,12 +236,19 @@ const resolvers = {
         },
         { new: true }
       )
+        // TODO Do we need to do all these populations?
         .populate({ path: "hostID" })
         .populate({ path: "comment", populate: { path: "userId" } })
         .populate({ path: "RSVP", populate: { path: "userId" } })
         .populate({ path: "contribution", populate: { path: "userId" } });
       return event;
     },
+
+    // RSVP MUTATIONS
+    // setRSVP: async (parent, args) => {
+    // If logged in
+    // Take event ID and the logged in user's ID and set their RSVP to the selected value
+    // },
   },
 };
 
