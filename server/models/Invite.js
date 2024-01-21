@@ -1,23 +1,21 @@
 const { Schema } = require('mongoose');
 
-const inviteSchema = new Schema({
-  userId: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    // required: true,
-  },
-  invite: {
-    type: String,
-    enum: ['Yes', 'No', 'Maybe'],
-    required: true,
-    default: 'Maybe',
-  },
-  // notified: { A boolean to check if a user has been notified or not, stretch goal
-  //     type: Boolean,
-  //     default: false
-  // }
+const inviteSchema = new Schema(
+  {
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
+    invite: {
+      type: String,
+      enum: ['Yes', 'No', 'Maybe', 'Not Responded'],
+      required: true,
+      default: 'Not Responded',
+    },
 
-  // need time for comment? maybe add notification?
-});
+    // need time for comment? maybe add notification?
+  },
+  { timestamps: true }
+);
 
 module.exports = inviteSchema;

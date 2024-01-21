@@ -1,20 +1,17 @@
-const { Schema, Types } = require('mongoose');
+const { Schema } = require('mongoose');
 
-const commentSchema = new Schema({
-  commentId: {
-    type: Schema.Types.ObjectId,
-    default: () => new Types.ObjectId(),
+const commentSchema = new Schema(
+  {
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
+    content: {
+      type: String,
+      required: true,
+    },
   },
-  userId: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-  },
-  content: {
-    type: String,
-    required: true,
-  },
-
-  // need time for comment? maybe add notification?
-});
+  { timestamps: true }
+);
 
 module.exports = commentSchema;

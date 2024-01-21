@@ -1,109 +1,124 @@
-import { gql } from '@apollo/client';
-
-export const USERS = gql`
-query Query {
-    users {
-      _id
-      name
-      email
-      password
-    }
-  }`;
+import {gql} from '@apollo/client';
 
 export const EVENTS = gql `
 query Events {
   events {
     _id
-   
-    title
-    description
-    date
-    time
-    location
-    
-    potluck
-    comment {
-      commentId
-      content
-    }
-
-    RSVP {
-      invite
-      userId
-    }
-    rsvpMaybe{
-      invite
-      userId
-    }
-  }
-}
-`;
-
-export const EVENT_DATA = gql `
-query GetEventData($id: ID!) {
-  getEventData(_id: $id) {
-    _id
-    hostID
-    title
-    description
-    date
-    time
-    location
-    comment {
-      commentId
-      userId
-      content
-    }
-    RSVP {
-      userId
-      invite
-    }
-    potluck
-    potluckContributions {
+    hostID {
       _id
       name
+      email
+      password
+    }
+    title
+    description
+    date
+    startTime
+    endTime
+    location
+    comment {
+      _id
+      userId {
+        _id
+        name
+        email
+        password
+      }
+      content
+    }
+    RSVP {
+      _id
+      userId {
+        _id
+        name
+        email
+        password
+      }
+      invite
+    }
+    potluck
+    contribution {
+      _id
+      userId {
+        _id
+        name
+        email
+        password
+      }
       item
-    }
-    rsvpMaybe {
-      userId
-      invite
-    }
-    rsvpYes {
-      userId
-      invite
-    }
-    rsvpNo {
-      userId
-      invite
     }
   }
 }`;
 
-export const GET_USER_EVENTS = gql `
-query GetUserEvents {
-  getUserEvents {
-  
-    event {
-      title
-      time
-      location
-      date
-      RSVP {
-        userId
-        invite
-      }
+export const EVENT = gql `
+query Event($eventId: ID!) {
+  event(id: $eventId) {
+    _id
+    hostID {
       _id
-      hostID 
+      name
+      email
+      password
     }
-
+    title
+    description
+    date
+    
+    location
+    comment {
+      _id
+      userId {
+        _id
+        name
+        email
+        password
+      }
+      content
+    }
+    RSVP {
+      _id
+      userId {
+        _id
+        name
+        email
+        password
+      }
+      invite
+    }
+    potluck
+    contribution {
+      _id
+      userId {
+        _id
+        name
+        email
+        password
+      }
+      item
+    }
+    startTime
+    endTime
   }
-}
-`;
+}`;
 
-export const LOOKUP_USER = gql`
-query LookupUser($id: ID!) {
-  lookupUser(_id: $id) {
+export const USERS = gql `
+query Users {
+  users {
+    _id
     name
+    email
+    password
   }
 }
-`;
+`
+export const SINGLE_USER = gql `
+query User($id: ID!) {
+  user(id: $id) {
+    _id
+    name
+    email
+    password
+  }
+}
+`
+;

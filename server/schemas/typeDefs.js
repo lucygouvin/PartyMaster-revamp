@@ -1,96 +1,86 @@
 const typeDefs = `
-# need to fix event, figuring out model 
- type Event {
-    _id: ID
-    hostID: ID
-    title: String!
-    description: String!
-    date: String!
-    time: String!
-    location: String!
-    comment: [Comment]
-    RSVP: [Invite]
-    potluck: Boolean
-    potluckContributions: [Contribution]
-    rsvpMaybe:[Invite]
-    rsvpYes:[Invite]
-    rsvpNo:[Invite]
-   
- }
-
- type User {
-    _id: ID
-    name: String
-    email: String
-    password: String
-    event: [Event]
- }
-
- type Comment {
-   commentId: ID
-   userId: ID
-   content: String
- }
-
- input CommentInput {
-   commentId: ID
-   content: String!
- }
-
-
- type Invite {
-   userId: ID
-   invite: String!
- }
-
- type Contribution {
-   _id: ID
-   name: String
-   item: String
+type Event{
+  _id: ID
+  hostID: User!
+  title: String!
+  description: String!
+  date: String!
+  startTime: String
+  endTime: String
+  location: String!
+  comment: [Comment]
+  RSVP: [Invite]
+  potluck: Boolean
+  contribution: [Contribution]
 }
 
-input ContributionInput {
-   _id: ID
-   item: String
-}
-#TODO Should make userId required
-input RSVPInput {
-   userId: ID
-   invite: String
-}
-
- type Auth {
-   token: ID!
-   user: User
+type User{
+  _id: ID
+  name: String
+  email: String
+  password: String
+  event: [Event]
+  prevSignIn: Boolean
 }
 
-type Query {
-   events: [Event]
-   users: [User]
-   me: User
-   getEventData(_id: ID!): Event
-   getUserEvents: User
-   lookupUser (_id:ID!): User
-   
- }
+input UserInput{
+  _id: ID!
+}
 
- type Mutation {
-   login(email: String!, password: String!): Auth
-   addUser(name: String!, email: String!, password: String!): Auth
-   deleteUser(_id: ID!): User
-   addEvent(title: String!, description: String!, date: String!, time: String!, location: String!, potluck: Boolean, contribution: [ContributionInput], guestList:String): Event
-   updateEvent(_id: ID!, title: String, description:String, date: String, time: String, location: String, potluck: Boolean,  contribution: [ContributionInput]): Event
-   deleteEvent(_id: ID!): Event
-   addComment(_id: ID!, comment: CommentInput!): Event
-   deleteComment(_id:ID!, commentId: ID!): Event
-   updateComment(_id:ID!, comment: CommentInput!): Event
-   addGuest(eventId: ID!, email:String!) : Event
-   removeGuest(eventId:ID!, guestId:ID!) : Event
-   updateRSVP (_id: ID!, RSVP:RSVPInput): Event
-   addContribution (eventId:ID!, contribution: ContributionInput!): Event
-   deleteContribution (eventId:ID!, contribution:ContributionInput!): Event
-   claimContribution (eventId:ID!, contribution:ContributionInput!): Event
+type Comment{
+  _id: ID!
+  userId: User
+  content: String
+}
 
- }
+input CommentInput{
+  _id: ID
+  content: String!
+}
+
+type Invite{
+  _id: ID!
+  userId: User
+  invite: String!
+}
+
+type Contribution{
+  _id: ID!
+  userId: User
+  item: String
+}
+
+input ContributionInput{
+  item: String!
+}
+
+type Auth {
+  token: ID
+  user: User
+}
+
+type Query{
+  events: [Event]
+  event(id:ID!): Event
+  users: [User]
+  user(id:ID!): User
+}
+
+type Mutation{
+  login(email: String!, password: String!): Auth
+  addUser(name: String, email: String!, password: String, params: String!): Auth
+  deleteUser(id:ID!): User
+  addEvent(hostID: UserInput!, title: String!, description: String!, date: String!, startTime: String!, endTime: String, location: String!, guestList: String): Event
+  editEvent(_id: ID!, title: String, description:String, date: String, startTime: String, endTime: String, location: String, potluck: Boolean): Event
+  deleteEvent(id:ID!): Event
+  addGuest(eventId: ID!, guests:String!): Event
+  deleteGuest(eventId: ID!, guestEmail: String!): Event
+  addComment(eventID:ID!, userID:UserInput!, content:CommentInput!):Event
+  editComment(eventId:ID!, comment: CommentInput!): Event
+  deleteComment(eventId:ID!, commentId: ID!): Event
+  addContribution(eventID: ID!, userID:UserInput!, contribution:ContributionInput!):Event
+}
+
 `;
+
 module.exports = typeDefs;

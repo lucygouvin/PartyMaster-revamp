@@ -1,8 +1,13 @@
-// import React, { useState } from 'react';
+import { useQuery } from '@apollo/client';
 import '../../styles/LandingPage.css';
 import FeatureCard from './FeatureCard';
 
+import { EVENTS } from '../../utils/queries';
+
 export function LandingPage() {
+  const {loading, data} = useQuery(EVENTS);
+  const events = data?.events;
+  console.log(events)
   return (
     <div className="landing-page">
       <main className="main-content">

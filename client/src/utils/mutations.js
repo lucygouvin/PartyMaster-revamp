@@ -15,238 +15,208 @@ mutation Login($email: String!, $password: String!) {
 `;
 
 export const ADD_USER = gql `
-mutation addUser($name: String!, $email: String!, $password: String!) {
-    addUser(name: $name, email: $email, password: $password) {
-      token
-      user {
+mutation AddUser($email: String!, $name: String, $password: String, $params: String!) {
+  addUser(email: $email, name: $name, password: $password, params: $params) {
+    token
+    user {
+      name
+      email
+      _id
+    }
+  }
+}`;
+
+export const DELETE_USER = gql `
+mutation DeleteUser($deleteUserId: ID!) {
+  deleteUser(id: $deleteUserId) {
+    _id
+  }
+}`;
+
+export const ADD_EVENT = gql `
+mutation AddEvent($hostId: UserInput!, $title: String!, $description: String!, $date: String!, $startTime: String!, $location: String!, $endTime: String, $guestList: String) {
+  addEvent(hostID: $hostId, title: $title, description: $description, date: $date, startTime: $startTime, location: $location, endTime: $endTime, guestList: $guestList) {
+    title
+    startTime
+    location
+    hostID {
+      _id
+      name
+      email
+    }
+    endTime
+    description
+    date
+    _id
+  }
+}
+`;
+
+export const EDIT_EVENT = gql `
+mutation EditEvent($id: ID!, $title: String, $description: String, $date: String, $potluck: Boolean, $location: String, $startTime: String, $endTime: String) {
+  editEvent(_id: $id, title: $title, description: $description, date: $date, potluck: $potluck, location: $location, startTime: $startTime, endTime: $endTime) {
+    title
+    potluck
+    location
+    hostID {
+      name
+      email
+      _id
+    }
+    description
+    date
+    _id
+    startTime
+    endTime
+  }
+}`;
+
+export const DELETE_EVENT = gql `
+mutation DeleteEvent($deleteEventId: ID!) {
+  deleteEvent(id: $deleteEventId) {
+    _id
+  }
+}`;
+
+export const ADD_GUEST = gql `
+mutation AddGuest($eventId: ID!, $guests: String!) {
+  addGuest(eventId: $eventId, guests: $guests) {
+    _id
+    title
+    location
+    hostID {
+      _id
+    }
+    description
+    date
+    RSVP {
+      userId {
+        _id
+        email
+        name
+      }
+      invite
+    }
+  }
+}`;
+
+export const DELETE_GUEST = gql `
+mutation DeleteGuest($eventId: ID!, $guestEmail: String!) {
+  deleteGuest(eventId: $eventId, guestEmail: $guestEmail) {
+    _id
+    title
+    RSVP {
+      userId {
+        name
+        email
+      }
+    }
+  }
+}`;
+
+export const ADD_COMMENT = gql `
+mutation AddComment($eventId: ID!, $userId: UserInput!, $content: CommentInput!) {
+  addComment(eventID: $eventId, userID: $userId, content: $content) {
+    _id
+    hostID {
+      _id
+      name
+      email
+      password
+    }
+    title
+    description
+    date
+    startTime
+    endTime
+    location
+    comment {
+      _id
+      userId {
+        _id
+        name
+        email
+        password
+      }
+      content
+    }
+    RSVP {
+      _id
+      userId {
+        _id
+        name
+        email
+        password
+      }
+      invite
+    }
+  }
+}
+`;
+
+export const EDIT_COMMENT = gql `
+mutation EditComment($eventId: ID!, $comment: CommentInput!) {
+  editComment(eventId: $eventId, comment: $comment) {
+    comment {
+      _id
+      content
+      userId {
+        _id
+      }
+    }
+  }
+}`;
+
+export const DELETE_COMMENT = gql `
+mutation DeleteComment($eventId: ID!, $commentId: ID!) {
+  deleteComment(eventId: $eventId, commentId: $commentId) {
+    comment {
+      _id
+    }
+  }
+}`;
+
+export const ADD_CONTRIB = gql `mutation AddContribution($eventId: ID!, $userId: UserInput!, $contribution: ContributionInput!) {
+  addContribution(eventID: $eventId, userID: $userId, contribution: $contribution) {
+    _id
+    hostID {
+      _id
+      name
+      email
+      password
+    }
+    title
+    description
+    date
+    location
+    comment {
+      _id
+      userId {
+        _id
+        name
+        email
+        password
+      }
+      content
+    }
+    RSVP {
+      _id
+      invite
+    }
+    potluck
+    contribution {
+      _id
+      item
+      userId {
         _id
         name
         email
         password
       }
     }
+    startTime
+    endTime
   }
-`;
+}`;
 
-export const DELETE_USER = gql `
-mutation DeleteUser($id: ID!) {
-  deleteUser(_id: $id) {
-    _id
-  }
-}
-`;
 
-export const ADD_EVENT = gql `
-mutation AddEvent($title: String!, $description: String!, $date: String!, $time: String!, $location: String!, $guestList: String) {
-  addEvent(title: $title, description: $description, date: $date, time: $time, location: $location, guestList: $guestList) {
-    title
-    time
-    location
-    hostID
-    description
-    date
-    _id
-  }
-}
-`;
-
-export const DELETE_EVENT = gql `
-mutation DeleteEvent($id: ID!) {
-  deleteEvent(_id: $id) {
-    _id
-    
-  }
-}
-`;
-
-export const UPDATE_EVENT = gql `
-mutation UpdateEvent($id: ID!, $title: String, $date: String, $description: String, $time: String, $location: String, $potluck: Boolean) {
-  updateEvent(_id: $id, title: $title, date: $date, description: $description, time: $time, location: $location, potluck: $potluck) {
-    _id
-    hostID
-    title
-    description
-    date
-    time
-    location
-    comment {
-      commentId
-      userId
-      content
-    }
-    RSVP {
-      userId
-      invite
-    }
-    potluck
-    potluckContributions {
-      _id
-      name
-      item
-    }
-    rsvpMaybe {
-      userId
-      invite
-    }
-    rsvpYes {
-      userId
-      invite
-    }
-    rsvpNo {
-      userId
-      invite
-    }
-    
-  }
-}
-`;
-
-export const ADD_COMMENT = gql`
-mutation AddComment($id: ID!, $comment: CommentInput!) {
-  addComment(_id: $id, comment: $comment) {
-    title
-    comment {
-      commentId
-      userId
-      content
-    }
-  }
-}
-`;
-
-export const DELETE_COMMENT = gql `
-mutation DeleteComment($id: ID!, $commentId: ID!) {
-  deleteComment(_id: $id, commentId: $commentId) {
-    comment {
-      commentId
-      userId
-      content
-    }
-  }
-}
-`;
-
-export const UPDATE_RSVP = gql `
-mutation UpdateRSVP($id: ID!, $rsvp: RSVPInput) {
-  updateRSVP(_id: $id, RSVP: $rsvp) {
-    title
-    _id
-    RSVP {
-      userId
-      invite
-    }
-    rsvpYes {
-      userId
-      invite
-    }
-    rsvpNo {
-      userId
-      invite
-    }
-    rsvpMaybe {
-      userId
-      invite
-    }
-  }
-}
-`;
-
-export const ADD_GUEST = gql `
-mutation AddGuest($eventId: ID!, $email: String!) {
-  addGuest(eventId: $eventId, email: $email) {
-    _id
-    RSVP {
-      userId
-      invite
-    }
-    rsvpYes {
-      userId
-      invite
-    }
-    rsvpNo {
-      userId
-      invite
-    }
-    rsvpMaybe {
-      userId
-      invite
-    }
-  }
-}
-`;
-
-export const REMOVE_GUEST = gql `
-mutation RemoveGuest($eventId: ID!, $guestId: ID!) {
-  removeGuest(eventId: $eventId, guestId: $guestId) {
-    title
-    _id
-    RSVP {
-      invite
-      userId
-    }
-    rsvpYes {
-      userId
-      invite
-    }
-    rsvpNo {
-      userId
-      invite
-    }
-    rsvpMaybe {
-      userId
-      invite
-    }
-  }
-}
-`;
-
-export const ADD_CONTRIBUTION = gql `
-mutation AddContribution($eventId: ID!, $contribution: ContributionInput!) {
-  addContribution(eventId: $eventId, contribution: $contribution) {
-    
-    potluckContributions {
-      _id
-      name
-      item
-    }
-    _id
-  }
-}
-`;
-
-export const DELETE_CONTRIBUTION = gql `
-mutation DeleteContribution($eventId: ID!, $contribution: ContributionInput!) {
-  deleteContribution(eventId: $eventId, contribution: $contribution) {
-    title
-    _id
-    potluckContributions {
-      _id
-    }
-  }
-}
-`;
-
-export const CLAIM_CONTRIBUTION = gql `
-mutation ClaimContribution($eventId: ID!, $contribution: ContributionInput!) {
-  claimContribution(eventId: $eventId, contribution: $contribution) {
-    _id
-    potluckContributions {
-      _id
-      name
-      item
-    }
-  }
-}
-`;
-
-export const UPDATE_COMMENT = gql `
-mutation UpdateComment($id: ID!, $comment: CommentInput!) {
-  updateComment(_id: $id, comment: $comment) {
-    comment {
-      commentId
-      userId
-      content
-    }
-  }
-}
-`;

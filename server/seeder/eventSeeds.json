@@ -4,32 +4,39 @@
       "description": "Join us for a fun birthday celebration!",
       "date": "2023-12-15",
       "time": "18:30",
+<<<<<<< Updated upstream
       "location": "123 Main Street, Anytown",
-      "potluck": true
     },
     {
-        "title": "Company Picnic",
+      "hostID": "6593285af02f64e2e969918f",
+=======
+      "location": "123 Main Street, Anytown"
+    },
+    {
+>>>>>>> Stashed changes
+      "title": "Company Picnic",
       "description": "Annual company picnic with games and food.",
       "date": "2023-07-08",
       "time": "12:00",
+<<<<<<< Updated upstream
       "location": "City Park, Riverside",
-      "potluck": false
     },
     {
-        "title": "Community Concert",
+      "hostID": "6593285af02f64e2e9699190",
+=======
+      "location": "City Park, Riverside"
+    },
+    {
+>>>>>>> Stashed changes
+      "title": "Community Concert",
       "description": "Enjoy live music in the park with your neighbors!",
       "date": "2023-08-20",
       "time": "19:00",
+<<<<<<< Updated upstream
       "location": "Central Park Amphitheater",
-      "potluck": true
-    },
-    {
-        "title": "Sports Tournament",
-      "description": "Compete in various sports and win prizes.",
-      "date": "2023-09-10",
-      "time": "10:00",
-      "location": "Sports Complex, Sunnyville",
-      "potluck": false
+=======
+      "location": "Central Park Amphitheater"
+>>>>>>> Stashed changes
     }
   ]
   

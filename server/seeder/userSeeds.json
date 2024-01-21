@@ -1,0 +1,27 @@
+[
+    {
+        "name":"Joe Smith",
+        "email":"JoeSmithy@aol.com",
+        "password": "Password123!"
+    },
+    {
+      "name":"Anthony Simmons",
+      "email":"AsmimmonX@gmail.com",
+      "password":"Password123!"
+    },
+    {
+      "name":"Clara Gallagher",
+      "email":"CGallagher@hey.com",
+      "password":"Password123!"
+    },
+    {
+      "name":"Maggie Long",
+      "email": "MagSafeLong@apple.com",
+      "password":"Password123!"
+    },
+    {
+      "name": "Ron Henderson",
+      "email": "RonHensom@gmail.com",
+      "password":"Password123!"
+    }
+]

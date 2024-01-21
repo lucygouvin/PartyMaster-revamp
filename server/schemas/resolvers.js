@@ -1,46 +1,43 @@
-const { Event, User } = require('../models');
-const { signToken, AuthenticationError } = require('../utils/auth');
-
-// TODO remove || true once auth stuff is added
+const { Event, User } = require("../models");
+const { signToken, AuthenticationError } = require("../utils/auth");
 
 const resolvers = {
   Query: {
-    events: async () => Event.find(),
-
-    users: async () => User.find(),
-
-    me: async (parent, args, context) => {
-      if (context.user) {
-        return User.findOne({ _id: context.user._id });
-      }
-      throw AuthenticationError;
+    // EVENT QUERIES
+    events: async () => {
+      const event = await Event.find()
+        .populate({ path: "hostID" })
+        .populate({ path: "comment", populate: { path: "userId" } })
+        .populate({ path: "RSVP", populate: { path: "userId" } })
+        .populate({ path: "contribution", populate: { path: "userId" } });
+      return event;
     },
 
-    getEventData: async (parent, eventInput, context) => {
-      if (context.user) {
-        return  Event.findOne(eventInput).populate('comment', 'user');
-      }
+    event: async (parent, args) => {
+      const event = await Event.findById(args.id)
+        .populate({ path: "hostID" })
+        .populate({ path: "comment", populate: { path: "userId" } })
+        .populate({ path: "RSVP", populate: { path: "userId" } })
+        .populate({ path: "contribution", populate: { path: "userId" } });
+      return event;
     },
 
-    getUserEvents: async (parent, _, context) => {
-      if (context.user) {
-        return User.findOne({ _id: context.user._id }).populate('event');
-      }
-      throw AuthenticationError;
+    // USER QUERIES
+    users: async () => {
+      const users = await User.find();
+      return users;
     },
 
-    lookupUser: async (parent, args) => {
-      return user = await User.findById(args._id)
-    }
+    user: async (parent, args) => {
+      const user = await User.findById(args.id);
+      return user;
+    },
+
+    // TODO: getUserEvents
   },
 
   Mutation: {
-    addUser: async (parent, args) => {
-      const user = await User.create(args);
-      const token = signToken(user);
-      return { token, user };
-    },
-
+    // USER MUTATIONS
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
 
@@ -58,189 +55,200 @@ const resolvers = {
 
       return { token, user };
     },
-    deleteUser: async (parent, { userID }, context) => {
-      if (context.user) {
-        return User.findOneAndDelete({ _id: userID });
-      }
 
-      throw AuthenticationError;
+    addUser: async (parent, args) => {
+      // If this mutation was called from /signup, then sign the user in automatically
+      const login = args.params === "signup";
+      const user = await User.create({
+        name: args.name,
+        email: args.email,
+        password: args.password,
+        prevSignIn: login,
+      });
+      if (login) {
+        const token = signToken(user);
+        return { token, user };
+      }
+      return { user };
     },
 
-    addEvent: async (parent, eventInput, context) => {
-      if (context.user) {
-        const event = await Event.create({
-          hostID: context.user._id,
-          title: eventInput.title,
-          description: eventInput.description,
-          date: eventInput.date,
-          time: eventInput.time,
-          location: eventInput.location,
-        });
+    deleteUser: async (parent, args) => User.findOneAndDelete({ _id: args.id }),
 
-        const guestArray = eventInput.guestList.split(',');
+    // TODO Stretch: Edit user
+    // TODO Stretch: Delete contrib
+    // TODO Stretch: Edit contrib
+    // TODO: Add guest
+    // TODO: Update RSVP
 
-        guestArray.forEach(async (invitee) => {
-          invitee.trim();
-          const guest = await User.findOne({ email: invitee });
-          await Event.findOneAndUpdate(
-            { _id: event._id },
-            {
-              $addToSet: {
-                RSVP: { userId: guest?._id.toHexString(), invite: 'Maybe' },
-              },
-            },
-            { new: true }
-          );
+    // EVENT MUTATIONS
 
-          await User.findByIdAndUpdate(guest?._id.toHexString(), {
-            $push: { event: event._id },
-          });
-        });
+    addEvent: async (parent, args) => {
+      const user = await User.findById(args.hostID._id);
+      const event = await Event.create({
+        hostID: user,
+        title: args.title,
+        description: args.description,
+        date: args.date,
+        startTime: args.startTime,
+        endTime: args.endTime,
+        time: args.time,
+        location: args.location,
+        // Add host to RSVP list, set as "Yes"
+        RSVP: {
+          userId: user,
+          invite: "Yes",
+        },
+      });
 
-        await User.findByIdAndUpdate(context.user._id, {
-          $push: { event: event._id },
-        });
+      const guestArray = args.guestList.split(",");
 
-        return event;
-      }
-
-      throw AuthenticationError;
-    },
-
-    updateEvent: async (parent, args, context) => {
-      if (context.user || true) {
-        const event = await Event.findOneAndUpdate(
-          { _id: args._id },
-          {
-            $set: args,
-          },
-          {
-            runValidators: true,
-            new: true,
-          }
+      guestArray.forEach(async (invitee) => {
+        invitee.trim();
+        // If the guest is a user, add this event to their list
+        const guest = await User.findOneAndUpdate(
+          { email: invitee },
+          { $push: { event: event._id } },
+          // If the user does not exist, create them, and add the event to their list
+          { upsert: true, new: true }
         );
-        return event;
-      }
-      throw AuthenticationError;
-    },
-
-    deleteEvent: async (parent, eventInput) => {
-      return Event.findOneAndDelete({ _id: eventInput });
-    },
-
-    addComment: async (parent, args, context) => {
-      if (context.user) {
-        return Event.findOneAndUpdate(
-          { _id: args._id },
+        // Add each invitee to the event's RSVP list. Set as "Not Responded"
+        await Event.findOneAndUpdate(
+          { _id: event._id },
           {
             $addToSet: {
-              // TODO include the user's id in the comment object
-              comment: {
-                userId: context.user._id,
-                content: args.comment.content,
+              RSVP: {
+                userId: guest,
+                invite: "Not Responded",
               },
             },
           },
-          {
-            new: true,
-          }
-        );
-      }
-      throw AuthenticationError;
-    },
-
-    deleteComment: async (parent, args) => {
-        return Event.findOneAndUpdate(
-          { _id: args._id },
-          { $pull: { comment: { commentId: args.commentId } } },
           { new: true }
         );
+      });
+
+      return event;
     },
 
-    addGuest: async (parent, args) => {
-      const guest = await User.findOneAndUpdate({ email: args.email },
+    editEvent: async (parent, args, context) => {
+      const event = await Event.findOneAndUpdate(
+        { _id: args._id },
         {
-          $push: { event: args.eventId },
-        });
+          $set: args,
+        },
+        {
+          runValidators: true,
+          new: true,
+        }
+      );
+      return event;
+    },
+
+    deleteEvent: async (parent, args) =>
+      Event.findOneAndDelete({ _id: args.id }),
+
+    // GUEST MUTATIONS
+    addGuest: async (parent, args) => {
+      // Assume data was sanitized on the front end, one user
+
+      // If the guest is a user, add this event to their list
+      const guest = await User.findOneAndUpdate(
+        { email: args.guests },
+        { $addToSet: { event: args.eventId } },
+        // If the user does not exist, create them, and add the event to their list
+        { upsert: true, new: true }
+      );
+
       return Event.findOneAndUpdate(
         { _id: args.eventId },
         {
           $addToSet: {
-            RSVP: { userId: guest?._id.toHexString(), invite: 'Maybe' },
+            RSVP: { userId: guest._id },
           },
         },
         { new: true }
-      );
+      ).populate({ path: "RSVP", populate: { path: "userId" } })
+      ;
     },
 
-    removeGuest: async (parent, args) => {
-    await User.findOneAndUpdate({_id:args.guestId},
-      {$pull:{ event: args.eventId }});
-    return Event.findOneAndUpdate(
+    deleteGuest: async (parent, args) => {
+      const user = User.findOneAndUpdate(
+        { email: args.guestEmail },
+        { $pull: { event: args.eventId } }
+      );
+
+      return Event.findOneAndUpdate(
         { _id: args.eventId },
-        { $pull: { RSVP: { userId: args.guestId } } },
+        { $pull: { RSVP: { userId: user._id } } },
         { new: true }
       );
     },
 
-    updateRSVP: async (parent, args, context) => {
-      if (context.user) {
-        const event = await Event.findOneAndUpdate(
-          { _id: args._id, 'RSVP.userId': args.RSVP.userId },
-          { $set: { 'RSVP.$.invite': args.RSVP.invite } },
-          {new: true}
-        );
-        return event;
-      }
-
-      throw new Error('Not logged in');
-    },
-
-    addContribution: async (parent, args, context) => {
-      if (context.user) {
-        return Event.findOneAndUpdate(
-          { _id: args.eventId },
-          {
-            $addToSet: {
-              potluckContributions: {
-                item: args.contribution.item,
-              },
+    // COMMENT MUTATIONS
+    addComment: async (parent, args) => {
+      const user = await User.findById(args.userID._id);
+      const event = await Event.findOneAndUpdate(
+        { _id: args.eventID },
+        {
+          $addToSet: {
+            comment: {
+              userId: user,
+              content: args.content.content,
             },
           },
-          { new: true }
-        );
-      }
-      throw new Error('Not logged in');
-    },
-    claimContribution: async (parent, args, context) => {
-      if (context.user) {
-        return Event.findOneAndUpdate(
-          { _id: args.eventId, "potluckContributions._id":args.contribution._id },
-          {$set: {"potluckContributions.$.name": context.user.name}},
-          { new: true }
-        );
-      }
-      throw new Error('Not logged in');
-    },
-    deleteContribution: async (parent, args, context) => {
-      if (context.user) {
-         const event = await Event.findOneAndUpdate(
-          { _id: args.eventId },
-          { $pull: { contribution: { _id: args.contribution._id } } },
-          { new: true }
-        );
-        return event 
-      }
-      throw new Error('Not logged in');
+        },
+        { new: true }
+      )
+        // TODO Do we need to do all these populations?
+
+        .populate({ path: "hostID" })
+        .populate({ path: "comment", populate: { path: "userId" } })
+        .populate({ path: "RSVP", populate: { path: "userId" } });
+      return event;
     },
 
-    updateComment: async (parent, args) => {
-      return Event.findOneAndUpdate(
-        {_id: args._id, "comment.commentId": args.comment.commentId},
-        {$set: {"comment.$.content": args.comment.content}},
-        {new: true}
-      );
-    }
+    deleteComment: async (parent, args) =>
+      Event.findOneAndUpdate(
+        { _id: args.eventId },
+        { $pull: { comment: { _id: args.commentId } } },
+        { new: true }
+      ),
+
+    editComment: async (parent, args) =>
+      Event.findOneAndUpdate(
+        { _id: args.eventId, "comment._id": args.comment._id },
+        { $set: { "comment.$.content": args.comment.content } },
+        { new: true }
+      ),
+
+    // CONTRIBUTION MUTATIONS
+
+    addContribution: async (parent, args) => {
+      const user = await User.findById(args.userID);
+      const event = await Event.findOneAndUpdate(
+        { _id: args.eventID },
+        {
+          $addToSet: {
+            contribution: {
+              userId: user,
+              item: args.contribution.item,
+            },
+          },
+        },
+        { new: true }
+      )
+        // TODO Do we need to do all these populations?
+        .populate({ path: "hostID" })
+        .populate({ path: "comment", populate: { path: "userId" } })
+        .populate({ path: "RSVP", populate: { path: "userId" } })
+        .populate({ path: "contribution", populate: { path: "userId" } });
+      return event;
+    },
+
+    // RSVP MUTATIONS
+    // setRSVP: async (parent, args) => {
+    // If logged in
+    // Take event ID and the logged in user's ID and set their RSVP to the selected value
+    // },
   },
 };
 
