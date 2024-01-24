@@ -33,7 +33,14 @@ const resolvers = {
       return user;
     },
 
-    // TODO: getUserEvents
+    userEvents: async(parent, args, context) => {
+      if (context.user) {
+        return User.findOne({ _id: context.user._id })
+        .populate({ path: "event", populate: { path: "hostID" } });
+      }
+      throw AuthenticationError;
+    },
+    
   },
 
   Mutation: {
@@ -75,9 +82,6 @@ const resolvers = {
     deleteUser: async (parent, args) => User.findOneAndDelete({ _id: args.id }),
 
     // TODO Stretch: Edit user
-    // TODO Stretch: Delete contrib
-    // TODO Stretch: Edit contrib
-    // TODO: Update RSVP
 
     // EVENT MUTATIONS
 
@@ -243,6 +247,20 @@ const resolvers = {
         .populate({ path: "contribution", populate: { path: "userId" } });
       return event;
     },
+
+    deleteContribution: async (parent, args) =>
+      Event.findOneAndUpdate(
+        { _id: args.eventID },
+        { $pull: { contribution: { _id: args.contributionID} } },
+        { new: true }
+      ),
+
+      editContribution: async (parent, args) =>
+      Event.findOneAndUpdate(
+        { _id: args.eventID, "contribution._id": args.contributionID },
+        { $set: { "contribution.$.item": args.item } },
+        { new: true }
+      ),
 
     // RSVP MUTATIONS
     setRSVP: async (parent, args, context) => {

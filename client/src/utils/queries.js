@@ -120,5 +120,30 @@ query User($id: ID!) {
     password
   }
 }
-`
-;
+`;
+
+export const USER_EVENTS = gql`
+query UserEvents {
+  userEvents {
+    event {
+      title
+      startTime
+      location
+      hostID {
+        name
+        _id
+      }
+      endTime
+      description
+      date
+      _id
+      RSVP {
+        invite
+        _id
+        userId {
+          _id
+        }
+      }
+    }
+  }
+}`;

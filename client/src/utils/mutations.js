@@ -219,4 +219,25 @@ export const ADD_CONTRIB = gql `mutation AddContribution($eventId: ID!, $userId:
   }
 }`;
 
+export const DELETE_CONTRIB = gql`
+mutation DeleteContribution($eventId: ID!, $contributionId: ID!) {
+  deleteContribution(eventID: $eventId, contributionID: $contributionId) {
+    _id
+  }
+}`;
+
+export const EDIT_CONTRIB = gql`
+mutation EditContribution($eventId: ID!, $item: String!, $contributionId: ID!) {
+  editContribution(eventID: $eventId, item: $item, contributionID: $contributionId) {
+    _id
+  }
+}`;
+
+export const SET_RSVP = gql`
+mutation SetRSVP($rsvp: String!, $eventId: ID!) {
+  setRSVP( rsvp: $rsvp, eventID: $eventId) {
+    _id
+  }
+}`;
+
 

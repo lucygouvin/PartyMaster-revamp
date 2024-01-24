@@ -64,6 +64,7 @@ type Query{
   event(id:ID!): Event
   users: [User]
   user(id:ID!): User
+  userEvents: User
 }
 
 type Mutation{
@@ -79,6 +80,8 @@ type Mutation{
   editComment(eventId:ID!, comment: CommentInput!): Event
   deleteComment(eventId:ID!, commentId: ID!): Event
   addContribution(eventID: ID!, userID:UserInput!, contribution:ContributionInput!):Event
+  deleteContribution(eventID: ID!, contributionID:ID!):Event
+  editContribution(eventID: ID!, item: String!, contributionID:ID!):Event
   setRSVP(eventID: ID!, rsvp: String!): Event
 }
 
