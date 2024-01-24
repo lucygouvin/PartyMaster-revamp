@@ -33,7 +33,14 @@ const resolvers = {
       return user;
     },
 
-    // TODO: getUserEvents
+    userEvents: async(parent, args, context) => {
+      if (context.user) {
+        return User.findOne({ _id: context.user._id })
+        .populate({ path: "event", populate: { path: "hostID" } });
+      }
+      throw AuthenticationError;
+    },
+    
   },
 
   Mutation: {
@@ -75,14 +82,11 @@ const resolvers = {
     deleteUser: async (parent, args) => User.findOneAndDelete({ _id: args.id }),
 
     // TODO Stretch: Edit user
-    // TODO Stretch: Delete contrib
-    // TODO Stretch: Edit contrib
-    // TODO: Add guest
-    // TODO: Update RSVP
 
     // EVENT MUTATIONS
 
-    addEvent: async (parent, args) => {
+    addEvent: async (parent, args, context) => {
+      if(context.user){
       const user = await User.findById(args.hostID._id);
       const event = await Event.create({
         hostID: user,
@@ -126,7 +130,7 @@ const resolvers = {
         );
       });
 
-      return event;
+      return event;}
     },
 
     editEvent: async (parent, args, context) => {
@@ -244,11 +248,29 @@ const resolvers = {
       return event;
     },
 
+    deleteContribution: async (parent, args) =>
+      Event.findOneAndUpdate(
+        { _id: args.eventID },
+        { $pull: { contribution: { _id: args.contributionID} } },
+        { new: true }
+      ),
+
+      editContribution: async (parent, args) =>
+      Event.findOneAndUpdate(
+        { _id: args.eventID, "contribution._id": args.contributionID },
+        { $set: { "contribution.$.item": args.item } },
+        { new: true }
+      ),
+
     // RSVP MUTATIONS
-    // setRSVP: async (parent, args) => {
-    // If logged in
-    // Take event ID and the logged in user's ID and set their RSVP to the selected value
-    // },
+    setRSVP: async (parent, args, context) => {
+      if (context.user){
+        return Event.findOneAndUpdate(
+        { _id: args.eventID, "RSVP.userId": context.user._id},
+        { $set: { "RSVP.$.invite": args.rsvp } },
+        { new: true }
+      ) }   
+    },
   },
 };
 
