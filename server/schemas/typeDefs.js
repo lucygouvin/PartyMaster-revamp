@@ -41,7 +41,7 @@ input CommentInput{
 type Invite{
   _id: ID!
   userId: User
-  invite: String!
+  invite: String
 }
 
 type Contribution{
@@ -79,6 +79,7 @@ type Mutation{
   editComment(eventId:ID!, comment: CommentInput!): Event
   deleteComment(eventId:ID!, commentId: ID!): Event
   addContribution(eventID: ID!, userID:UserInput!, contribution:ContributionInput!):Event
+  setRSVP(eventID: ID!, rsvp: String!): Event
 }
 
 `;
