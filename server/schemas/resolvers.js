@@ -143,7 +143,9 @@ const resolvers = {
           runValidators: true,
           new: true,
         }
-      );
+      ).populate({ path: "hostID" })
+      .populate({ path: "comment", populate: { path: "userId" } })
+      .populate({ path: "RSVP", populate: { path: "userId" } });
       return event;
     },
 
@@ -175,10 +177,13 @@ const resolvers = {
     },
 
     deleteGuest: async (parent, args) => {
+      console.log(args)
       const user = User.findOneAndUpdate(
-        { email: args.guestEmail },
-        { $pull: { event: args.eventId } }
+        { email:" CGallagher@hey.com" },
+        { $pull: { event: "65b08f13361fd904321d855a" } }
       );
+
+      console.log(user.name)
 
       return Event.findOneAndUpdate(
         { _id: args.eventId },
