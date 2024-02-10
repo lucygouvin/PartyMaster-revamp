@@ -14,13 +14,16 @@ const EventOverview = () => {
   const [addGuest, {addGuestError}] = useMutation(ADD_GUEST)
   const [deleteGuest, {deleteGuestError}] = useMutation(DELETE_GUEST)
   const [setRSVP, {RSVPerror}] = useMutation(SET_RSVP)
+  const [addComment, {addCommentError}] = useMutation(ADD_COMMENT)
+  const [editComment, {editCommentError}] = useMutation(EDIT_COMMENT)
+  const [deleteComment, {deleteCommentError}] = useMutation(DELETE_COMMENT)
 
   const saveEventDetails = () => {
     try {
         const {data} = updateEvent({
             variables: {
                 id: eventId,
-                title: "Edit test 3"
+                title: "Edit test 4"
             }
         })
     }
@@ -34,7 +37,7 @@ const EventOverview = () => {
         const {data} = addGuest({
             variables: {
                 eventId: eventId,
-                guests: "CGallagher@hey.com"
+                guests: "AsmimmonX@gmail.com"
             }
 
         })
@@ -49,7 +52,7 @@ const EventOverview = () => {
         const {data} = deleteGuest({
             variables: {
                 eventId: eventId,
-                guestEmail: "CGallagher@hey.com"
+                guestEmail: "AsmimmonX@gmail.com"
             }
 
         })
@@ -59,6 +62,65 @@ const EventOverview = () => {
     }
   }
 
+  const saveSetRSVP  = () => {
+    try {
+      const {data} = setRSVP({
+        variables: {
+          eventId: eventId,
+          rsvp: "No"
+        }
+      })
+
+    }catch (RSVPerror){
+      console.error("Unable to save RSVP", RSVPerror)
+    }
+
+  }
+
+  const saveAddComment = () => {
+    try {
+      const {data} = addComment({
+        variables: {
+          eventId: eventId,
+          content:  "Content from button"
+        }
+      })
+
+    }catch (addCommentError){
+      console.error("Unable to add comment", addCommentError)
+    }
+  }
+
+  const saveEditComment = () => {
+    try {
+      const {data} = editComment({
+        variables: {
+          eventId: eventId,
+          comment: {
+            _id: "65c79f119125ea6118979d45",
+            content: "Edited from button again"
+          }
+        }
+      })
+
+    }catch (editCommentError){
+      console.error("Unable to edit comment", editCommentError)
+    }
+  }
+
+  const saveDeleteComment = () => {
+    try {
+      const {data} = deleteComment({
+        variables: {
+          eventId: eventId,
+          commentId: "65c7a29c47409d66f8233419"
+        }
+      })
+
+    }catch (deleteCommentError){
+      console.error("Unable to delete comment", deleteCommentError)
+    }
+  }
 
 
   console.log(data)
@@ -78,10 +140,14 @@ const EventOverview = () => {
       <p>Guests:</p>
       <button onClick={saveAddGuest}>Add Guest</button>
       <button onClick={saveDeleteGuest}>Delete Guest</button>
+      <button onClick={saveSetRSVP}>Set RSVP</button>
       {data.event.RSVP.map(function(guest){
         return (<p>{guest.userId.name||guest.userId.email}, {guest.invite}</p>)
       })}
       <p>Comments:</p>
+      <button onClick={saveAddComment}>Add Comment</button>
+      <button onClick={saveEditComment}>Edit Comment</button>
+      <button onClick={saveDeleteComment}>Delete Comment</button>
       {data.event.comment.map(function(comment){
         return (<p>{comment.userId.name||comment.userId.email}, {comment.content}</p>)
       })}

@@ -177,31 +177,31 @@ const resolvers = {
     },
 
     deleteGuest: async (parent, args) => {
-      console.log(args)
-      const user = User.findOneAndUpdate(
-        { email:" CGallagher@hey.com" },
-        { $pull: { event: "65b08f13361fd904321d855a" } }
+      const user = await User.findOneAndUpdate(
+        { email: args.guestEmail },
+        { $pull: { event: args.eventId} }
       );
 
-      console.log(user.name)
-
-      return Event.findOneAndUpdate(
+      const event = await Event.findOneAndUpdate(
         { _id: args.eventId },
         { $pull: { RSVP: { userId: user._id } } },
         { new: true }
       );
+
+      return event
     },
 
     // COMMENT MUTATIONS
-    addComment: async (parent, args) => {
-      const user = await User.findById(args.userID._id);
+    addComment: async (parent, args, context) => {
+      if (context.user)
+      {const user = await User.findById(context.user._id);
       const event = await Event.findOneAndUpdate(
         { _id: args.eventID },
         {
           $addToSet: {
             comment: {
               userId: user,
-              content: args.content.content,
+              content: args.content
             },
           },
         },
@@ -209,25 +209,24 @@ const resolvers = {
       )
         // TODO Do we need to do all these populations?
 
-        .populate({ path: "hostID" })
         .populate({ path: "comment", populate: { path: "userId" } })
-        .populate({ path: "RSVP", populate: { path: "userId" } });
-      return event;
+      return event;}
     },
 
     deleteComment: async (parent, args) =>
-      Event.findOneAndUpdate(
+       Event.findOneAndUpdate(
         { _id: args.eventId },
         { $pull: { comment: { _id: args.commentId } } },
         { new: true }
-      ),
+      ).populate({ path: "comment", populate: { path: "userId" } })
+      ,
 
     editComment: async (parent, args) =>
       Event.findOneAndUpdate(
         { _id: args.eventId, "comment._id": args.comment._id },
         { $set: { "comment.$.content": args.comment.content } },
         { new: true }
-      ),
+      ).populate({ path: "comment", populate: { path: "userId" } }),
 
     // CONTRIBUTION MUTATIONS
 
@@ -269,12 +268,13 @@ const resolvers = {
 
     // RSVP MUTATIONS
     setRSVP: async (parent, args, context) => {
+      console.log(args)
       if (context.user){
         return Event.findOneAndUpdate(
         { _id: args.eventID, "RSVP.userId": context.user._id},
         { $set: { "RSVP.$.invite": args.rsvp } },
         { new: true }
-      ) }   
+      ).populate({ path: "RSVP", populate: { path: "userId" } }) }   
     },
   },
 };
