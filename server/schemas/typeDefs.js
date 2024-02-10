@@ -79,9 +79,11 @@ type Mutation{
   addComment(eventID:ID!, content:String!):Event
   editComment(eventId:ID!, comment: CommentInput!): Event
   deleteComment(eventId:ID!, commentId: ID!): Event
-  addContribution(eventID: ID!, userID:UserInput!, contribution:ContributionInput!):Event
+  addContribution(eventID: ID!, userID:ID, contribution:String!):Event
+  claimContribution(eventID: ID!, contributionID: ID!): Event
   deleteContribution(eventID: ID!, contributionID:ID!):Event
-  editContribution(eventID: ID!, item: String!, contributionID:ID!):Event
+  editContribution(eventID: ID!, item: String!, userId: ID, contributionID:ID!):Event
+  unclaimContribution(eventID: ID! contributionID: ID!): Event
   setRSVP(eventID: ID!, rsvp: String!): Event
 }
 

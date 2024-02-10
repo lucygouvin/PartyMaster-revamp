@@ -2,7 +2,7 @@ import React from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import { EVENT } from "../../utils/queries";
-import { EDIT_EVENT, ADD_COMMENT, EDIT_COMMENT, DELETE_COMMENT, ADD_CONTRIB, DELETE_CONTRIB, EDIT_CONTRIB, SET_RSVP, ADD_GUEST, DELETE_GUEST } from "../../utils/mutations";
+import { EDIT_EVENT, ADD_COMMENT, EDIT_COMMENT, DELETE_COMMENT, ADD_CONTRIB, CLAIM_CONTRIB, DELETE_CONTRIB, EDIT_CONTRIB, UNCLAIM_CONTRIB, SET_RSVP, ADD_GUEST, DELETE_GUEST } from "../../utils/mutations";
 import Auth from "../../utils/auth";
 
 const EventOverview = () => {
@@ -17,6 +17,11 @@ const EventOverview = () => {
   const [addComment, {addCommentError}] = useMutation(ADD_COMMENT)
   const [editComment, {editCommentError}] = useMutation(EDIT_COMMENT)
   const [deleteComment, {deleteCommentError}] = useMutation(DELETE_COMMENT)
+  const [addContrib, {addContribError}] = useMutation(ADD_CONTRIB)
+  const [editContrib, {editContribError}] = useMutation(EDIT_CONTRIB)
+  const [claimContrib, {claimContribError}] = useMutation(CLAIM_CONTRIB)
+  const [deleteContrib, {deleteContribError}] = useMutation(DELETE_CONTRIB)
+  const [unclaimContrib, {unclaimContribError}] = useMutation(UNCLAIM_CONTRIB)
 
   const saveEventDetails = () => {
     try {
@@ -122,6 +127,83 @@ const EventOverview = () => {
     }
   }
 
+  const saveAddContrib = () => {
+    try {
+      const {data} = addContrib ({
+        variables: {
+        eventId: eventId,
+        contribution: "snacks",
+        userId: "659342c99429127b5e676c82"
+      }
+
+      })
+
+    }catch(addContribError) {
+      console.error("Unable to add contribution", addContribError)
+    }
+  }
+
+  const saveEditContrib = () => {
+    try {
+      const {data} = editContrib ({
+        variables: {
+          eventId: eventId,
+          item: "dip",
+          contributionId: "65c7a73eb0c018697d0eca6a",
+        }
+        
+      })
+
+    }catch(editContribError) {
+      console.error("Unable to edit contribution", editContribError)
+    }
+  }
+
+  const saveClaimContrib = () => {
+    try {
+      const {data} = claimContrib ({
+        variables: {
+          eventId: eventId,
+          contributionId: "65c7a73eb0c018697d0eca6a",
+        }
+        
+      })
+
+    }catch(claimContribError) {
+      console.error("Unable to edit contribution", claimContribError)
+    }
+  }
+
+  const saveDeleteContrib = () => {
+    try {
+      const {data} = deleteContrib ({
+        variables:{
+          eventId: eventId,
+          contributionId: "65c7a7e7d943ac1d566f65f6"
+        }
+        
+      })
+
+    }catch(deleteContribError) {
+      console.error("Unable to delete contribution", deleteContribError)
+    }
+  }
+
+  const saveUnclaimContrib = () => {
+    try {
+      const {data} = unclaimContrib ({
+        variables: {
+          eventId: eventId,
+          contributionId: "65c7a73eb0c018697d0eca6a",
+        }
+        
+      })
+
+    }catch(unClaimContribError) {
+      console.error("Unable to edit contribution", unClaimContribError)
+    }
+  }
+
 
   console.log(data)
 
@@ -152,8 +234,15 @@ const EventOverview = () => {
         return (<p>{comment.userId.name||comment.userId.email}, {comment.content}</p>)
       })}
       <p>Contributions:</p>
+      <button onClick={saveAddContrib}>Add Contrib</button>
+      <button onClick={saveEditContrib}>Edit Contrib</button>
+      <button onClick={saveDeleteContrib}>Delete Contrib</button>
+      <button onClick={saveClaimContrib}>Claim Contrib</button>
+      <button onClick={saveUnclaimContrib}>Unclaim Contrib</button>
+
+
       {data.event.contribution.map(function(contribution){
-        return (<p>{contribution.userId.name||contribution.userId.email}, {contribution.item}</p>)
+        return (<p>{contribution.userId? contribution.userId.name : "Unclaimed"}, {contribution.item}</p>)
       })}
       <button onClick={saveEventDetails}>Update Event Test</button>
     </>

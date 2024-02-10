@@ -160,46 +160,32 @@ mutation DeleteComment($eventId: ID!, $commentId: ID!) {
   }
 }`;
 
-export const ADD_CONTRIB = gql `mutation AddContribution($eventId: ID!, $userId: UserInput!, $contribution: ContributionInput!) {
-  addContribution(eventID: $eventId, userID: $userId, contribution: $contribution) {
+export const ADD_CONTRIB = gql `mutation AddContribution($eventId: ID!, $contribution: String!, $userId: ID) {
+  addContribution(eventID: $eventId, contribution: $contribution, userID: $userId) {
     _id
-    hostID {
-      _id
-      name
-      email
-      password
-    }
-    title
-    description
-    date
-    location
-    comment {
-      _id
-      userId {
-        _id
-        name
-        email
-        password
-      }
-      content
-    }
-    RSVP {
-      _id
-      invite
-    }
-    potluck
     contribution {
-      _id
-      item
       userId {
-        _id
         name
-        email
-        password
+        _id
       }
+      item
+      _id
     }
-    startTime
-    endTime
+  }
+}`;
+
+export const CLAIM_CONTRIB = gql`
+mutation ClaimContribution($eventId: ID!, $contributionId: ID!) {
+  claimContribution(eventID: $eventId, contributionID: $contributionId) {
+    _id
+    contribution {
+      userId {
+        name
+        _id
+      }
+      item
+      _id
+    }
   }
 }`;
 
@@ -207,13 +193,44 @@ export const DELETE_CONTRIB = gql`
 mutation DeleteContribution($eventId: ID!, $contributionId: ID!) {
   deleteContribution(eventID: $eventId, contributionID: $contributionId) {
     _id
+    contribution {
+      userId {
+        name
+        _id
+      }
+      item
+      _id
+    }
   }
 }`;
 
 export const EDIT_CONTRIB = gql`
-mutation EditContribution($eventId: ID!, $item: String!, $contributionId: ID!) {
-  editContribution(eventID: $eventId, item: $item, contributionID: $contributionId) {
+mutation EditContribution($eventId: ID!, $item: String!, $contributionId: ID!, $userId: ID) {
+  editContribution(eventID: $eventId, item: $item, contributionID: $contributionId, userId: $userId) {
     _id
+    contribution {
+      userId {
+        name
+        _id
+      }
+      item
+      _id
+    }
+  }
+}`;
+
+export const UNCLAIM_CONTRIB = gql`
+mutation UnclaimContribution($eventId: ID!, $contributionId: ID!) {
+  unclaimContribution(eventID: $eventId, contributionID: $contributionId) {
+    _id
+    contribution {
+      userId {
+        name
+        _id
+      }
+      item
+      _id
+    }
   }
 }`;
 
