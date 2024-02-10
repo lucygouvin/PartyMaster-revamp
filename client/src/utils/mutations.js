@@ -115,40 +115,17 @@ mutation DeleteGuest($eventId: ID!, $guestEmail: String!) {
 }`;
 
 export const ADD_COMMENT = gql `
-mutation AddComment($eventId: ID!, $userId: UserInput!, $content: CommentInput!) {
-  addComment(eventID: $eventId, userID: $userId, content: $content) {
+mutation AddComment($eventId: ID!, $content: String!) {
+  addComment(eventID: $eventId, content: $content) {
     _id
-    hostID {
-      _id
-      name
-      email
-      password
-    }
-    title
-    description
-    date
-    startTime
-    endTime
-    location
     comment {
-      _id
       userId {
-        _id
         name
         email
-        password
+        _id
       }
       content
-    }
-    RSVP {
       _id
-      userId {
-        _id
-        name
-        email
-        password
-      }
-      invite
     }
   }
 }
@@ -170,52 +147,45 @@ mutation EditComment($eventId: ID!, $comment: CommentInput!) {
 export const DELETE_COMMENT = gql `
 mutation DeleteComment($eventId: ID!, $commentId: ID!) {
   deleteComment(eventId: $eventId, commentId: $commentId) {
+    _id
     comment {
+      userId {
+        name
+        email
+        _id
+      }
+      content
       _id
     }
   }
 }`;
 
-export const ADD_CONTRIB = gql `mutation AddContribution($eventId: ID!, $userId: UserInput!, $contribution: ContributionInput!) {
-  addContribution(eventID: $eventId, userID: $userId, contribution: $contribution) {
+export const ADD_CONTRIB = gql `mutation AddContribution($eventId: ID!, $contribution: String!, $userId: ID) {
+  addContribution(eventID: $eventId, contribution: $contribution, userID: $userId) {
     _id
-    hostID {
-      _id
-      name
-      email
-      password
-    }
-    title
-    description
-    date
-    location
-    comment {
-      _id
-      userId {
-        _id
-        name
-        email
-        password
-      }
-      content
-    }
-    RSVP {
-      _id
-      invite
-    }
-    potluck
     contribution {
-      _id
-      item
       userId {
-        _id
         name
-        email
-        password
+        _id
       }
+      item
+      _id
     }
-    startTime
-    endTime
+  }
+}`;
+
+export const CLAIM_CONTRIB = gql`
+mutation ClaimContribution($eventId: ID!, $contributionId: ID!) {
+  claimContribution(eventID: $eventId, contributionID: $contributionId) {
+    _id
+    contribution {
+      userId {
+        name
+        _id
+      }
+      item
+      _id
+    }
   }
 }`;
 
@@ -223,20 +193,60 @@ export const DELETE_CONTRIB = gql`
 mutation DeleteContribution($eventId: ID!, $contributionId: ID!) {
   deleteContribution(eventID: $eventId, contributionID: $contributionId) {
     _id
+    contribution {
+      userId {
+        name
+        _id
+      }
+      item
+      _id
+    }
   }
 }`;
 
 export const EDIT_CONTRIB = gql`
-mutation EditContribution($eventId: ID!, $item: String!, $contributionId: ID!) {
-  editContribution(eventID: $eventId, item: $item, contributionID: $contributionId) {
+mutation EditContribution($eventId: ID!, $item: String!, $contributionId: ID!, $userId: ID) {
+  editContribution(eventID: $eventId, item: $item, contributionID: $contributionId, userId: $userId) {
     _id
+    contribution {
+      userId {
+        name
+        _id
+      }
+      item
+      _id
+    }
+  }
+}`;
+
+export const UNCLAIM_CONTRIB = gql`
+mutation UnclaimContribution($eventId: ID!, $contributionId: ID!) {
+  unclaimContribution(eventID: $eventId, contributionID: $contributionId) {
+    _id
+    contribution {
+      userId {
+        name
+        _id
+      }
+      item
+      _id
+    }
   }
 }`;
 
 export const SET_RSVP = gql`
-mutation SetRSVP($rsvp: String!, $eventId: ID!) {
-  setRSVP( rsvp: $rsvp, eventID: $eventId) {
+mutation SetRSVP($eventId: ID!, $rsvp: String!) {
+  setRSVP(eventID: $eventId, rsvp: $rsvp) {
     _id
+    RSVP {
+      _id
+      invite
+      userId {
+        name
+        email
+        _id
+      }
+    }
   }
 }`;
 
