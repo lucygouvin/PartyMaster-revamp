@@ -8,7 +8,6 @@ query Events {
       _id
       name
       email
-      password
     }
     title
     description
@@ -22,7 +21,6 @@ query Events {
         _id
         name
         email
-        password
       }
       content
     }
@@ -32,7 +30,6 @@ query Events {
         _id
         name
         email
-        password
       }
       invite
     }
@@ -43,7 +40,6 @@ query Events {
         _id
         name
         email
-        password
       }
       item
     }
@@ -58,7 +54,6 @@ query Event($eventId: ID!) {
       _id
       name
       email
-      password
     }
     title
     description
@@ -71,7 +66,6 @@ query Event($eventId: ID!) {
         _id
         name
         email
-        password
       }
       content
     }
@@ -81,7 +75,6 @@ query Event($eventId: ID!) {
         _id
         name
         email
-        password
       }
       invite
     }
@@ -92,12 +85,43 @@ query Event($eventId: ID!) {
         _id
         name
         email
-        password
       }
       item
     }
     startTime
     endTime
+    rsvpYes {
+      userId {
+        name
+        email
+        _id
+      }
+      _id
+    }
+    rsvpNotResponded {
+      userId {
+        name
+        email
+        _id
+      }
+      _id
+    }
+    rsvpNo {
+      userId {
+        name
+        email
+        _id
+      }
+      _id
+    }
+    rsvpMaybe {
+      _id
+      userId {
+        name
+        email
+        _id
+      }
+    }
   }
 }`;
 
@@ -107,7 +131,6 @@ query Users {
     _id
     name
     email
-    password
   }
 }
 `
@@ -117,7 +140,6 @@ query User($id: ID!) {
     _id
     name
     email
-    password
   }
 }
 `;

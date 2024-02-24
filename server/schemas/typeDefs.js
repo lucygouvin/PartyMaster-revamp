@@ -12,6 +12,10 @@ type Event{
   RSVP: [Invite]
   potluck: Boolean
   contribution: [Contribution]
+  rsvpMaybe: [Invite]
+  rsvpYes: [Invite]
+  rsvpNo: [Invite]
+  rsvpNotResponded: [Invite]
 }
 
 type User{

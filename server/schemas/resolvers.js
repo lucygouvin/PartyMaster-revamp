@@ -1,24 +1,24 @@
-const { Event, User } = require("../models");
-const { signToken, AuthenticationError } = require("../utils/auth");
+const { Event, User } = require('../models');
+const { signToken, AuthenticationError } = require('../utils/auth');
 
 const resolvers = {
   Query: {
     // EVENT QUERIES
     events: async () => {
       const event = await Event.find()
-        .populate({ path: "hostID" })
-        .populate({ path: "comment", populate: { path: "userId" } })
-        .populate({ path: "RSVP", populate: { path: "userId" } })
-        .populate({ path: "contribution", populate: { path: "userId" } });
+        .populate({ path: 'hostID' })
+        .populate({ path: 'comment', populate: { path: 'userId' } })
+        .populate({ path: 'RSVP', populate: { path: 'userId' } })
+        .populate({ path: 'contribution', populate: { path: 'userId' } });
       return event;
     },
 
     event: async (parent, args) => {
       const event = await Event.findById(args.id)
-        .populate({ path: "hostID" })
-        .populate({ path: "comment", populate: { path: "userId" } })
-        .populate({ path: "RSVP", populate: { path: "userId" } })
-        .populate({ path: "contribution", populate: { path: "userId" } });
+        .populate({ path: 'hostID' })
+        .populate({ path: 'comment', populate: { path: 'userId' } })
+        .populate({ path: 'RSVP', populate: { path: 'userId' } })
+        .populate({ path: 'contribution', populate: { path: 'userId' } });
       return event;
     },
 
@@ -36,8 +36,8 @@ const resolvers = {
     userEvents: async (parent, args, context) => {
       if (context.user) {
         return User.findOne({ _id: context.user._id }).populate({
-          path: "event",
-          populate: { path: "hostID" },
+          path: 'event',
+          populate: { path: 'hostID' },
         });
       }
       throw AuthenticationError;
@@ -66,7 +66,7 @@ const resolvers = {
 
     addUser: async (parent, args) => {
       // If this mutation was called from /signup, then sign the user in automatically
-      const login = args.params === "signup";
+      const login = args.params === 'signup';
       const user = await User.create({
         name: args.name,
         email: args.email,
@@ -101,11 +101,11 @@ const resolvers = {
           // Add host to RSVP list, set as "Yes"
           RSVP: {
             userId: user,
-            invite: "Yes",
+            invite: 'Yes',
           },
         });
 
-        const guestArray = args.guestList.split(",");
+        const guestArray = args.guestList.split(',');
 
         guestArray.forEach(async (invitee) => {
           invitee.trim();
@@ -123,7 +123,7 @@ const resolvers = {
               $addToSet: {
                 RSVP: {
                   userId: guest,
-                  invite: "Not Responded",
+                  invite: 'Not Responded',
                 },
               },
             },
@@ -146,9 +146,9 @@ const resolvers = {
           new: true,
         }
       )
-        .populate({ path: "hostID" })
-        .populate({ path: "comment", populate: { path: "userId" } })
-        .populate({ path: "RSVP", populate: { path: "userId" } });
+        .populate({ path: 'hostID' })
+        .populate({ path: 'comment', populate: { path: 'userId' } })
+        .populate({ path: 'RSVP', populate: { path: 'userId' } });
       return event;
     },
 
@@ -175,7 +175,7 @@ const resolvers = {
           },
         },
         { new: true }
-      ).populate({ path: "RSVP", populate: { path: "userId" } });
+      ).populate({ path: 'RSVP', populate: { path: 'userId' } });
     },
 
     deleteGuest: async (parent, args) => {
@@ -211,7 +211,7 @@ const resolvers = {
         )
           // TODO Do we need to do all these populations?
 
-          .populate({ path: "comment", populate: { path: "userId" } });
+          .populate({ path: 'comment', populate: { path: 'userId' } });
         return event;
       }
     },
@@ -221,13 +221,13 @@ const resolvers = {
         { _id: args.eventId },
         { $pull: { comment: { _id: args.commentId } } },
         { new: true }
-      ).populate({ path: "comment", populate: { path: "userId" } }),
+      ).populate({ path: 'comment', populate: { path: 'userId' } }),
     editComment: async (parent, args) =>
       Event.findOneAndUpdate(
-        { _id: args.eventId, "comment._id": args.comment._id },
-        { $set: { "comment.$.content": args.comment.content } },
+        { _id: args.eventId, 'comment._id': args.comment._id },
+        { $set: { 'comment.$.content': args.comment.content } },
         { new: true }
-      ).populate({ path: "comment", populate: { path: "userId" } }),
+      ).populate({ path: 'comment', populate: { path: 'userId' } }),
 
     // CONTRIBUTION MUTATIONS
 
@@ -244,7 +244,7 @@ const resolvers = {
           },
         },
         { new: true }
-      );
+      ).populate({ path: 'contribution', populate: { path: 'userId' } });
       // TODO Do we need to do all these populations?
       return event;
     },
@@ -252,10 +252,10 @@ const resolvers = {
     claimContribution: async (parent, args, context) => {
       if (context.user) {
         return Event.findOneAndUpdate(
-          { _id: args.eventID, "contribution._id": args.contributionID },
-          { $set: { "contribution.$.userId": context.user._id } },
+          { _id: args.eventID, 'contribution._id': args.contributionID },
+          { $set: { 'contribution.$.userId': context.user._id } },
           { new: true }
-        ).populate({ path: "contribution", populate: { path: "userId" } });
+        ).populate({ path: 'contribution', populate: { path: 'userId' } });
       }
     },
 
@@ -264,34 +264,34 @@ const resolvers = {
         { _id: args.eventID },
         { $pull: { contribution: { _id: args.contributionID } } },
         { new: true }
-      ).populate({ path: "contribution", populate: { path: "userId" } }),
+      ).populate({ path: 'contribution', populate: { path: 'userId' } }),
 
     editContribution: async (parent, args) =>
       Event.findOneAndUpdate(
-        { _id: args.eventID, "contribution._id": args.contributionID },
-        { $set: { "contribution.$.item": args.item } },
+        { _id: args.eventID, 'contribution._id': args.contributionID },
+        { $set: { 'contribution.$.item': args.item } },
         { new: true }
-      ).populate({ path: "contribution", populate: { path: "userId" } }),
+      ).populate({ path: 'contribution', populate: { path: 'userId' } }),
 
-      unclaimContribution: async (parent, args, context) => {
-        if (context.user) {
-          return Event.findOneAndUpdate(
-            { _id: args.eventID, "contribution._id": args.contributionID },
-            { $set: { "contribution.$.userId": null } },
-            { new: true }
-          ).populate({ path: "contribution", populate: { path: "userId" } });
-        }
-      },
+    unclaimContribution: async (parent, args, context) => {
+      if (context.user) {
+        return Event.findOneAndUpdate(
+          { _id: args.eventID, 'contribution._id': args.contributionID },
+          { $set: { 'contribution.$.userId': null } },
+          { new: true }
+        ).populate({ path: 'contribution', populate: { path: 'userId' } });
+      }
+    },
 
     // RSVP MUTATIONS
     setRSVP: async (parent, args, context) => {
       console.log(args);
       if (context.user) {
         return Event.findOneAndUpdate(
-          { _id: args.eventID, "RSVP.userId": context.user._id },
-          { $set: { "RSVP.$.invite": args.rsvp } },
+          { _id: args.eventID, 'RSVP.userId': context.user._id },
+          { $set: { 'RSVP.$.invite': args.rsvp } },
           { new: true }
-        ).populate({ path: "RSVP", populate: { path: "userId" } });
+        ).populate({ path: 'RSVP', populate: { path: 'userId' } });
       }
     },
   },

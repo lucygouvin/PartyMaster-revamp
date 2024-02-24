@@ -166,6 +166,7 @@ export const ADD_CONTRIB = gql `mutation AddContribution($eventId: ID!, $contrib
     contribution {
       userId {
         name
+        email
         _id
       }
       item
@@ -241,6 +242,38 @@ mutation SetRSVP($eventId: ID!, $rsvp: String!) {
     RSVP {
       _id
       invite
+      userId {
+        name
+        email
+        _id
+      }
+    }
+    rsvpYes {
+      _id
+      userId {
+        name
+        email
+        _id
+      }
+    }
+    rsvpNotResponded {
+      _id
+      userId {
+        name
+        email
+        _id
+      }
+    }
+    rsvpNo {
+      _id
+      userId {
+        name
+        email
+        _id
+      }
+    }
+    rsvpMaybe {
+      _id
       userId {
         name
         email
