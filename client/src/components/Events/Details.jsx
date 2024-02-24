@@ -4,7 +4,9 @@ import { useMutation } from "@apollo/client";
 import { EDIT_EVENT} from "../../utils/mutations";
 
 export default function Details ({details}){
-    const eventId = useContext(EventContext);
+    const {eventId} = useContext(EventContext);
+    const {isHost} = useContext(EventContext);
+
 
     const [updateEvent, { eventError }] = useMutation(EDIT_EVENT);
 
@@ -26,7 +28,9 @@ export default function Details ({details}){
         <div className="group details-group">
             <h2>Details</h2>
             <p className="container details-container">{details}</p>
+            {isHost ? (
             <button onClick={saveEventDetails}>Edit</button>
+            ): <></>}
         </div>
     )
 }

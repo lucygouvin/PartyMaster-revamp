@@ -6,7 +6,7 @@ import { ADD_COMMENT } from "../../utils/mutations";
 import Comment from "./Comment";
 
 export default function CommentSection({ commentArray }) {
-  const eventId = useContext(EventContext);
+  const {eventId} = useContext(EventContext);
 
   const [addComment, { addCommentError }] = useMutation(ADD_COMMENT);
 
@@ -29,7 +29,7 @@ export default function CommentSection({ commentArray }) {
       <button onClick={saveAddComment}>Add Comment</button>
       <div className="comment-list">
         {commentArray.map(function (commentInfo) {
-          return <Comment comment={commentInfo} />;
+          return <Comment comment={commentInfo} key={commentInfo._id} />;
         })}
       </div>
     </div>

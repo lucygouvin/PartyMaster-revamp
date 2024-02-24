@@ -1,4 +1,5 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import { EVENT } from "../../utils/queries";
@@ -12,20 +13,34 @@ import { EventContext } from "./EventContext";
 
 const EventOverview = () => {
   const { eventId } = useParams();
+  const {data: user} = Auth.getProfile();
+  let [isHost, setIsHost] = useState(false)
+  console.log(user)
+
 
   const { loading, data } = useQuery(EVENT, {
     variables: { eventId: eventId },
   });
 
-  console.log(data);
+  useEffect(() => {
+    if (loading === false && data) {
+     setIsHost(true)
+    }
+  }, [loading, data]);
 
+const universalData = {
+  eventId,
+  user,
+  isHost
+}
+  console.log(data);
   return (
     <div>
       {loading ? (
         <p>Loading...</p>
       ) : (
         <>
-          <EventContext.Provider value={eventId}>
+          <EventContext.Provider value={universalData}>
             <Headline
               headline={{
                 title: data.event.title,

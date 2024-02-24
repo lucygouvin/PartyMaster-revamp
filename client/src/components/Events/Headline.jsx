@@ -4,7 +4,8 @@ import { useMutation } from "@apollo/client";
 import { EDIT_EVENT} from "../../utils/mutations";
 
 export default function Headline({headline}){
-    const eventId = useContext(EventContext);
+    const {eventId} = useContext(EventContext);
+    const {isHost} = useContext(EventContext);
 
     const [updateEvent, { eventError }] = useMutation(EDIT_EVENT);
 
@@ -30,7 +31,9 @@ export default function Headline({headline}){
             <h4>Hosted by {headline.hostName}</h4>
             <h4>{headline.location}</h4>
             </div>
+            {isHost ? (
             <button onClick={saveEventDetails}>Edit</button>
+            ): <></>}
 
 
         </div>

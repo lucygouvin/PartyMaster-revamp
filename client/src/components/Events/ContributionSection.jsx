@@ -6,7 +6,7 @@ import { ADD_CONTRIB } from "../../utils/mutations";
 import Contribution from "./Contribution";
 
 export default function ContributionSection({ contributionArray }) {
-    const eventId = useContext(EventContext)
+    const {eventId} = useContext(EventContext)
 
     const [addContrib, {addContribError}] = useMutation(ADD_CONTRIB)
 
@@ -29,7 +29,7 @@ export default function ContributionSection({ contributionArray }) {
       <h2>Can I Bring Anything?</h2>
       <div className="contribution-list">
         {contributionArray.map(function (contribInfo) {
-          return <Contribution contribution={contribInfo} />;
+          return <Contribution contribution={contribInfo} key={contribInfo._id}/>;
         })}
       </div>
       <textarea></textarea>
