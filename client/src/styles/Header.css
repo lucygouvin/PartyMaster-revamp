@@ -1,91 +1,58 @@
 /* Header.css */
 
 .header {
-  background-color: var(--dark-color);
-  color: var(--light-color);
+  background-color: var(--light-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
-  position: relative;
-  padding: 30px;
+  padding: 0 1rem;
+  border-bottom: #999797 1px solid;
 
-}
-
-.menu-icon {
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  height: 25px;
-  z-index: 3;
-}
-
-.menu-icon div {
-  background-color: #ecf0f1;
-  height: 3px;
-  width: 30px;
-  margin: 2px 0; 
-  border-radius: 2px; 
-  transition: background-color 0.3s;
-}
-
-.menu-icon:hover div {
-  background-color: #3498db; 
-}
-
-.header-text {
-  flex-grow: 1; 
-  text-align: center;
-  font-size: 24px;
 }
 
 .header h1 {
+  color: var(--primary-color);
   margin: 0;
   padding: 0;
-  font-size: 1.5em; 
-}
-.dropdown-content {
-  position: absolute;
-  top: 100%; 
-  left: 0;
-  background-color: #f9f9f9;
-  min-width: 200px; 
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); 
-  border-radius: 5px;
-  overflow: hidden;
-  z-index: 1;
-  opacity: 0; 
-  visibility: hidden; 
-  transition: opacity 0.3s, visibility 0.3s;
+  font-size: 3rem; 
 }
 
-.header:hover .dropdown-content {
-  opacity: 1; 
-  visibility: visible;
+.header-button-group{
+  display: flex;
+  gap: 3%;
+  flex-direction: row;
+  justify-content: flex-end;
+  min-width: 50%;
 }
 
-.dropdown-content a {
-  color: black;
-  padding: 15px 20px;
-  text-decoration: none;
-  display: block;
-  transition: background-color 0.3s; 
-  font-size: 24px; 
+.header .dashboard-button{
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--secondary-color);
+  background-color: transparent;
+  outline: none;
+  border: none;
+  display: inline;
 }
 
-.dropdown-content a:hover {
-  background-color: #f1f1f1;
-  color: #3498db; 
+.header .create-button{
+  font-size: 1.5rem;
+  color: var(--light-font-color);
+  background-color: var(--secondary-color);
+  border-radius: var(--border-radius);
+  padding: 2%;
+  outline: none;
+  border: none;
+  display: inline;
+  /* min-width: 2rem; */
 }
 
 
-@media (max-width: 768px) {
+
+/* @media (max-width: 768px) {
   .header {
     flex-direction: column;
   }
 
-  .dropdown-content {
-    width: 100%; 
-  }
-}
+ 
+} */
