@@ -1,6 +1,6 @@
 :root {
     --light-color: #FFF;
-    --background-color: #999797;
+    --background-color: #F0F2F5;
     --primary-color: #F65858;
     --secondary-color:#0D99AA;
     --dark-header-color: #185369;
@@ -24,7 +24,18 @@ body {
 main {
     /* border: 1px solid red; */
    padding: 0 1rem 1rem 1rem;
-    /* background-color: var(--background-color); */
+    background-color: var(--background-color);
+    display: flex;
+}
+
+.edit-button{
+    max-height: 25px;
+}
+
+.container{
+    background-color: var(--light-color);
+    border-radius: var(--border-radius);
+    padding: 2%;
 }
 
 

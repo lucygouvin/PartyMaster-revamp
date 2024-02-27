@@ -84,7 +84,7 @@ export default function Contribution({ contribution }) {
   };
 
   return (
-    <div className="contribution-item">
+    <div className="container contribution-item">
       <p>
         {contribution.userId ? contribution.userId.name : "Unclaimed"},{" "}
         {contribution.item}

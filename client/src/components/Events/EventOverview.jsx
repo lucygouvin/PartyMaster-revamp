@@ -11,12 +11,13 @@ import CommentSection from "./CommentSection";
 import ContributionSection from "./ContributionSection";
 import { EventContext } from "./EventContext";
 
+import '../../styles/EventOverview.css'
+
 const EventOverview = () => {
   const { eventId } = useParams();
-  const {data: user} = Auth.getProfile();
-  let [isHost, setIsHost] = useState(false)
-  console.log(user)
-
+  const { data: user } = Auth.getProfile();
+  let [isHost, setIsHost] = useState(false);
+  console.log(user);
 
   const { loading, data } = useQuery(EVENT, {
     variables: { eventId: eventId },
@@ -24,15 +25,15 @@ const EventOverview = () => {
 
   useEffect(() => {
     if (loading === false && data) {
-     setIsHost(true)
+      setIsHost(true);
     }
   }, [loading, data]);
 
-const universalData = {
-  eventId,
-  user,
-  isHost
-}
+  const universalData = {
+    eventId,
+    user,
+    isHost,
+  };
   console.log(data);
   return (
     <div>
@@ -51,18 +52,26 @@ const universalData = {
                 location: data.event.location,
               }}
             />
-            <Details details={data.event.description} />
-            <Guests
-              guests={{
-                rsvpYes: data.event.rsvpYes,
-                rsvpNo: data.event.rsvpNo,
-                rsvpMaybe: data.event.rsvpMaybe,
-                rsvpNotResponded: data.event.rsvpNotResponded,
-              }}
-            />
-            <CommentSection commentArray={data.event.comment} />
+            <main>
+              <div className="large-column">
+                <Details details={data.event.description} />
+                <CommentSection commentArray={data.event.comment} />
+              </div>
 
-            <ContributionSection contributionArray={data.event.contribution} />
+              <div className="small-column">
+                <Guests
+                  guests={{
+                    rsvpYes: data.event.rsvpYes,
+                    rsvpNo: data.event.rsvpNo,
+                    rsvpMaybe: data.event.rsvpMaybe,
+                    rsvpNotResponded: data.event.rsvpNotResponded,
+                  }}
+                />
+                <ContributionSection
+                  contributionArray={data.event.contribution}
+                />
+              </div>
+            </main>
           </EventContext.Provider>
         </>
       )}

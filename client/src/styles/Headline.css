@@ -1,0 +1,34 @@
+.headline{
+    background-color: var(--light-color);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.headline h2{
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+
+.headline h3{
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+.headline h4{
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+
+
+.event-date-time{
+    color: var(--dark-header-color);
+    text-transform: uppercase;
+}
+
+.event-title{
+    color: var(--primary-color);
+    font-size: 4rem;
+    font-weight: 300;
+
+}
+

@@ -42,7 +42,7 @@ export default function Comment({ comment }) {
   };
 
   return (
-    <div className="comment-item">
+    <div className="container comment-item">
       <p>
         {comment.userId.name || comment.userId.email}, {comment.content}
       </p>
