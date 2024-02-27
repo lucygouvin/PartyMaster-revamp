@@ -1,0 +1,6 @@
+.contribution-item{
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

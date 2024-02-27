@@ -16,7 +16,7 @@ export default function Headline({ headline }) {
       const { data } = updateEvent({
         variables: {
           id: eventId,
-          title: "Edit from child",
+          title: "Test event title",
         },
       });
     } catch (eventError) {
@@ -27,12 +27,12 @@ export default function Headline({ headline }) {
   return (
     <div className="headline">
       <div className="event-info">
-        <h3 className="event-date-time">
+        <h2 className="event-date-time">
           {headline.date} from {headline.startTime} to {headline.endTime}
-        </h3>
-        <h2 className="event-title">{headline.title}</h2>
-        <h4 className="event-host">Hosted by {headline.hostName}</h4>
-        <h4 className="event-location">{headline.location}</h4>
+        </h2>
+        <h1 className="event-title">{headline.title}</h1>
+        <h3 className="event-host">Hosted by {headline.hostName}</h3>
+        <h3 className="event-location">{headline.location}</h3>
       </div>
       {isHost ? <button className="button edit-button headline-edit-button" onClick={saveEventDetails}>Edit</button> : <></>}
     </div>

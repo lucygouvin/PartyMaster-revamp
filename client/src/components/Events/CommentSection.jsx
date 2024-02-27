@@ -25,8 +25,10 @@ export default function CommentSection({ commentArray }) {
 
   return (
     <div className="group comment-group">
+      <div className="flex-group">
       <h2>Comments</h2>
       <button onClick={saveAddComment}>Add Comment</button>
+      </div>
       <div className="comment-list">
         {commentArray.map(function (commentInfo) {
           return <Comment comment={commentInfo} key={commentInfo._id} />;

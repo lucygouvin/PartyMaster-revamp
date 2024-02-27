@@ -1,0 +1,17 @@
+.comment-author{
+    font-style: italic;
+    color: var(--quiet-color);
+    
+}
+
+.edit-comment-button{
+    background-color: var(--tertiary-color);
+    border-color: var(--tertiary-color);
+    color: var(--light-font-color)
+}
+
+.comment-button-group{
+    display: flex;
+    justify-content: end;
+    gap: 1%;
+}

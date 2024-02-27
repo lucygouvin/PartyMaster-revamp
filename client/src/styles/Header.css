@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 1rem;
-  border-bottom: #999797 1px solid;
+  border-bottom: var(--quiet-color) 1px solid;
 
 }
 

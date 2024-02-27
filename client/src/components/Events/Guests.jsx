@@ -49,8 +49,10 @@ export default function Guests({ guests }) {
   };
   return (
     <div className="group guests-group">
+      <div className="flex-group">
       <h2>Guests</h2>
       <p>See all</p>
+      </div>
       <div className="container guest-container">
         <h3>Yes: {guests.rsvpYes.length} </h3>
         <h3>No: {guests.rsvpNo.length} </h3>

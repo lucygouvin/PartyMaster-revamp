@@ -27,13 +27,14 @@ export default function ContributionSection({ contributionArray }) {
     return (
     <div className="group contribution-group">
       <h2>Can I Bring Anything?</h2>
-      <div className="contribution-list">
+      <div className="container contribution-list">
         {contributionArray.map(function (contribInfo) {
           return <Contribution contribution={contribInfo} key={contribInfo._id}/>;
         })}
-      </div>
+      
       <textarea></textarea>
       <button onClick={saveAddContrib}>Add</button>
+      </div>
     </div>
   );
 }

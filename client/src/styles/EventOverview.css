@@ -15,11 +15,11 @@ body {
 }
 
 .large-column{
-width: 75vw;
+width: 66vw;
 padding: 0 2%;
 }
 
 .small-column{
-min-width: 25vw;
+min-width: 33vw;
 padding: 0 2%
 }

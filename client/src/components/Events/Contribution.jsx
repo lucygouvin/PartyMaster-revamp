@@ -8,6 +8,8 @@ import {
   UNCLAIM_CONTRIB,
 } from "../../utils/mutations";
 
+import '../../styles/Contribution.css'
+
 export default function Contribution({ contribution }) {
   const { eventId } = useContext(EventContext);
   const { user } = useContext(EventContext);
@@ -84,11 +86,18 @@ export default function Contribution({ contribution }) {
   };
 
   return (
-    <div className="container contribution-item">
+    <div className=" contribution-item">
       <p>
-        {contribution.userId ? contribution.userId.name : "Unclaimed"},{" "}
         {contribution.item}
       </p>
+      <div className="contribution-button-group">
+      {isUnowned ? (
+        <>
+        <button onClick={saveClaimContrib}>Claim</button>
+        </>
+      ) : (
+        <>{contribution.userId ? contribution.userId.name : "Unclaimed"}</>
+      )}
       {isOwner ? (
         <>
          <button onClick={saveEditContrib}>Edit</button>
@@ -104,16 +113,10 @@ export default function Contribution({ contribution }) {
       ) : (
         <></>
       )}
-      {isUnowned ? (
-        <>
-        <button onClick={saveClaimContrib}>Claim</button>
-        </>
-      ) : (
-        <></>
-      )}
       
       
       
+      </div>
       
     </div>
   );

@@ -3,6 +3,8 @@ import { EventContext } from "./EventContext";
 import { useMutation } from "@apollo/client";
 import { EDIT_COMMENT, DELETE_COMMENT } from "../../utils/mutations";
 
+import'../../styles/Comment.css'
+
 export default function Comment({ comment }) {
   const { eventId } = useContext(EventContext);
   const { user } = useContext(EventContext);
@@ -43,23 +45,28 @@ export default function Comment({ comment }) {
 
   return (
     <div className="container comment-item">
-      <p>
-        {comment.userId.name || comment.userId.email}, {comment.content}
+      <p className="comment-author">
+        {comment.userId.name || comment.userId.email} 
       </p>
+      <p className="comment-content">{comment.content}</p>
+      <div className="comment-button-group">
+       {isAuthor || isHost ? (
+        <>
+          <button className="button delete-button delete-comment-button" onClick={saveDeleteComment}>Delete</button>
+        </>
+      ) : (
+        <></>
+      )}
       {isAuthor ? (
         <>
-          <button onClick={saveEditComment}>Edit Comment</button>
+          <button className="button edit-button edit-comment-button" onClick={saveEditComment}>Edit</button>
         </>
       ) : (
         <></>
-      )}
-      {isAuthor || isHost ? (
-        <>
-          <button onClick={saveDeleteComment}>Delete Comment</button>
-        </>
-      ) : (
-        <></>
-      )}
+      )} 
+      </div>
+      
+      
     </div>
   );
 }
