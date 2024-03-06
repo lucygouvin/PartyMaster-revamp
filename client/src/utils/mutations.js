@@ -134,12 +134,15 @@ mutation AddComment($eventId: ID!, $content: String!) {
 export const EDIT_COMMENT = gql `
 mutation EditComment($eventId: ID!, $comment: CommentInput!) {
   editComment(eventId: $eventId, comment: $comment) {
+    _id
     comment {
-      _id
-      content
       userId {
+        name
+        email
         _id
       }
+      content
+      _id
     }
   }
 }`;

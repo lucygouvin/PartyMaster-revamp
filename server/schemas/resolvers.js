@@ -222,6 +222,7 @@ const resolvers = {
         { $pull: { comment: { _id: args.commentId } } },
         { new: true }
       ).populate({ path: 'comment', populate: { path: 'userId' } }),
+      
     editComment: async (parent, args) =>
       Event.findOneAndUpdate(
         { _id: args.eventId, 'comment._id': args.comment._id },
