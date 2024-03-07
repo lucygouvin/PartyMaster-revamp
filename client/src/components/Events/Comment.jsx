@@ -77,7 +77,7 @@ export default function Comment({ comment }) {
   return (
     <div className="container comment-item" data-comment-id={comment._id}>
       <p className="comment-author">
-        {comment.userId.name || comment.userId.email} 
+        {comment.userId.name || comment.userId.email}
       </p>
       <p className="comment-content">{commentText}</p>
       <div className="comment-button-group">

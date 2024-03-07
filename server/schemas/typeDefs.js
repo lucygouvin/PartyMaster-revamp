@@ -35,6 +35,7 @@ type Comment{
   _id: ID!
   userId: User
   content: String
+  updatedAt: String
 }
 
 input CommentInput{

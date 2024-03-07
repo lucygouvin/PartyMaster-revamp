@@ -68,6 +68,7 @@ query Event($eventId: ID!) {
         email
       }
       content
+      updatedAt
     }
     RSVP {
       _id
