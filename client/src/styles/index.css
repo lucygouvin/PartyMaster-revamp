@@ -43,7 +43,7 @@ main {
 }
 
 .cta-button{
-    max-height: 25px;
+    /* max-height: 25px; */
     border: var(--secondary-color) 1px solid;
     border-radius: var(--border-radius);
     background-color: var(--secondary-color);
@@ -51,7 +51,7 @@ main {
 }
 
 .edit-button{
-    max-height: 25px;
+    /* max-height: 25px; */
     border: var(--secondary-color) 1px solid;
     border-radius: var(--border-radius);
     background-color: transparent;
@@ -59,7 +59,7 @@ main {
 }
 
 .delete-button{
-    max-height: 25px;
+    /* max-height: 25px; */
     border: var(--danger-color) 1px solid;
     border-radius: var(--border-radius);
     background-color: var(--danger-color);
@@ -67,7 +67,7 @@ main {
 }
 
 .cancel-button{
-    max-height: 25px;
+    /* max-height: 25px; */
     border: var(--danger-color) 1px solid;
     border-radius: var(--border-radius);
     background-color: transparent;

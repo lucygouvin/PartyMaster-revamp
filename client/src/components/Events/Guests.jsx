@@ -9,17 +9,22 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 
+import "../../styles/Guests.css";
+
 const style = {
   position: "absolute",
-  top: "50%",
+  top: "25%",
   left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "45%",
+  transform: "translate(-50%, 0)",
+  width: "30%",
+  minWidth: "450px",
+  maxHeight: "50%",
+  overflow: "scroll",
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
-  "border-radius": "15px",
+  borderRadius: "15px",
 };
 
 export default function Guests({ guests }) {
@@ -33,7 +38,13 @@ export default function Guests({ guests }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const [childOpen, setChildOpen] = useState(false);
+  const handleChildOpen = () => setChildOpen(true);
+  const handleChildClose = () => setChildOpen(false);
+
   const [value, setValue] = useState(0);
+
+  const [invitee, setInvitee] = useState("");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -52,32 +63,34 @@ export default function Guests({ guests }) {
       >
         {value === index && (
           <Box sx={{ p: 3 }}>
-            <Typography>{children}</Typography>
+            <p>{children}</p>
           </Box>
         )}
       </div>
     );
   }
 
-  const saveAddGuest = () => {
+  const saveAddGuest = (guestEmail) => {
     try {
       const { data } = addGuest({
         variables: {
           eventId,
-          guests: "RonHensom@gmail.com",
+          guests: guestEmail,
         },
       });
     } catch (addGuestError) {
       console.error("Unable to add guest", addGuestError);
     }
+    setInvitee("")
+    handleChildClose()
   };
 
-  const saveDeleteGuest = () => {
+  const saveDeleteGuest = (guestId) => {
     try {
       const { data } = deleteGuest({
         variables: {
           eventId,
-          guestEmail: "RonHensom@gmail.com",
+          guestId: guestId,
         },
       });
     } catch (deleteGuestError) {
@@ -107,14 +120,20 @@ export default function Guests({ guests }) {
         </a>
       </div>
       <div className="container guest-container">
-        <h3>Yes: {guests.rsvpYes.length} </h3>
-        <h3>No: {guests.rsvpNo.length} </h3>
-        <h3>Maybe: {guests.rsvpMaybe.length} </h3>
-        <h3>Not Responded: {guests.rsvpNotResponded.length}</h3>
+        <div className="response-numbers">
+          <h3>Yes: {guests.rsvpYes.length} </h3>
+          <h3>No: {guests.rsvpNo.length} </h3>
+          <h3>Maybe: {guests.rsvpMaybe.length} </h3>
+          {/* <h3>Not Responded: {guests.rsvpNotResponded.length}</h3> */}
+        </div>
         {isHost ? (
           <>
-            <button onClick={saveAddGuest}>Add Guest</button>
-            <button onClick={saveDeleteGuest}>Delete Guest</button>
+            <button
+              className="button cta-button edit-guests"
+              onClick={handleOpen}
+            >
+              Edit Guests
+            </button>
           </>
         ) : (
           <button onClick={saveSetRSVP}>Set RSVP</button>
@@ -140,30 +159,117 @@ export default function Guests({ guests }) {
             </Tabs>
 
             <CustomTabPanel value={value} index={0}>
-            {guests.rsvpYes.map(function(guest) {
-                return <p>{guest.userId.name || guest.userId.email}</p>
-              })}
+              {guests.rsvpYes.length ? (
+                guests.rsvpYes.map(function (guest, index) {
+                  return (
+                    <div className="guest-rsvp" key={index}>
+                    <p>{guest.userId.name || guest.userId.email}</p>
+                    <button
+                      className="delete-guest"
+                      onClick={(event) => saveDeleteGuest(guest.userId._id)}
+                    >
+                      X
+                    </button>
+                  </div>
+                  );
+                })
+              ) : (
+                <>
+                  <i>None</i>
+                </>
+              )}
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
-              {guests.rsvpNo.map(function(guest) {
-                return <p>{guest.userId.name || guest.userId.email}</p>
-              })}
+              {guests.rsvpNo.length ? (
+                guests.rsvpNo.map(function (guest, index) {
+                  return (
+                    <div className="guest-rsvp" key={index}>
+                    <p>{guest.userId.name || guest.userId.email}</p>
+                    <button
+                      className="delete-guest"
+                      onClick={(event) => saveDeleteGuest(guest.userId._id)}
+                    >
+                      X
+                    </button>
+                  </div>
+                  );
+                })
+              ) : (
+                <>
+                  <i>None</i>
+                </>
+              )}
             </CustomTabPanel>
             <CustomTabPanel value={value} index={2}>
-            {guests.rsvpMaybe.map(function(guest) {
-                return <p>{guest.userId.name || guest.userId.email}</p>
-              })}
+              {guests.rsvpMaybe.length ? (
+                guests.rsvpMaybe.map(function (guest, index) {
+                  return (
+                    <div className="guest-rsvp" key={index}>
+                      <p>{guest.userId.name || guest.userId.email}</p>
+                      <button
+                        className="delete-guest"
+                        onClick={(event) => saveDeleteGuest(guest.userId._id)}
+                      >
+                        X
+                      </button>
+                    </div>
+                  );
+                })
+              ) : (
+                <>
+                  <i>None</i>
+                </>
+              )}
             </CustomTabPanel>
             <CustomTabPanel value={value} index={3}>
-            {guests.rsvpNotResponded.map(function(guest) {
-                return <p>{guest.userId.name || guest.userId.email}</p>
-              })}
+              {guests.rsvpNotResponded.length ? (
+                guests.rsvpNotResponded.map(function (guest, index) {
+                  return (
+                    <div className="guest-rsvp" key={index}>
+                      <p>{guest.userId.name || guest.userId.email}</p>
+                      <button
+                        className="delete-guest"
+                        onClick={(event) => saveDeleteGuest(guest.userId._id)}
+                      >
+                        X
+                      </button>
+                    </div>
+                  );
+                })
+              ) : (
+                <>
+                  <i>None</i>
+                </>
+              )}
             </CustomTabPanel>
-            <div>
+            <div className="guest-button-group">
               <button className="cancel-button" onClick={handleClose}>
                 Close
               </button>
+              <button className="button cta-button" onClick={handleChildOpen}>
+                Invite Guests
+              </button>
             </div>
+            <Modal
+              open={childOpen}
+              onClose={handleChildClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <div>
+                <Box sx={style}>
+                  <textarea placeholder="Enter email addresses separated by commas" value={invitee} onChange={(event) => setInvitee(event.target.value)}></textarea>
+                  <div className="guest-button-group">
+                  <button className="button cancel-button" onClick={handleChildClose}>Cancel</button>
+                  <button className="button cta-button" onClick={(event)=> {
+                    const inviteeArray = invitee.split(',')
+                    inviteeArray.forEach((el) => saveAddGuest(el))
+
+                  }}>Send invitation</button>
+                  </div>
+                </Box>
+              </div>
+            </Modal>
           </Box>
         </div>
       </Modal>

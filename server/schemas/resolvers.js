@@ -180,7 +180,7 @@ const resolvers = {
 
     deleteGuest: async (parent, args) => {
       const user = await User.findOneAndUpdate(
-        { email: args.guestEmail },
+        { _id: args.guestId },
         { $pull: { event: args.eventId } }
       );
 
@@ -188,7 +188,7 @@ const resolvers = {
         { _id: args.eventId },
         { $pull: { RSVP: { userId: user._id } } },
         { new: true }
-      );
+      ).populate({ path: 'RSVP', populate: { path: 'userId' } });
 
       return event;
     },

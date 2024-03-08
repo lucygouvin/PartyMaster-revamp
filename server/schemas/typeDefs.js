@@ -80,7 +80,7 @@ type Mutation{
   editEvent(_id: ID!, title: String, description:String, date: String, startTime: String, endTime: String, location: String, potluck: Boolean): Event
   deleteEvent(id:ID!): Event
   addGuest(eventId: ID!, guests:String!): Event
-  deleteGuest(eventId: ID!, guestEmail: String!): Event
+  deleteGuest(eventId: ID!, guestId: ID!): Event
   addComment(eventID:ID!, content:String!):Event
   editComment(eventId:ID!, comment: CommentInput!): Event
   deleteComment(eventId:ID!, commentId: ID!): Event
