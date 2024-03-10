@@ -3,23 +3,10 @@ import { EventContext } from "./EventContext";
 import { useMutation } from "@apollo/client";
 import { EDIT_COMMENT, DELETE_COMMENT } from "../../utils/mutations";
 
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
+import ConfirmDeleteModal from "../Modals/ConfirmDelete";
+import EditAddModal from "../Modals/EditAddModal";
 
 import'../../styles/Comment.css'
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-  "border-radius": "15px",
-};
 
 export default function Comment({ comment }) {
   const { eventId } = useContext(EventContext);
@@ -36,6 +23,10 @@ export default function Comment({ comment }) {
     setOpen(false);
     setEditCommentText(commentText);
   }
+
+  const [delOpen, setDelOpen] = useState(false)
+  const handleDelOpen = () => setDelOpen(true)
+  const handleDelClose = () => setDelOpen(false)
 
   const [commentText, setCommentText] = useState(comment.content);
   const [editCommentText, setEditCommentText] = useState(commentText);
@@ -83,7 +74,7 @@ export default function Comment({ comment }) {
       <div className="comment-button-group">
        {isAuthor || isHost ? (
         <>
-          <button className="button delete-button delete-comment-button" onClick={saveDeleteComment}>Delete</button>
+          <button className="button delete-button delete-comment-button" onClick={handleDelOpen}>Delete</button>
         </>
       ) : (
         <></>
@@ -97,7 +88,9 @@ export default function Comment({ comment }) {
       )} 
       </div>
 
-      <Modal
+      <EditAddModal isTextArea={true} isActive={open} placeholder={"Enter comment"} value={editCommentText} onChange={(event) => setEditCommentText(event.target.value)} title={"Edit comment"} onClose={handleClose} onSave={saveEditComment}></EditAddModal>
+
+      {/* <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
@@ -122,9 +115,9 @@ export default function Comment({ comment }) {
             </div>
           </Box>
         </div>
-      </Modal>
+      </Modal> */}
       
-      
+      <ConfirmDeleteModal title= {"Are you sure you want to delete this comment?"} isActive={delOpen} onClose={handleDelClose} onDelete={saveDeleteComment}></ConfirmDeleteModal>
     </div>
   );
 }

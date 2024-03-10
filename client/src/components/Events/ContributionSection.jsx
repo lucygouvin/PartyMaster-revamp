@@ -32,7 +32,7 @@ export default function ContributionSection({ contributionArray }) {
           return <Contribution contribution={contribInfo} key={contribInfo._id}/>;
         })}
       
-      <textarea></textarea>
+      <input type="text" />
       <button onClick={saveAddContrib}>Add</button>
       </div>
     </div>
