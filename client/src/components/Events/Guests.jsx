@@ -3,73 +3,45 @@ import { useContext, useState } from "react";
 import { EventContext } from "./EventContext";
 import { SET_RSVP, ADD_GUEST, DELETE_GUEST } from "../../utils/mutations";
 
-import Box from "@mui/material/Box";
-import Modal from "@mui/material/Modal";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
+import GuestDetailsModal from "../Modals/GuestDetails";
+import ConfirmDeleteModal from "../Modals/ConfirmDelete";
+import EditAddModal from "../Modals/EditAddModal";
 
 import "../../styles/Guests.css";
 
-const style = {
-  position: "absolute",
-  top: "25%",
-  left: "50%",
-  transform: "translate(-50%, 0)",
-  width: "30%",
-  minWidth: "450px",
-  maxHeight: "50%",
-  overflow: "scroll",
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-  borderRadius: "15px",
-};
-
 export default function Guests({ guests }) {
-  const [setRSVP, { RSVPerror }] = useMutation(SET_RSVP);
-  const [addGuest, { addGuestError }] = useMutation(ADD_GUEST);
-  const [deleteGuest, { deleteGuestError }] = useMutation(DELETE_GUEST);
   const { eventId } = useContext(EventContext);
   const { isHost } = useContext(EventContext);
 
+  // State management for guest details modal
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const [childOpen, setChildOpen] = useState(false);
-  const handleChildOpen = () => setChildOpen(true);
-  const handleChildClose = () => setChildOpen(false);
-
-  const [value, setValue] = useState(0);
-
+// State management for tracking which users to invite
   const [invitee, setInvitee] = useState("");
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  // State management for invitation modal
+  const [inviteOpen, setInviteOpen] = useState(false);
+  const handleInviteOpen = () => setInviteOpen(true);
+  const handleInviteClose = () => {
+    setInviteOpen(false);
+    setInvitee("");
   };
 
-  function CustomTabPanel(props) {
-    const { children, value, index, ...other } = props;
+  // State management for tracking which user to delete
+  const [delId, setDelId] = useState("");
 
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box sx={{ p: 3 }}>
-            <p>{children}</p>
-          </Box>
-        )}
-      </div>
-    );
-  }
+  // State management for delete modal
+  const [delOpen, setDelOpen] = useState(false);
+  const handleDelOpen = (delId) => {
+    setDelOpen(true);
+    setDelId(delId);
+  };
+  const handleDelClose = () => setDelOpen(false);
 
+  // MUTATIONS
+  const [addGuest, { addGuestError }] = useMutation(ADD_GUEST);
   const saveAddGuest = (guestEmail) => {
     try {
       const { data } = addGuest({
@@ -81,23 +53,28 @@ export default function Guests({ guests }) {
     } catch (addGuestError) {
       console.error("Unable to add guest", addGuestError);
     }
-    setInvitee("")
-    handleChildClose()
+    setInvitee("");
+    handleInviteClose();
   };
 
+  const [deleteGuest, { deleteGuestError }] = useMutation(DELETE_GUEST);
   const saveDeleteGuest = (guestId) => {
+    console.log("delID", delId);
     try {
       const { data } = deleteGuest({
         variables: {
           eventId,
-          guestId: guestId,
+          guestId: delId,
         },
       });
+      setDelId("");
     } catch (deleteGuestError) {
       console.error("Unable to delete guest", deleteGuestError);
     }
+    handleDelClose();
   };
 
+  const [setRSVP, { RSVPerror }] = useMutation(SET_RSVP);
   const saveSetRSVP = () => {
     try {
       const { data } = setRSVP({
@@ -116,7 +93,7 @@ export default function Guests({ guests }) {
         <h2>Guests</h2>
         <a href="#">
           {" "}
-          <p onClick={handleOpen}>See all</p>
+          <p className="see-all" onClick={handleOpen}>See all</p>
         </a>
       </div>
       <div className="container guest-container">
@@ -126,6 +103,7 @@ export default function Guests({ guests }) {
           <h3>Maybe: {guests.rsvpMaybe.length} </h3>
           {/* <h3>Not Responded: {guests.rsvpNotResponded.length}</h3> */}
         </div>
+        {/* If the current user is the event host, they can add more guests */}
         {isHost ? (
           <>
             <button
@@ -139,140 +117,33 @@ export default function Guests({ guests }) {
           <button onClick={saveSetRSVP}>Set RSVP</button>
         )}
       </div>
-      <Modal
-        open={open}
+      <GuestDetailsModal
+        setDel={(event) => handleDelOpen(event.target.value)}
+        guests={guests}
+        isActive={open}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <div className="comment-flex-group">
-          <Box sx={style}>
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              aria-label="basic tabs example"
-            >
-              <Tab label="Yes" />
-              <Tab label="No" />
-              <Tab label="Maybe" />
-              <Tab label="Not Responded" />
-            </Tabs>
-
-            <CustomTabPanel value={value} index={0}>
-              {guests.rsvpYes.length ? (
-                guests.rsvpYes.map(function (guest, index) {
-                  return (
-                    <div className="guest-rsvp" key={index}>
-                    <p>{guest.userId.name || guest.userId.email}</p>
-                    <button
-                      className="delete-guest"
-                      onClick={(event) => saveDeleteGuest(guest.userId._id)}
-                    >
-                      X
-                    </button>
-                  </div>
-                  );
-                })
-              ) : (
-                <>
-                  <i>None</i>
-                </>
-              )}
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={1}>
-              {guests.rsvpNo.length ? (
-                guests.rsvpNo.map(function (guest, index) {
-                  return (
-                    <div className="guest-rsvp" key={index}>
-                    <p>{guest.userId.name || guest.userId.email}</p>
-                    <button
-                      className="delete-guest"
-                      onClick={(event) => saveDeleteGuest(guest.userId._id)}
-                    >
-                      X
-                    </button>
-                  </div>
-                  );
-                })
-              ) : (
-                <>
-                  <i>None</i>
-                </>
-              )}
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={2}>
-              {guests.rsvpMaybe.length ? (
-                guests.rsvpMaybe.map(function (guest, index) {
-                  return (
-                    <div className="guest-rsvp" key={index}>
-                      <p>{guest.userId.name || guest.userId.email}</p>
-                      <button
-                        className="delete-guest"
-                        onClick={(event) => saveDeleteGuest(guest.userId._id)}
-                      >
-                        X
-                      </button>
-                    </div>
-                  );
-                })
-              ) : (
-                <>
-                  <i>None</i>
-                </>
-              )}
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={3}>
-              {guests.rsvpNotResponded.length ? (
-                guests.rsvpNotResponded.map(function (guest, index) {
-                  return (
-                    <div className="guest-rsvp" key={index}>
-                      <p>{guest.userId.name || guest.userId.email}</p>
-                      <button
-                        className="delete-guest"
-                        onClick={(event) => saveDeleteGuest(guest.userId._id)}
-                      >
-                        X
-                      </button>
-                    </div>
-                  );
-                })
-              ) : (
-                <>
-                  <i>None</i>
-                </>
-              )}
-            </CustomTabPanel>
-            <div className="guest-button-group">
-              <button className="cancel-button" onClick={handleClose}>
-                Close
-              </button>
-              <button className="button cta-button" onClick={handleChildOpen}>
-                Invite Guests
-              </button>
-            </div>
-            <Modal
-              open={childOpen}
-              onClose={handleChildClose}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-            >
-              <div>
-                <Box sx={style}>
-                  <textarea placeholder="Enter email addresses separated by commas" value={invitee} onChange={(event) => setInvitee(event.target.value)}></textarea>
-                  <div className="guest-button-group">
-                  <button className="button cancel-button" onClick={handleChildClose}>Cancel</button>
-                  <button className="button cta-button" onClick={(event)=> {
-                    const inviteeArray = invitee.split(',')
-                    inviteeArray.forEach((el) => saveAddGuest(el))
-
-                  }}>Send invitation</button>
-                  </div>
-                </Box>
-              </div>
-            </Modal>
-          </Box>
-        </div>
-      </Modal>
+        onDelete={handleDelOpen}
+        onAction={handleInviteOpen}
+      ></GuestDetailsModal>
+      <ConfirmDeleteModal
+        isActive={delOpen}
+        title={"Are you sure you want to remove this guest?"}
+        onClose={handleDelClose}
+        onDelete={saveDeleteGuest}
+      ></ConfirmDeleteModal>
+      <EditAddModal
+        isActive={inviteOpen}
+        inputType={"textarea"}
+        placeholder={"Enter email addresses separated by commas"}
+        value={invitee}
+        onChange={(event) => setInvitee(event.target.value)}
+        title={"Invite guests"}
+        onClose={handleInviteClose}
+        onSave={(event) => {
+          const inviteeArray = invitee.split(",");
+          inviteeArray.forEach((el) => saveAddGuest(el));
+        }}
+      ></EditAddModal>
     </div>
   );
 }

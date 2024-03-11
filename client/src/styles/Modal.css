@@ -1,3 +1,19 @@
-.delete-modal {
-    background-color: white;
+.modal{
+position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 33%;
+  background-color: var(--light-color);
+  border: 2px solid #000;
+  overflow: scroll;
+  padding: 2%;
+  border-radius: var(--border-radius)
+}
+
+.modal-button-group{
+    display: flex;
+    justify-content: flex-end;
+    gap: 2%;
+    padding-top: 2%;
 }
