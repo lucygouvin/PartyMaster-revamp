@@ -75,6 +75,14 @@ main {
 
 }
 
+.secondary-button{
+    /* max-height: 25px; */
+    border: var(--quiet-color) 1px solid;
+    border-radius: var(--border-radius);
+    background-color: transparent;
+    color: var(--quiet-color);
+
+}
 .container{
     background-color: var(--light-color);
     border-radius: var(--border-radius);

@@ -233,7 +233,10 @@ const resolvers = {
     // CONTRIBUTION MUTATIONS
 
     addContribution: async (parent, args) => {
-      const user = await User.findById(args.userID);
+      let user = null
+      if (args.userID){
+        user = await User.findById(args.userID);
+      }
       const event = await Event.findOneAndUpdate(
         { _id: args.eventID },
         {
@@ -246,7 +249,6 @@ const resolvers = {
         },
         { new: true }
       ).populate({ path: 'contribution', populate: { path: 'userId' } });
-      // TODO Do we need to do all these populations?
       return event;
     },
 

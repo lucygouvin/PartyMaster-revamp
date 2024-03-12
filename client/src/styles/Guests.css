@@ -48,5 +48,13 @@
     justify-content: flex-end;
 }
 
-.see-all{
+.guest-header-group{
+    display: flex;
+    flex-direction: row;
+    align-items:last baseline;
+    gap: 1%;
+}
+
+.see-all, a:visited{
+    color: var(--secondary-color);
 }

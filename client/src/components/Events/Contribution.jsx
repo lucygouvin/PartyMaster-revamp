@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { EventContext } from "./EventContext";
 import { useMutation } from "@apollo/client";
 import {
@@ -7,6 +7,8 @@ import {
   DELETE_CONTRIB,
   UNCLAIM_CONTRIB,
 } from "../../utils/mutations";
+
+import EditContribModal from "../Modals/EditContrib";
 
 import '../../styles/Contribution.css'
 
@@ -23,35 +25,47 @@ export default function Contribution({ contribution }) {
     ownerId = ""
     isUnowned = true
   }
-
   const isOwner = (user._id === ownerId);
 
-  const [editContrib, { editContribError }] = useMutation(EDIT_CONTRIB);
-  const [claimContrib, { claimContribError }] = useMutation(CLAIM_CONTRIB);
-  const [deleteContrib, { deleteContribError }] = useMutation(DELETE_CONTRIB);
-  const [unclaimContrib, { unclaimContribError }] =
-    useMutation(UNCLAIM_CONTRIB);
+  // State management for edit modal
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
+  // State management of edit mode
+  const [editBool, toggleEdit] = useState(false);
+  const toggleOff = () => toggleEdit(false);
+  const toggleOn = () => toggleEdit(true);
+
+  // State management for contribution text and editing that text
+  const [contribText, setContribText] = useState(contribution.item)
+  const [editContribText, setEditContribText] = useState(contribText)
+
+  // MUTATIONS
+  const [editContrib, { editContribError }] = useMutation(EDIT_CONTRIB);
   const saveEditContrib = () => {
     try {
       const { data } = editContrib({
         variables: {
           eventId,
-          item: "dip from child",
-          contributionId: "65c7a73eb0c018697d0eca6a",
+          item: editContribText,
+          contributionId: contribution._id,
         },
       });
+      toggleOff()
+      handleClose()
     } catch (editContribError) {
       console.error("Unable to edit contribution", editContribError);
     }
   };
 
+  const [claimContrib, { claimContribError }] = useMutation(CLAIM_CONTRIB);
   const saveClaimContrib = () => {
     try {
       const { data } = claimContrib({
         variables: {
           eventId,
-          contributionId: "65c7a73eb0c018697d0eca6a",
+          contributionId: contribution._id,
         },
       });
     } catch (claimContribError) {
@@ -59,12 +73,13 @@ export default function Contribution({ contribution }) {
     }
   };
 
+  const [deleteContrib, { deleteContribError }] = useMutation(DELETE_CONTRIB);
   const saveDeleteContrib = () => {
     try {
       const { data } = deleteContrib({
         variables: {
           eventId,
-          contributionId: "65c7a73eb0c018697d0eca6a",
+          contributionId: contribution._id,
         },
       });
     } catch (deleteContribError) {
@@ -72,52 +87,45 @@ export default function Contribution({ contribution }) {
     }
   };
 
+  const [unclaimContrib, { unclaimContribError }] =
+    useMutation(UNCLAIM_CONTRIB);
   const saveUnclaimContrib = () => {
     try {
       const { data } = unclaimContrib({
         variables: {
           eventId,
-          contributionId: "65c7a73eb0c018697d0eca6a",
+          contributionId: contribution._id,
         },
       });
+      handleClose()
     } catch (unClaimContribError) {
       console.error("Unable to edit contribution", unClaimContribError);
     }
   };
 
   return (
-    <div className=" contribution-item">
+    <div className="contribution-item">
       <p>
         {contribution.item}
       </p>
       <div className="contribution-button-group">
       {isUnowned ? (
         <>
-        <button onClick={saveClaimContrib}>Claim</button>
+        <button onClick={saveClaimContrib} className="cta-button">Claim</button>
         </>
       ) : (
-        <>{contribution.userId ? contribution.userId.name : "Unclaimed"}</>
+        <><i>{contribution.userId ? contribution.userId.name : contribution.userId.email}</i></>
       )}
-      {isOwner ? (
-        <>
-         <button onClick={saveEditContrib}>Edit</button>
-         <button onClick={saveUnclaimContrib}>Unclaim</button>
-        </>
-      ) : (
-        <></>
-      )}
+     
       {isOwner|| isHost ? (
         <>
-          <button onClick={saveDeleteContrib}>Delete</button>
+          <button onClick={handleOpen} className="edit-button">Edit</button>
         </>
       ) : (
         <></>
       )}
-      
-      
-      
+      <EditContribModal isActive={open} isOwner={isOwner} editBool={editBool} toggleOff={toggleOff} toggleOn={toggleOn} value={editContribText} onChange={(event) => setEditContribText(event.target.value)} onClose={handleClose} onSave={saveEditContrib} onDelete={saveDeleteContrib} onUnclaim={saveUnclaimContrib}></EditContribModal>      
       </div>
-      
     </div>
   );
 }

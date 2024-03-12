@@ -3,4 +3,39 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    margin: 1%;
+}
+
+.contribution-button-group{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+}
+
+.contribution-button-group i {
+    color: var(--quiet-color);
+    font-size: 0.8rem;
+}
+
+.add-contrib-section {
+    display: flex;
+    gap: 2%;
+    margin-top: 2%;
+}
+
+.add-contrib{
+    width: 15%;
+}
+
+.add-contrib-item{
+ width: 100%;   
+}
+
+.item-name{
+    font-size: 1.2rem;
+}
+
+.edit-contrib-item{
+    font-size: 1.2rem;
 }

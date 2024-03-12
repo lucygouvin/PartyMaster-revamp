@@ -89,11 +89,11 @@ export default function Guests({ guests }) {
   };
   return (
     <div className="group guests-group">
-      <div className="flex-group">
+      <div className="guest-header-group">
         <h2>Guests</h2>
-        <a href="#">
+        <a href="#" className="see-all">
           {" "}
-          <p className="see-all" onClick={handleOpen}>See all</p>
+          <p  onClick={handleOpen}><i>See all</i></p>
         </a>
       </div>
       <div className="container guest-container">
