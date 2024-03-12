@@ -1,9 +1,14 @@
 .footer {
-  background-color: var(--dark-color);
+  background-color: var(--primary-color);
   color: var(--light-color);
   text-align: center;
-  padding: 20px;
   bottom: 0;
+  margin: 0;
+  padding: 2%;
   width: 100%;
-  border-top: 1px solid #7f8c8d;
+}
+
+.footer p{
+  margin-block-start: 0;
+  margin-block-end: 0;
 }

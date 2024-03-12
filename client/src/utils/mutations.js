@@ -82,13 +82,6 @@ export const ADD_GUEST = gql `
 mutation AddGuest($eventId: ID!, $guests: String!) {
   addGuest(eventId: $eventId, guests: $guests) {
     _id
-    title
-    location
-    hostID {
-      _id
-    }
-    description
-    date
     RSVP {
       userId {
         _id
@@ -101,15 +94,53 @@ mutation AddGuest($eventId: ID!, $guests: String!) {
 }`;
 
 export const DELETE_GUEST = gql `
-mutation DeleteGuest($eventId: ID!, $guestEmail: String!) {
-  deleteGuest(eventId: $eventId, guestEmail: $guestEmail) {
+mutation Mutation($eventId: ID!, $guestId: ID!) {
+  deleteGuest(eventId: $eventId, guestId: $guestId) {
     _id
-    title
     RSVP {
       userId {
+        _id
         name
         email
       }
+      invite
+      _id
+    }
+    rsvpYes {
+      userId {
+        _id
+        name
+        email
+      }
+      invite
+      _id
+    }
+    rsvpNotResponded {
+      userId {
+        name
+        email
+        _id
+      }
+      invite
+      _id
+    }
+    rsvpNo {
+      userId {
+        name
+        email
+        _id
+      }
+      invite
+      _id
+    }
+    rsvpMaybe {
+      userId {
+        name
+        email
+        _id
+      }
+      invite
+      _id
     }
   }
 }`;
@@ -134,12 +165,15 @@ mutation AddComment($eventId: ID!, $content: String!) {
 export const EDIT_COMMENT = gql `
 mutation EditComment($eventId: ID!, $comment: CommentInput!) {
   editComment(eventId: $eventId, comment: $comment) {
+    _id
     comment {
-      _id
-      content
       userId {
+        name
+        email
         _id
       }
+      content
+      _id
     }
   }
 }`;
@@ -166,6 +200,7 @@ export const ADD_CONTRIB = gql `mutation AddContribution($eventId: ID!, $contrib
     contribution {
       userId {
         name
+        email
         _id
       }
       item
@@ -241,6 +276,38 @@ mutation SetRSVP($eventId: ID!, $rsvp: String!) {
     RSVP {
       _id
       invite
+      userId {
+        name
+        email
+        _id
+      }
+    }
+    rsvpYes {
+      _id
+      userId {
+        name
+        email
+        _id
+      }
+    }
+    rsvpNotResponded {
+      _id
+      userId {
+        name
+        email
+        _id
+      }
+    }
+    rsvpNo {
+      _id
+      userId {
+        name
+        email
+        _id
+      }
+    }
+    rsvpMaybe {
+      _id
       userId {
         name
         email

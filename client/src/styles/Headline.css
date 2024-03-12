@@ -1,0 +1,23 @@
+.headline{
+    background-color: var(--light-color);
+    display: flex;
+    justify-content: space-between;
+    padding: 1% 2%;
+}
+
+.headline h1{
+    color: var(--primary-color);
+    font-size: 3rem;
+    font-weight: 300;
+}
+
+.headline h2{
+    color: var(--dark-header-color);
+    text-transform: uppercase;
+    font-size: 1rem;
+}
+
+.headline h3{
+    font-weight: 300;
+    font-size: 1rem;
+}

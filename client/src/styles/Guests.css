@@ -1,0 +1,60 @@
+.guest-container {
+    display: flex;
+    flex-direction: column;
+    padding: 5% 10%;
+
+}
+
+.response-numbers {
+    display: flex;
+    justify-content: space-between;
+}
+
+.edit-guests {
+    max-height: 100vh;
+    display: block;
+    padding: 2%;
+    margin: 2% auto 0 auto;
+    font-size: 1rem;
+
+}
+
+.guest-rsvp{
+    display: flex;
+    justify-content: space-between;
+}
+
+.css-19kzrtu{
+    /* border-bottom: solid var(--dark-font-color) 1px;
+    border-right: solid var(--dark-font-color) 1px;
+    border-left: solid var(--dark-font-color) 1px;
+    border: solid var(--dark-font-color) 1px; */
+    margin: 2%;
+}
+
+.delete-guest{
+    color: var(--danger-color);
+    font-weight: bold;
+    font-size: 0.9rem;
+    outline: none;
+    background-color: transparent;
+    border: 1px solid lightgray;
+    border-radius: 4px;
+}
+
+.guest-button-group{
+    display: flex;
+    gap: 2%;
+    justify-content: flex-end;
+}
+
+.guest-header-group{
+    display: flex;
+    flex-direction: row;
+    align-items:last baseline;
+    gap: 1%;
+}
+
+.see-all, a:visited{
+    color: var(--secondary-color);
+}

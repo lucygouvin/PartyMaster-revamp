@@ -1,0 +1,21 @@
+label{
+    display:none;
+    margin: 0.5rem 0;
+}
+
+textarea{
+    width: 100%;
+}
+
+.comment-flex-group{
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-button-group{
+    gap: 2%
+}
+
+.MuiBox-root{
+    padding: 2%;
+}
