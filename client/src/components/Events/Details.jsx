@@ -1,24 +1,33 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { EventContext } from "./EventContext";
 import { useMutation } from "@apollo/client";
 import { EDIT_EVENT } from "../../utils/mutations";
 
-import '../../styles/Details.css'
+import "../../styles/Details.css";
 
 export default function Details({ details }) {
   const { eventId } = useContext(EventContext);
   const { isHost } = useContext(EventContext);
 
-  const [updateEvent, { eventError }] = useMutation(EDIT_EVENT);
+  // State management of edit mode
+  const [editBool, toggleEdit] = useState(false);
+  const toggleOff = () => toggleEdit(false);
+  const toggleOn = () => toggleEdit(true);
 
+  // State management for description editing
+  const [description, setDescription] = useState(details);
+
+  // MUTATION
+  const [updateEvent, { eventError }] = useMutation(EDIT_EVENT);
   const saveEventDetails = () => {
     try {
       const { data } = updateEvent({
         variables: {
           id: eventId,
-          description: "Join us for an evening under the stars right inside our warm and cozy winery! Our winemaker Kevin Collins is also an amateur astronomer and telescope maker. Using a planetarium projector he will take us on a journey across the night sky, star-hopping through constellations to show and tell about some of our universe's most beautiful sights. Included in this season's shows will be a short talk on the upcoming Total Solar Eclipse in April 2024! Learn about why total eclipses happen, when, and where to view the first in decades that will be within a few hour's drive of western Massachusetts.",
+          description,
         },
       });
+      toggleOff();
     } catch (eventError) {
       console.error("Unable to update event", eventError);
     }
@@ -28,9 +37,41 @@ export default function Details({ details }) {
     <div className="group details-group">
       <div className="flex-group">
         <h2>Details</h2>
-        {isHost ? <button className="edit-button" onClick={saveEventDetails}>Edit</button> : <></>}
+        {/* Show edit button if the logged in user is the host, and it's not in edit mode */}
+        {isHost && !editBool ? (
+          <button className="edit-button" onClick={toggleOn}>
+            Edit
+          </button>
+        ) : (
+          <></>
+        )}
+        {/* Show the save and cancel buttons if the logged in user is the host, and it's in edit mode */}
+        {isHost && editBool ? (
+          <div className="flex-group">
+            <button className="button cta-button" onClick={saveEventDetails}>
+              Save
+            </button>
+            <button className="button cancel-button" onClick={toggleOff}>
+              Cancel
+            </button>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
-      <p className="container details-container">{details}</p>
+      {/* If it's in edit mode, show the textarea field */}
+      {editBool ? (
+        <div className="container details-container">
+          <textarea
+            rows="5"
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
+          ></textarea>
+        </div>
+      ) : (
+        // If it's not in edit mode, show the display field
+        <p className="container details-container">{description}</p>
+      )}
     </div>
   );
 }

@@ -68,7 +68,7 @@ const EventOverview = () => {
                   }}
                 />
                 <ContributionSection
-                  contributionArray={data.event.contribution}
+                  contributionArray={data.event.contribution} contributionBool={data.event.potluck}
                 />
               </div>
             </main>
