@@ -6,6 +6,8 @@ import { SET_RSVP, ADD_GUEST, DELETE_GUEST } from "../../utils/mutations";
 import GuestDetailsModal from "../Modals/GuestDetails";
 import ConfirmDeleteModal from "../Modals/ConfirmDelete";
 import EditAddModal from "../Modals/EditAddModal";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 
 import "../../styles/Guests.css";
 
@@ -18,7 +20,7 @@ export default function Guests({ guests }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-// State management for tracking which users to invite
+  // State management for tracking which users to invite
   const [invitee, setInvitee] = useState("");
 
   // State management for invitation modal
@@ -39,6 +41,17 @@ export default function Guests({ guests }) {
     setDelId(delId);
   };
   const handleDelClose = () => setDelOpen(false);
+
+  // State management, determines whether user is shown a dropdown
+  const [responded, toggleResponded] = useState(
+    guests.userResponse != "Not Responded"
+  );
+
+  // State management for user's selected RSVP
+  const [rsvpResponse, setRsvpResponse] = useState(guests.userResponse);
+  const handleChange = (event) => {
+    setRsvpResponse(event.target.value);
+  };
 
   // MUTATIONS
   const [addGuest, { addGuestError }] = useMutation(ADD_GUEST);
@@ -77,10 +90,11 @@ export default function Guests({ guests }) {
   const [setRSVP, { RSVPerror }] = useMutation(SET_RSVP);
   const saveSetRSVP = () => {
     try {
+      toggleResponded(true);
       const { data } = setRSVP({
         variables: {
           eventId,
-          rsvp: "No",
+          rsvp: rsvpResponse,
         },
       });
     } catch (RSVPerror) {
@@ -93,7 +107,9 @@ export default function Guests({ guests }) {
         <h2>Guests</h2>
         <a href="#" className="see-all">
           {" "}
-          <p  onClick={handleOpen}><i>See all</i></p>
+          <p onClick={handleOpen}>
+            <i>See all</i>
+          </p>
         </a>
       </div>
       <div className="container guest-container">
@@ -101,7 +117,6 @@ export default function Guests({ guests }) {
           <h3>Yes: {guests.rsvpYes.length} </h3>
           <h3>No: {guests.rsvpNo.length} </h3>
           <h3>Maybe: {guests.rsvpMaybe.length} </h3>
-          {/* <h3>Not Responded: {guests.rsvpNotResponded.length}</h3> */}
         </div>
         {/* If the current user is the event host, they can add more guests */}
         {isHost ? (
@@ -114,7 +129,47 @@ export default function Guests({ guests }) {
             </button>
           </>
         ) : (
-          <button onClick={saveSetRSVP}>Set RSVP</button>
+          <>
+            {/* If the user has already responded, show their selected RSVP, and the option to update */}
+            {responded ? (
+              <div className="display-rsvp">
+                <div>
+                  {rsvpResponse === "Yes" ? <p>You're going!</p> : <></>}
+                  {rsvpResponse === "No" ? <p>You're not going.</p> : <></>}
+                  {rsvpResponse === "Maybe" ? <p>You may be going</p> : <></>}
+                </div>
+
+                <button
+                  className="button change-rsvp-button"
+                  onClick={() => toggleResponded(false)}
+                >
+                  Edit RSVP
+                </button>
+              </div>
+            ) : (
+              // If user has not already responded, or wants to change it, show the dropdown
+              <div className="change-rsvp">
+                <Select
+                  labelId="rsvp-label"
+                  value={rsvpResponse}
+                  onChange={handleChange}
+                  className="rsvp-dropdown"
+                  id="rsvp-dropdown"
+                >
+                  <MenuItem value={"Yes"}>Yes</MenuItem>
+                  <MenuItem value={"No"}>No</MenuItem>
+                  <MenuItem value={"Maybe"}>Maybe</MenuItem>
+                </Select>
+
+                <button
+                  onClick={saveSetRSVP}
+                  className="button cta-button save-rsvp-button"
+                >
+                  Save
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
       <GuestDetailsModal

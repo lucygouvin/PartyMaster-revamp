@@ -11,6 +11,8 @@ import "../../styles/Comment.css";
 export default function Comment({ comment }) {
   const { eventId } = useContext(EventContext);
   const { user } = useContext(EventContext);
+  const { isHost } = useContext(EventContext);
+
 
   const isAuthor = user._id === comment.userId._id;
 

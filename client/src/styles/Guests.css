@@ -8,6 +8,7 @@
 .response-numbers {
     display: flex;
     justify-content: space-between;
+    width: 50%
 }
 
 .edit-guests {
@@ -24,12 +25,40 @@
     justify-content: space-between;
 }
 
-.css-19kzrtu{
-    /* border-bottom: solid var(--dark-font-color) 1px;
-    border-right: solid var(--dark-font-color) 1px;
-    border-left: solid var(--dark-font-color) 1px;
-    border: solid var(--dark-font-color) 1px; */
-    margin: 2%;
+.display-rsvp{
+    display: flex;
+    gap: 5%;
+    width: 50%;
+    margin: auto;
+    align-items: center;
+}
+
+.change-rsvp-button{
+    color: var(--secondary-color);
+    background-color: transparent;
+    border: transparent;
+    font-size: 1em;
+}
+
+.change-rsvp{
+    display: flex;
+    gap: 5%;
+    width: 50%;
+    margin: auto;
+    align-items: center;
+
+}
+.save-rsvp-button{
+    max-height: 1.75rem
+
+}
+
+#rsvp-dropdown{
+    padding:5%
+}
+.rsvp-dropdown{
+    width: 100%;
+    display: inline;
 }
 
 .delete-guest{
