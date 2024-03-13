@@ -135,7 +135,7 @@ const resolvers = {
       }
     },
 
-    editEvent: async (parent, args, context) => {
+    editEvent: async (parent, args) => {
       const event = await Event.findOneAndUpdate(
         { _id: args._id },
         {
@@ -222,7 +222,7 @@ const resolvers = {
         { $pull: { comment: { _id: args.commentId } } },
         { new: true }
       ).populate({ path: 'comment', populate: { path: 'userId' } }),
-      
+
     editComment: async (parent, args) =>
       Event.findOneAndUpdate(
         { _id: args.eventId, 'comment._id': args.comment._id },
@@ -233,8 +233,8 @@ const resolvers = {
     // CONTRIBUTION MUTATIONS
 
     addContribution: async (parent, args) => {
-      let user = null
-      if (args.userID){
+      let user = null;
+      if (args.userID) {
         user = await User.findById(args.userID);
       }
       const event = await Event.findOneAndUpdate(
