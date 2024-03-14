@@ -88,9 +88,9 @@ const resolvers = {
 
     addEvent: async (parent, args, context) => {
       if (context.user) {
-        const user = await User.findById(args.hostID._id);
+        const user = await User.findById(context.user._id);
         const event = await Event.create({
-          hostID: user,
+          hostID: user._id,
           title: args.title,
           description: args.description,
           date: args.date,
@@ -122,7 +122,7 @@ const resolvers = {
             {
               $addToSet: {
                 RSVP: {
-                  userId: guest,
+                  userId: guest._id,
                   invite: 'Not Responded',
                 },
               },
