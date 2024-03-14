@@ -10,6 +10,10 @@
 
 }
 
+.header a{
+  text-decoration: none;
+}
+
 .header h1 {
   color: var(--primary-color);
   margin: 0;
@@ -35,16 +39,14 @@
   display: inline;
 }
 
-.header .create-button{
+a .create-button{
   font-size: 1.5rem;
   color: var(--light-font-color);
   background-color: var(--secondary-color);
   border-radius: var(--border-radius);
-  padding: 2%;
+  padding: 10px;
   outline: none;
   border: none;
-  display: inline;
-  /* min-width: 2rem; */
 }
 
 

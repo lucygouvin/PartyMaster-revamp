@@ -7,7 +7,7 @@ import LandingPage from './components/LandingPage/LandingPage.jsx';
 // import Dashboard  from './components/Dashboard/Dashboard.jsx'
 import Login from './components/Authentication/Login.jsx';
 import Signup from './components/Authentication/Signup.jsx';
-// import EventCreate from './components/Events/EventCreate.jsx';
+import EventCreate from './components/CreateEvent/EventCreate.jsx';
 import EventOverview from './components/Events/EventOverview.jsx';
 // import Invitation from './components/Invitations/Invitations.jsx';
 // import AboutPage from './components/Help/AboutPage.jsx';
@@ -33,9 +33,9 @@ const router = createBrowserRouter([
       },{
         path: '/signup',
         element: <Signup />
-      // },{
-      //   path: '/create-event',
-      //   element: <EventCreate />
+      },{
+        path: '/create-event',
+        element: <EventCreate />
       },{
         path: '/event/:eventId',
         element: <EventOverview />
