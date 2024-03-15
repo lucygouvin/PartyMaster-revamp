@@ -33,7 +33,7 @@
 .main-content{
   display: flex;
   flex-direction: column;
-  background-color: var(--light-color);
+  /* background-color: var(--light-color); */
   justify-content: center;
 }
 
