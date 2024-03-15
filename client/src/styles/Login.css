@@ -1,33 +1,17 @@
-:root {
-  --primary-color: #3498db;
-  --secondary-color: #2ecc71;
-  --bg-color: #ecf0f1;
-  --font-stack: 'Arial', sans-serif;
-  --border-radius: 8px;
-  --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-
 .login-container {
-  height: 550px;
+  background-color: #fff;
+  height: 50%;
   max-width: 700px;
   width: 100%;
-  /* margin: 0 auto; */
-  /* padding: 40px; */
-  background-color: #fff;
-  border-radius: 12px;
+  margin: auto;
+  padding: 3rem;
+  border-radius: var(--border-radius);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   justify-content: center;
   box-sizing: border-box;
 }
-
-
 
 .login-form .form-group {
   margin-bottom: 20px;
@@ -35,30 +19,21 @@
   box-sizing: border-box;
 }
 
-
-
 .login-form .form-label {
   display: block;
   margin-bottom: 8px;
   font-weight: 500;
-  color: #333;
+  color: var(--dark-font-color);
 }
-
-
 
 .login-form .form-control {
   width: 100%;
   padding: 15px;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: var(--border-radius);
   font-size: 16px;
   box-sizing: border-box;
   transition: border-color 0.3s ease-in-out;
-}
-
-.login-form .form-control:focus {
-  border-color: #3498db;
-  outline: none;
 }
 
 .signin-button,
@@ -77,21 +52,13 @@
 
 .signin-button {
   margin-bottom: 20px;
-  background-color: #3498db;
-  color: #fff;
 }
 
-.signin-button:hover {
-  background-color: #2980b9;
-}
 
 .signup-button-two {
   margin-top: 20px;
-  background-color: #2ecc71;
-  color: #fff;
-  /* padding: 14px; */
 }
 
-.signup-button-two:hover {
-  background-color: #27ae60;
+#sign-up-redirect{
+  color: var(--light-color)
 }

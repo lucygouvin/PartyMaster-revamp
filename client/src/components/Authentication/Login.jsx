@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import '../../styles/Login.css';
 import { useMutation } from '@apollo/client';
 import { LOGIN } from '../../utils/mutations';
@@ -49,14 +49,14 @@ export function Login(props) {
             </div>
             <div className="form-group">
               <label htmlFor="password-login" className="form-label">Password</label>
-              <input type="password" className="form-control styling-exclude" id="password-login" placeholder="****" required 
+              <input type="password" className="form-control styling-exclude" id="password-login" placeholder="" required 
               name="password"
               value={formState.password}
               onChange={handleChange}
               />
             </div>
-            <button type="submit" className="signin-button">Sign In</button>
-            <a href="/signup" className="signup-button-two">Create New Account</a>
+            <button type="submit" className="signin-button cta-button">Sign In</button>
+            <a href="/signup" id="sign-up-redirect" className="signup-button-two primary-button">Create New Account</a>
           </form>
         </div>
       </main>
