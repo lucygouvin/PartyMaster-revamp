@@ -154,10 +154,10 @@ query UserEvents {
       location
       hostID {
         name
+        email
         _id
       }
       endTime
-      description
       date
       _id
       RSVP {
@@ -165,6 +165,8 @@ query UserEvents {
         _id
         userId {
           _id
+          name
+          email
         }
       }
     }

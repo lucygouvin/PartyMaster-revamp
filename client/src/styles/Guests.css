@@ -8,7 +8,8 @@
 .response-numbers {
     display: flex;
     justify-content: space-between;
-    width: 50%
+    padding: 0 15%;
+    gap: 10%;
 }
 
 .edit-guests {

@@ -21,3 +21,11 @@
     font-weight: 300;
     font-size: 1rem;
 }
+
+.view-mode{
+    width: 100%;
+}
+
+.edit-mode{
+    width: 100%;
+}
