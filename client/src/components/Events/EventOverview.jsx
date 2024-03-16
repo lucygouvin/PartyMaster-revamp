@@ -1,4 +1,3 @@
-import React from "react";
 import { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
@@ -52,10 +51,6 @@ const EventOverview = () => {
     isHost,
     isGuest,
   };
-  console.log(data);
-  console.log("isHost", isHost)
-  console.log("isGuest", isGuest)
-  console.log(userResponse)
   return (
     <div>
       {loading ? (

@@ -35,9 +35,12 @@ const resolvers = {
 
     userEvents: async (parent, args, context) => {
       if (context.user) {
-        return User.findOne({ _id: context.user._id }).populate({
+        return await User.findOne({ _id: context.user._id }).populate({
           path: 'event',
           populate: { path: 'hostID' },
+        }).populate({
+          path: 'event',
+          populate: { path: 'RSVP.userId' },
         });
       }
       throw AuthenticationError;
