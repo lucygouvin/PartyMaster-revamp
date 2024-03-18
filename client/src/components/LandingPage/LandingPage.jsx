@@ -9,7 +9,7 @@ export function LandingPage() {
   const events = data?.events;
   console.log(events)
   return (
-    <div className="landing-page">
+    <div className="landing-page full-page content-padding">
       <main className="main-content">
         <h1 className="landing-page-header">What Will You Plan?</h1>
         <div className="features-overview">

@@ -44,12 +44,14 @@
 }
 
 .feature-card {
-  width: 25rem;
-  height: 20rem;
-  display: block;
-  border: 2px solid var(--dark-accent);
+  width: 20%;
+min-height: 200px;
+display: block;
+  border: 2px solid var(--dark-font-color);
   border-radius: var(--border-radius);
   overflow: hidden;
+  align-items: center;
+  
 }
 
 .feature-card img{

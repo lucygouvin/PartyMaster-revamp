@@ -74,7 +74,7 @@ type Query{
 
 type Mutation{
   login(email: String!, password: String!): Auth
-  addUser(name: String, email: String!, password: String, params: String!): Auth
+  addUser(name: String, email: String!, password: String, login: Boolean): Auth
   deleteUser(id:ID!): User
   addEvent(title: String!, description: String!, date: String!, startTime: String!, endTime: String, location: String!, guestList: String): Event
   editEvent(_id: ID!, title: String, description:String, date: String, startTime: String, endTime: String, location: String, potluck: Boolean): Event

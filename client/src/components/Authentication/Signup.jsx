@@ -25,9 +25,8 @@ export function Signup(props) {
     
         }
         try {
-           
             const { data } = await addUser({
-                variables: { email, name, password },
+                variables: { email, name, password, login:true, },
             });
             Auth.login(data.addUser.token)
 
@@ -40,7 +39,7 @@ export function Signup(props) {
         }
     };
     return (
-        <div className="landing-page">
+        <div className="landing-page full-page">
             <main className="main-content">
                 <div className="signup-container">
                     <form className="signup-form" 

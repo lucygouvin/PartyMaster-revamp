@@ -3,9 +3,13 @@ import { SET_RSVP } from "../../utils/mutations";
 
 export default function DashboardListItem({ events, user }) {
   const isHost = events.hostID._id === user._id;
-  const { invite } = events.RSVP.filter(
+
+  let invite;
+
+  if(!isHost){
+   invite=events.RSVP.filter(
     (event) => event.userId._id === user._id
-  )[0];
+  )[0].invite}
 
   const [setRSVP, { RSVPerror }] = useMutation(SET_RSVP);
   const saveSetRSVP = (value) => {
@@ -35,11 +39,11 @@ export default function DashboardListItem({ events, user }) {
         </p>
       </div>
       <div>{isHost ? <p>You're the Host!</p> : <>
-      <h3>Quick RSVP:</h3>
+      <h3>RSVP:</h3>
       {invite==="Not Responded"? (<>
-      <button value={"Yes"} onClick={(event)=>saveSetRSVP(event.target.value)}><img  className="rsvp-icon" src="/checkmark_icon.png"></img></button>
-      <button value={"No"} onClick={(event)=>saveSetRSVP(event.target.value)}><img  className="rsvp-icon" src="/x_icon.svg"></img></button>
-      <button value={"Maybe"} onClick={(event)=>saveSetRSVP(event.target.value)}><img  className="rsvp-icon" src="/question_icon.png"></img></button>
+      <button value={"Yes"} onClick={(event)=>saveSetRSVP(event.target.value)}>&#10003;</button>
+      <button value={"No"} onClick={(event)=>saveSetRSVP(event.target.value)}>&#88;</button>
+      <button value={"Maybe"} onClick={(event)=>saveSetRSVP(event.target.value)}>&#63;</button>
       </>):<>{invite}</>}</>}</div>
     </div>
   );

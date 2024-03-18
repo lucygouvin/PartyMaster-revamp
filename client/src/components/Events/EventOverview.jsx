@@ -33,10 +33,10 @@ const EventOverview = () => {
       } else if (user.event.includes(eventId)){
         setIsGuest(true)
         for (let i=0; i<data.event.RSVP.length; i++){
-          // if(data.event.RSVP[i].userId._id === user._id){
-          //   setUserResponse(data.event.RSVP[i].invite)
-          //   break
-          // }
+          if(data.event.RSVP[i].userId._id === user._id){
+            setUserResponse(data.event.RSVP[i].invite)
+            break
+          }
         }
       }else{
         setIsHost(false)
@@ -44,7 +44,7 @@ const EventOverview = () => {
       }
     }
   }, [loading, data]);
-
+console.log(data)
   const universalData = {
     eventId,
     user,
@@ -52,7 +52,7 @@ const EventOverview = () => {
     isGuest,
   };
   return (
-    <div>
+    <div className="full-page">
       {loading ? (
         <p>Loading...</p>
       ) : (

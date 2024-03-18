@@ -49,7 +49,7 @@ const EventCreate = () => {
     return (
 
         
-        <div className="create-container">
+        <div className="create-container full-page">
             <h2>Create a New Event</h2>
             <form onSubmit={handleSubmit}>
                 <div>

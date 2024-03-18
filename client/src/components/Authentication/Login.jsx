@@ -36,7 +36,7 @@ export function Login(props) {
     });
   };
   return (
-    <div className="landing-page">
+    <div className="landing-page full-page">
       <main className="main-content">
         <div className="login-container">
           <form className="login-form" onSubmit={handleFormSubmit}>
