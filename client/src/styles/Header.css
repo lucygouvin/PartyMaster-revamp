@@ -7,6 +7,8 @@
   justify-content: space-between;
   padding: 0 1rem;
   border-bottom: var(--quiet-color) 1px solid;
+  height: 7vh;
+  box-sizing: border-box;
 
 }
 

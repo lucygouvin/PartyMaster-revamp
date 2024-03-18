@@ -68,19 +68,18 @@ const resolvers = {
     },
 
     addUser: async (parent, args) => {
+      let token
       // If this mutation was called from /signup, then sign the user in automatically
-      const login = args.params === 'signup';
       const user = await User.create({
         name: args.name,
         email: args.email,
         password: args.password,
-        prevSignIn: login,
+        prevSignIn: args.login,
       });
-      if (login) {
-        const token = signToken(user);
-        return { token, user };
+      if (args.login) {
+        token = signToken(user);
       }
-      return { user };
+      return { token, user };
     },
 
     deleteUser: async (parent, args) => User.findOneAndDelete({ _id: args.id }),
