@@ -43,7 +43,7 @@ export function LandingPage() {
           }} />
         </div>
         
-        <a href="/signup" className="start-button">Join the Party!</a>
+        <a href="/signup"><button className='cta-button start-button'>Join the Party!</button></a>
         {/* <button className='start-button'>Join the party</button> */}
       </main>
     </div>
