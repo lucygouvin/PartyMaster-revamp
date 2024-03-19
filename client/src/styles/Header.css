@@ -49,6 +49,7 @@ a .create-button{
   padding: 10px;
   outline: none;
   border: none;
+  white-space: nowrap;
 }
 
 
